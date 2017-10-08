@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="index-right">
-      <slide-show></slide-show>
+      <slide-show :slide='slides' :interval='slideSpeed'></slide-show>
         <div class="index-board-item" v-for="(item,index) in borderList" :class="{'line-last' : index % 2 !== 0 }">
           <div class="index-board-item-inner"
           :class="[{'line-last' : index % 2 !== 0},
@@ -64,6 +64,29 @@ export default {
   },
   data () {
     return{
+      slideSpeed:2000,
+      slides: [
+        {
+          src: require('../assets/slideShow/pic1.jpg'),
+          title: 'xxx1',
+          href: 'detail/analysis'
+        },
+        {
+          src: require('../assets/slideShow/pic2.jpg'),
+          title: 'xxx2',
+          href: 'detail/count'
+        },
+        {
+          src: require('../assets/slideShow/pic3.jpg'),
+          title: 'xxx3',
+          href: 'http://xxx.xxx.com'
+        },
+        {
+          src: require('../assets/slideShow/pic4.jpg'),
+          title: 'xxx4',
+          href: 'detail/forecast'
+        }
+      ],
       borderList: [
         {
           title: '开放产品',
