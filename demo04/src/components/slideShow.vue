@@ -2,7 +2,12 @@
   <div class="slide-show" @mouseover='clearInv' @mouseout='runInv'>
     <div class="slide-img" v-for="(item,index) in slide">
       <a :href="slide[nowIndex].href">
-        <img :src="slide[nowIndex].src" alt="">
+        <transition name="slide-trans">
+          <img :src="slide[nowIndex].src" v-if="isShow">
+        </transition>
+        <transform name='slide-trans-old'>
+          <img :src="slide[nowIndex].src" v-if="!isShow">
+        </transform>
       </a>
     </div>
     <h2>{{ slide[nowIndex].title }}</h2>
@@ -46,12 +51,18 @@
     },
     data(){
       return {
-        nowIndex:0
+        nowIndex:0,
+        isShow:true
       }
     },
     methods : {
       goto(index){
-        this.nowIndex=index
+        this.isShow = false;
+        setTimeout(() => {
+          this.isShow=true;
+          this.nowIndex=index;
+        },10)
+
       },
       runInv(){
         this.invID =  setInterval(() => {
