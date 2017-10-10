@@ -64,7 +64,7 @@ export default {
   },
   methods : {
     doSomething(){
-      console.log(111)
+      
     }
   },
   data () {

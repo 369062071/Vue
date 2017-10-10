@@ -4,12 +4,11 @@
       <div class="app-head-inner">
         <div class="head-nav">
           <ul class="nav-list">
-            <li>退出</li>
-            <li>登录</li>
+            <li @click='logClick'>登录</li>
             <li>|</li>
-            <li>注册</li>
+            <li @click='regClick'>注册</li>
             <li>|</li>
-            <li>关于</li>
+            <li @click='aboutClick'>关于</li>
           </ul>
         </div>
       </div>
@@ -23,24 +22,53 @@
     <div class="app-foot">
       <p>© 2016 fishenal MIT</p>
     </div>
-    <my-dialog></my-dialog>
+    <my-dialog :is-show='isShowAboutDialog' @on-close="closeDialog('isShowAboutDialog')">
+      <p>about</p>
+    </my-dialog>
+
+    <my-dialog :is-show='isShowLogDialog' @on-close="closeDialog('isShowLogDialog')">
+      <log-form></log-form>
+    </my-dialog>
+
+    <my-dialog :is-show='isShowRegDialog' @on-close="closeDialog('isShowRegDialog')">
+      <reg-form></reg-form>
+    </my-dialog>
   </div>
 </template>
 
 <script>
 import MyDialog from './dialog.vue'
+import LogForm from './logForm.vue'
+import RegForm from './regForm.vue'
+
 export default {
   components:{
-    MyDialog
+    MyDialog,
+    LogForm,
+    RegForm
   },
   data () {
     return {
-      isShowAboutDialog: false,
-      isShowLogDialog: false,
-      isShowRegDialog: false,
-      username: ''
+      isShowAboutDialog:false,
+      isShowLogDialog:false,
+      isShowRegDialog: false
+    }
+  },
+  methods:{
+    aboutClick(){
+      this.isShowAboutDialog=true
+    },
+    logClick () {
+      this.isShowLogDialog=true
+    },
+    regClick () {
+      this.isShowRegDialog=true
+    } ,
+    closeDialog(attr) {
+      this[attr]=false
     }
   }
+
 }
 </script>
 
