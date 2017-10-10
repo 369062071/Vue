@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="index-right">
-      <slide-show :slide='slides' :interval='slideSpeed'></slide-show>
+      <slide-show :slide='slides' :interval='slideSpeed' @onchange='doSomething'></slide-show>
         <div class="index-board-item" v-for="(item,index) in borderList" :class="{'line-last' : index % 2 !== 0 }">
           <div class="index-board-item-inner"
           :class="[{'line-last' : index % 2 !== 0},
@@ -61,6 +61,11 @@ export default {
     },function(err){
       console.log(err)
     })
+  },
+  methods : {
+    doSomething(){
+      console.log(111)
+    }
   },
   data () {
     return{

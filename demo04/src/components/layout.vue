@@ -23,12 +23,16 @@
     <div class="app-foot">
       <p>© 2016 fishenal MIT</p>
     </div>
+    <my-dialog></my-dialog>
   </div>
 </template>
 
 <script>
-
+import MyDialog from './dialog.vue'
 export default {
+  components:{
+    MyDialog
+  },
   data () {
     return {
       isShowAboutDialog: false,

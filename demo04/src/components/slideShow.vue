@@ -5,9 +5,9 @@
         <transition name="slide-trans">
           <img :src="slide[nowIndex].src" v-if="isShow">
         </transition>
-        <transform name='slide-trans-old'>
+        <transition name='slide-trans-old'>
           <img :src="slide[nowIndex].src" v-if="!isShow">
-        </transform>
+        </transition>
       </a>
     </div>
     <h2>{{ slide[nowIndex].title }}</h2>
@@ -61,8 +61,8 @@
         setTimeout(() => {
           this.isShow=true;
           this.nowIndex=index;
+          this.$emit('onchange',index)
         },10)
-
       },
       runInv(){
         this.invID =  setInterval(() => {
