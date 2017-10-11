@@ -4,9 +4,11 @@
       <div class="app-head-inner">
         <div class="head-nav">
           <ul class="nav-list">
-            <li @click='logClick'>登录</li>
+            <li> {{ userName }}</li>
+            <li v-if="userName === ''" @click='logClick'>登录</li>
             <li>|</li>
-            <li @click='regClick'>注册</li>
+            <li v-if=" userName !==''">退出</li>
+            <li v-if="userName === ''" @click='regClick'>注册</li>
             <li>|</li>
             <li @click='aboutClick'>关于</li>
           </ul>
@@ -27,7 +29,7 @@
     </my-dialog>
 
     <my-dialog :is-show='isShowLogDialog' @on-close="closeDialog('isShowLogDialog')">
-      <log-form></log-form>
+      <log-form @has-log='onSuccessLog'></log-form>
     </my-dialog>
 
     <my-dialog :is-show='isShowRegDialog' @on-close="closeDialog('isShowRegDialog')">
@@ -51,7 +53,8 @@ export default {
     return {
       isShowAboutDialog:false,
       isShowLogDialog:false,
-      isShowRegDialog: false
+      isShowRegDialog: false,
+      userName:''
     }
   },
   methods:{
@@ -66,6 +69,10 @@ export default {
     } ,
     closeDialog(attr) {
       this[attr]=false
+    },
+    onSuccessLog (data) {
+      this.closeDialog('isShowLogDialog')
+      this.userName = data.username
     }
   }
 

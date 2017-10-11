@@ -55,7 +55,7 @@ export default {
     slideShow
   },
   created: function (){
-    this.$http.post('getList',{userID:123})
+    this.$http.get('http://localhost:3000/getNewsList')
     .then(function(data){
       console.log(data)
     },function(err){
@@ -64,7 +64,7 @@ export default {
   },
   methods : {
     doSomething(){
-      
+
     }
   },
   data () {
