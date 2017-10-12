@@ -5,12 +5,14 @@
         <span class="g-form-label"></span>
         <div class="g-form-input">
           <input type="text"
-           placeholder="请输入用户名">
+           placeholder="请输入用户名"
+           v-model='userName'>
         </div>
+        <span class="g-form-error">{{ userErrors.errorText}} </span>
       </div>
       <div class="g-form-line">
         <div class="g-form-btn">
-          <a class="button">登录</a>
+          <a class="button" @click='onreg'>注册</a>
         </div>
       </div>
     </div>
@@ -19,7 +21,48 @@
 
 <script>
 export default {
-  
+  data () {
+    return{
+      userName : '',
+      uPattern: /^[a-zA-Z0-9_-]{4,8}$/
+
+    }
+  },
+  computed : {
+    userErrors () {
+      let errorText, status;
+      if(!this.uPattern.test(this.userName)){
+        status = false;
+        errorText = '格式错误'
+      } else {
+        status = true ,
+        errorText = ''
+      }
+      if(!this.userFlag){
+        errorText = '';
+        this.userFlag = true
+      }
+      return{
+        status,
+        errorText
+      }
+    }
+  },
+  methods : {
+    onreg () {
+      if(!this.userErrors.status){
+        alert('错误')
+      } else {
+        this.userErrors.errorText = '';
+        this.$http.get('http://localhost:3000/login')
+        .then((data) => {
+          this.$emit('reg-data',data.data)
+        }, (err) => {
+          console.log(err)
+        })
+      }
+    }
+  }
 }
 
 </script>

@@ -1,14 +1,16 @@
 <template lang="html">
   <div>
-    <div class="dialog-wrap" v-if='isShow'>
-      <div class="dialog-cover" @click='closeDialog'>
-      </div>
-      <div class="dialog-content">
-          <p class="dialog-close" @click='closeDialog'>X</p>
-          <slot>
-            dfsd
-          </slot>
-      </div>
+    <div class="dialog-wrap" >
+      <div class="dialog-cover" v-if='isShow' @click='closeDialog'></div>
+      <transition name='drop'>
+        <div class="dialog-content" v-if='isShow'>
+            <p class="dialog-close" @click='closeDialog'>X</p>
+            <slot>
+              dfsd
+            </slot>
+        </div>
+      </transition>
+
     </div>
   </div>
 </template>

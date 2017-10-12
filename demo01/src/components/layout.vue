@@ -33,7 +33,7 @@
     </my-dialog>
 
     <my-dialog :is-show='isShowRegDialog' @on-close="closeDialog('isShowRegDialog')">
-      <reg-form></reg-form>
+      <reg-form @reg-data='onSuccessReg'></reg-form>
     </my-dialog>
   </div>
 </template>
@@ -73,6 +73,10 @@ export default {
     onSuccessLog (data) {
       this.closeDialog('isShowLogDialog')
       this.userName = data.username
+    },
+    onSuccessReg (data) {
+      this.closeDialog('isShowRegDialog');
+      console.log(data)
     }
   }
 
