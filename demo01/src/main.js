@@ -22,6 +22,7 @@ let router=new VueRouter({
     {
       path:'/detail',
       component:DetailPage,
+      redirect:'/detail/count',
       children: [
         {
           path: 'analysis',
@@ -32,7 +33,7 @@ let router=new VueRouter({
           component : DetailCouPage
         },
         {
-          path: 'forecase',
+          path: 'forecast',
           component : DetailForPage
         },
         {
