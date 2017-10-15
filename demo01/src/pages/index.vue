@@ -32,7 +32,8 @@
       </div>
     </div>
     <div class="index-right">
-      <slide-show :slide='slides' :interval='slideSpeed' @onchange='doSomething'></slide-show>
+      <slide-show :slide='slides' :interval='slideSpeed' @onchange='doSomething'>
+      </slide-show>
         <div class="index-board-item" v-for="(item,index) in borderList" :class="{'line-last' : index % 2 !== 0 }">
           <div class="index-board-item-inner"
           :class="[{'line-last' : index % 2 !== 0},
@@ -61,6 +62,30 @@ export default {
     },function(err){
       console.log(err)
     })
+  },
+  beforeCreate() {
+     console.group('beforeCreate 创建前状态===============》');
+  },
+  created () {
+    console.log('创建后')
+  },
+  beforeMount(){
+    console.log('挂载前')
+  },
+  mounted () {
+    console.log('挂载后')
+  },
+  beforeUpdate () {
+    console.log('更新前')
+  },
+  updated () {
+    console.log('更新后')
+  },
+  beforeDestroy () {
+    console.log('删除前')
+  },
+  destroued () {
+    console.log('销毁后')
   },
   methods : {
     doSomething(){
