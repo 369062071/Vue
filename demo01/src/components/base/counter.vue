@@ -2,7 +2,7 @@
     <div class="counter-component">
       <div class="counter-btn" @click='minus'> - </div>
       <div class="counter-show">
-        <input type="text" v-model='buyNum'>
+        <input type="text" v-model='buyNum'@keyup='fixNumber'>
       </div>
       <div class="counter-btn" @click='maxus'> + </div>
     </div>
@@ -33,13 +33,17 @@ export default {
       }else{
         fix = this.buynum
       }
+      if(fix > this.max || fix < this.min) {
+        fix = this.min
+      }
+      this.buyNum = fix
     },
     minus () {
       if(this.buyNum <= this.min){
         return
       }
       this.buyNum--
-      console.log(this.buyNum)
+      console.log(this.buyNum--)
     },
     maxus () {
       if(this.buyNum >= this.max){
