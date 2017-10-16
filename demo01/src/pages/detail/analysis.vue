@@ -10,7 +10,10 @@
                   购买数量：
               </div>
               <div class="sales-board-line-right">
-                <v-counter :max='numMax' :min='numMin'></v-counter>
+                <v-counter :max='numMax'
+                :min='numMin'
+@on-change="onParamChange('buyNum',$event)">
+                </v-counter>
               </div>
           </div>
           <div class="sales-board-line">
@@ -19,7 +22,7 @@
               </div>
               <div class="sales-board-line-right">
                   <v-selection :selections="productTypes"
-                  @on>
+                  @on-change="onParamChange('versions',$event)">
                   </v-selection>
               </div>
           </div>
@@ -28,15 +31,9 @@
                   有效时间：
               </div>
               <div class="sales-board-line-right">
-                  <valid-time :selections='periodList'></valid-time>
-              </div>
-          </div>
-          <div class="sales-board-line">
-              <div class="sales-board-line-left">
-                  产品版本：
-              </div>
-              <div class="sales-board-line-right">
-
+                  <valid-time :selections='periodList'
+                    @on-change="onParamChange('period',$event)"
+                  ></valid-time>
               </div>
           </div>
           <div class="sales-board-line">
@@ -50,7 +47,7 @@
           <div class="sales-board-line">
               <div class="sales-board-line-left">&nbsp;</div>
               <div class="sales-board-line-right">
-                  <div class="button">
+                  <div class="button" @click='clickPay'>
                     立即购买
                   </div>
               </div>
@@ -78,30 +75,32 @@
           <li>用户所在地理区域分布状况等</li>
         </ul>
       </div>
-      <!-- <my-dialog >
-        <table class="buy-dialog-table">
-          <tr>
-            <th>购买数量</th>
-            <th>产品类型</th>
-            <th>有效时间</th>
-            <th>产品版本</th>
-            <th>总价</th>
-          </tr>
-          <tr>
-            <td>45</td>
-            <td>45</td>
-            <td>45</td>
-            <td>
-              <span></span>
-            </td>
-            <td>4545</td>
-          </tr>
-        </table>
-        <h3 class="buy-dialog-title">请选择银行</h3>
-        <bank-chooser></bank-chooser>
-        <div class="button buy-dialog-btn">
-          确认购买
-        </div> -->
+      <my-dialog :is-show="inShowPayDialog"
+      @on-close='closeDialog'>
+      <table class="buy-dialog-table">
+        <tr>
+          <th>购买数量</th>
+          <th>产品类型</th>
+          <th>有效时间</th>
+          <th>总价</th>
+        </tr>
+        <tr>
+          <td>{{ buyNum }}</td>
+          <td>{{ versions.label }}</td>
+          <td>{{ period.label }}</td>
+          <td>
+            <span ></span>
+          </td>
+
+        </tr>
+      </table>
+      <h3 class="buy-dialog-title">请选择银行</h3>
+      <bank-chooser></bank-chooser>
+      <div class="button buy-dialog-btn" >
+        确认购买
+      </div>
+      </my-dialog>
+
 
 
 
@@ -113,19 +112,24 @@ import VSelection from '../../components/base/selection.vue'
 import ValidTime from '../../components/base/ValidTime.vue'
 import VCounter from '../../components/base/counter.vue'
 import MyDialog from '../../components/dialog.vue'
-
+import BankChooser from '../../components/bankChoose.vue'
 
 export default {
   components: {
     VSelection,
     ValidTime,
     VCounter,
-    MyDialog
+    MyDialog,
+    BankChooser
   },
   data () {
     return {
+      buyNum: 0,
+      period: {},
+      versions: {},
       numMax:30,
       numMin:1,
+      inShowPayDialog:false,
       periodList: [
         {
           label: '半年',
@@ -154,6 +158,34 @@ export default {
           value: 2
         }
       ],
+    }
+  },
+  methods: {
+    onParamChange (attr,val) {
+      this[attr] = val
+      this.getPrice();
+    },
+    getPrice () {
+      let buyVersionsArray = _.map(this.versions,(item) => {
+        console.log(item)
+        return item
+      })
+
+      let reqParams = {
+        buyNumber: this.buyNum,
+        period: this.period.value,
+        version: this.versions.value
+      }
+      this.$http.post('http://127.0.0.1:3000/getPrice',reqParams)
+      .then((res)=>{
+        console.log(res)
+      })
+    },
+    clickPay () {
+      this.inShowPayDialog = true;
+    },
+    closeDialog () {
+      this.inShowPayDialog = false;
     }
   }
 

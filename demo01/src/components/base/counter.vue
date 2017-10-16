@@ -1,11 +1,11 @@
 <template>
-    <div class="counter-component">
-      <div class="counter-btn" @click='minus'> - </div>
-      <div class="counter-show">
-        <input type="text" v-model='buyNum'@keyup='fixNumber'>
-      </div>
-      <div class="counter-btn" @click='maxus'> + </div>
+  <div class="counter-component">
+    <div class="counter-btn" @click="minus"> - </div>
+    <div class="counter-show">
+      <input type="text" v-model="number" @keyup="fixNumber">
     </div>
+    <div class="counter-btn" @click="add"> + </div>
+  </div>
 </template>
 
 <script>
@@ -22,34 +22,39 @@ export default {
   },
   data () {
     return {
-      buyNum: this.min
+      number: this.min
+    }
+  },
+  watch : {
+    number () {
+      this.$emit('on-change',this.number)
     }
   },
   methods: {
     fixNumber () {
       let fix
-      if (typeof this.buynum === 'string'){
-        fix = Number(this.buynum.replace(/\D/g,''))
+      if (typeof this.number === 'string'){
+        fix = Number(this.number.replace(/\D/g,''))
       }else{
-        fix = this.buynum
+        fix = this.number
       }
       if(fix > this.max || fix < this.min) {
         fix = this.min
       }
-      this.buyNum = fix
+      this.number = fix
     },
     minus () {
-      if(this.buyNum <= this.min){
+      if(this.number <= this.min){
         return
       }
-      this.buyNum--
-      console.log(this.buyNum--)
+      this.number--
+
     },
-    maxus () {
-      if(this.buyNum >= this.max){
+    add () {
+      if(this.number >= this.max){
         return
       }
-      this.buynum++
+      this.number++
     }
   }
 

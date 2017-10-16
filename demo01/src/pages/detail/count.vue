@@ -10,7 +10,7 @@
                   购买数量：
               </div>
               <div class="sales-board-line-right">
-
+                <v-counter @on-change="onParamChange('buyNum',$event)"></v-counter>
               </div>
           </div>
           <div class="sales-board-line">
@@ -18,7 +18,9 @@
                   产品类型：
               </div>
               <div class="sales-board-line-right">
-                <multiple-choice :selections='productTypes'></multiple-choice>
+                <multiple-choice :selections='productTypes'
+                  @on-change="onParamChange('versions',$event)"
+                ></multiple-choice>
               </div>
           </div>
           <div class="sales-board-line">
@@ -26,7 +28,9 @@
                   有效时间：
               </div>
               <div class="sales-board-line-right">
-                  <valid-time :selections='periodList'></valid-time>
+                  <valid-time :selections='periodList'
+                    @on-change="onParamChange('period',$event)"
+                  ></valid-time>
               </div>
           </div>
 
@@ -41,7 +45,7 @@
           <div class="sales-board-line">
               <div class="sales-board-line-left">&nbsp;</div>
               <div class="sales-board-line-right">
-                  <div class="button">
+                  <div class="button" @click='showDialog'>
                     立即购买
                   </div>
               </div>
@@ -69,7 +73,7 @@
           <li>用户所在地理区域分布状况等</li>
         </ul>
       </div>
-      <!-- <my-dialog >
+      <my-dialog :is-show='inShowPayDialog' @on-close='closeDialog'>
         <table class="buy-dialog-table">
           <tr>
             <th>购买数量</th>
@@ -79,20 +83,16 @@
             <th>总价</th>
           </tr>
           <tr>
-            <td>45</td>
-            <td>45</td>
-            <td>45</td>
+            <td>{{ buyNum }}</td>
+            <td>{{ versions.label }}</td>
+            <td>{{ period.label }}</td>
             <td>
-              <span></span>
+              <span</span>
             </td>
-            <td>4545</td>
+            <td></td>
           </tr>
         </table>
-        <h3 class="buy-dialog-title">请选择银行</h3>
-        <bank-chooser></bank-chooser>
-        <div class="button buy-dialog-btn">
-          确认购买
-        </div> -->
+      </my-dialog>
 
 
 
@@ -100,18 +100,25 @@
 </template>
 
 <script>
+import VCounter from '../../components/base/counter.vue'
 import MultipleChoice from '../../components/base/multipleChoice.vue'
 import ValidTime from '../../components/base/validTime.vue'
 import MyDialog from '../../components/dialog.vue'
 
+
 export default {
   components: {
+    VCounter,
     MultipleChoice,
     ValidTime,
     MyDialog
   },
   data () {
     return {
+      inShowPayDialog: false,
+      buyNum: 0,
+      versions:{},
+      period:{},
       periodList: [
         {
           label: '半年',
@@ -140,6 +147,31 @@ export default {
           value: 2
         }
       ],
+    }
+  },
+  methods: {
+    showDialog () {
+      this.inShowPayDialog = true;
+    },
+    closeDialog () {
+      this.inShowPayDialog = false;
+    },
+    onParamChange (attr,val) {
+      this[attr] = val
+      this.getPrice()
+    },
+    getPrice () {
+      let buyVersionsArray = _.map(this.versions,(item) =>{
+        return item.value
+      })
+      let reqParams = {
+        buyNum: this.buyNum,
+        version: buyVersionsArray.join(','),
+        period: this.period.value
+      }
+      this.$http.post('http://127.0.0.1:3000/getPrice',reqParams).then((res) => {
+        console.log(res)
+      })
     }
   }
 

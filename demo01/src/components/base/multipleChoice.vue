@@ -30,21 +30,22 @@ export default {
       if(this.nowIndex.indexOf(index)===-1){
         this.nowIndex.push(index)
       }else{
-        for(var i=0;i<this.nowIndex.length;i++){
-          if(this.nowIndex[i] === index){
-            this.nowIndex.splice(i,1)
-          }
-        }
+        this.nowIndex = _.remove(this.nowIndex,(idx) =>{
+          return idx !== index
+        })
       };
-      console.log(this.nowIndex)
-      this.$emit('on-choose',this.nowIndex)
+      //返回到父组件的值映射
+      let nowObjArray = _.map(this.nowIndex,(idx) =>{
+        return this.selections[idx]
+      })
+      this.$emit('on-change',nowObjArray)
     },
     checkActive (index) {
       return this.nowIndex.indexOf(index) !== -1
     }
   },
   mounted () {
-    console.log(this.selections)
+
   }
 }
 </script>

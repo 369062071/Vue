@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted(){
-    console.log(this.imgMap[this.$route.path])
+  
   }
 }
 </script>

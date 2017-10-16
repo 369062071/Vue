@@ -26,7 +26,9 @@
     "userId": 123123
   },
   "getPrice": {
-    "amount": 678
+    "buyNum": 0,
+    "version": "0",
+    "period": 1
   },
   "createOrder": {
     "orderId": "6djk979"
