@@ -95,12 +95,12 @@
         </tr>
       </table>
       <h3 class="buy-dialog-title">请选择银行</h3>
-      <bank-chooser></bank-chooser>
-      <div class="button buy-dialog-btn" >
+      <bank-chooser @on-change="onChangeBanks"></bank-chooser>
+      <div class="button buy-dialog-btn" @click='confirmBuy'>
         确认购买
       </div>
       </my-dialog>
-
+      <check-order :show="true"></check-order>
 
 
 
@@ -113,6 +113,7 @@ import ValidTime from '../../components/base/ValidTime.vue'
 import VCounter from '../../components/base/counter.vue'
 import MyDialog from '../../components/dialog.vue'
 import BankChooser from '../../components/bankChoose.vue'
+import CheckOrder from '../../components/checkOrder.vue'
 
 export default {
   components: {
@@ -120,7 +121,8 @@ export default {
     ValidTime,
     VCounter,
     MyDialog,
-    BankChooser
+    BankChooser,
+    CheckOrder
   },
   data () {
     return {
@@ -129,6 +131,7 @@ export default {
       versions: {},
       numMax:30,
       numMin:1,
+      isShowCheckOrder:false,
       inShowPayDialog:false,
       periodList: [
         {
@@ -158,7 +161,9 @@ export default {
           value: 2
         }
       ],
+      bankId:''
     }
+
   },
   methods: {
     onParamChange (attr,val) {
@@ -167,18 +172,18 @@ export default {
     },
     getPrice () {
       let buyVersionsArray = _.map(this.versions,(item) => {
-        console.log(item)
-        return item
-      })
 
+        return item.value
+      })
       let reqParams = {
         buyNumber: this.buyNum,
         period: this.period.value,
-        version: this.versions.value
+        version: this.versions.value,
       }
       this.$http.post('http://127.0.0.1:3000/getPrice',reqParams)
       .then((res)=>{
-        console.log(res)
+        let data = JSON.stringify(res.data)
+        console.log(data)
       })
     },
     clickPay () {
@@ -186,7 +191,36 @@ export default {
     },
     closeDialog () {
       this.inShowPayDialog = false;
+    },
+    onChangeBanks (bankObj) {
+      this.bankId = bankObj.id
+      console.log(bankObj)
+    },
+    confirmBuy () {
+      let buyVersionsArray = _.map(this.versions,(item) => {
+        return item.value
+      })
+      let reqParams = {
+        buyNumber: this.buyNum,
+        period: this.period.value,
+        version: this.versions.value,
+        bankId: this.bankId
+      }
+      this.$http.post('http://127.0.0.1:3000/getPrice',reqParams)
+      .then((res)=>{
+        let data = JSON.stringify(res.data)
+        this.isShowCheckOrder = true
+        this.inShowPayDialog = false
+        console.log(data)
+      }, (err) =>{
+
+      })
     }
+  },
+  mounted () {
+    this.buyNum = 0;
+    this.period = this.periodList[0];
+    this.versions = this.productTypes[0];
   }
 
 

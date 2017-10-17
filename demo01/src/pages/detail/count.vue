@@ -79,7 +79,6 @@
             <th>购买数量</th>
             <th>产品类型</th>
             <th>有效时间</th>
-            <th>产品版本</th>
             <th>总价</th>
           </tr>
           <tr>
@@ -117,7 +116,7 @@ export default {
     return {
       inShowPayDialog: false,
       buyNum: 0,
-      versions:{},
+      versions:[],
       period:{},
       periodList: [
         {
@@ -169,10 +168,16 @@ export default {
         version: buyVersionsArray.join(','),
         period: this.period.value
       }
+      console.log(this.versions)
       this.$http.post('http://127.0.0.1:3000/getPrice',reqParams).then((res) => {
-        console.log(res)
+        console.log(res.data)
       })
     }
+  },
+  mounted () {
+    this.buyNum = 1;
+    this.period = this.periodList[0];
+    this.versions = this.productTypes[0];
   }
 
 

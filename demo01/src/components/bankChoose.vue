@@ -1,9 +1,10 @@
 <template>
   <div class="chooser-component">
     <ul class="chooser-list">
-      <li v-for='item in banks'>
-        {{ item.label }}
-      </li>
+      <li v-for='(item,index) in banks' :class="[item.name,{active: index === nowIndex}]"
+      :title="item.label"
+        @click='chooseBank(index)'
+      ></li>
     </ul>
   </div>
 </template>
@@ -55,6 +56,12 @@ export default {
               name: 'zhongxin'
           }
       ]
+    }
+  },
+  methods:{
+    chooseBank (index) {
+      this.nowIndex = index
+      this.$emit('on-change', this.banks[index])
     }
   }
 }
