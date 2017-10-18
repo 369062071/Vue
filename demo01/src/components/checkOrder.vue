@@ -1,7 +1,7 @@
 <template>
   <div>
-    <my-dialog >
-      <div class="button" is-show='show'>
+    <my-dialog :is-show='isShow' @on-close="closeDialog">
+      <div class="button" >
         支付成功
       </div>
       <div class="button" >
@@ -10,6 +10,9 @@
     </my-dialog>
     <my-dialog :is-show="isShowErrDialog">
       支付失败！
+    </my-dialog>
+    <my-dialog :is-show="isShowSuccessDialog">
+      支付成功
     </my-dialog>
   </div>
 </template>
@@ -21,7 +24,7 @@ export default {
     MyDialog
   },
   props:{
-    show:{
+    isShow:{
       type: Boolean,
       default: false
     },
@@ -35,6 +38,11 @@ export default {
       isShowCheckDialog: false,
       isShowSuccessDialog: false,
       isShowFailDialog: false
+    }
+  },
+  methods: {
+    closeDialog () {
+      this.$emit('close-show-check-dialog')
     }
   }
 }

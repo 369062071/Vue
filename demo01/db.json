@@ -26,10 +26,10 @@
     "userId": 123123
   },
   "getPrice": {
-    "buyNumber": 0,
+    "buyNum": 1,
+    "version": ",",
     "period": 0,
-    "version": 0,
-    "bankId": ""
+    "bankId": 501
   },
   "createOrder": {
     "orderId": "6djk979"

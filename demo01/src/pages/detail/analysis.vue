@@ -100,8 +100,10 @@
         确认购买
       </div>
       </my-dialog>
-      <check-order :show="true"></check-order>
-
+      <check-order :is-show="isShowCheckOrder"
+        @close-show-check-dialog='hideCheckDialog'
+      ></check-order>
+      <check-order :is-show-err-dialog='isShowFailDialog'></check-order>
 
 
   </div>
@@ -133,6 +135,7 @@ export default {
       numMin:1,
       isShowCheckOrder:false,
       inShowPayDialog:false,
+      isShowFailDialog:false,
       periodList: [
         {
           label: '半年',
@@ -215,6 +218,9 @@ export default {
       }, (err) =>{
 
       })
+    },
+    hideCheckDialog () {
+      this.isShowCheckOrder = false
     }
   },
   mounted () {

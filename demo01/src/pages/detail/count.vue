@@ -85,16 +85,19 @@
             <td>{{ buyNum }}</td>
             <td>{{ versions.label }}</td>
             <td>{{ period.label }}</td>
-            <td>
-              <span</span>
-            </td>
             <td></td>
           </tr>
         </table>
+        <h3 class="buy-dialog-title">请选择银行</h3>
+        <bank-choose @on-change='onChangeBanks'></bank-choose>
+        <div class="button buy-dialog-btn"
+        @click='confirmBuy'>
+          确认购买
+        </div>
       </my-dialog>
-
-
-
+      <check-order :is-show='isShowCheckOrder'
+        @close-show-check-dialog='hideCheckDialog'
+      ></check-order>
   </div>
 </template>
 
@@ -103,14 +106,17 @@ import VCounter from '../../components/base/counter.vue'
 import MultipleChoice from '../../components/base/multipleChoice.vue'
 import ValidTime from '../../components/base/validTime.vue'
 import MyDialog from '../../components/dialog.vue'
-
+import BankChoose from "../../components/bankChoose.vue"
+import CheckOrder from '../../components/checkOrder.vue'
 
 export default {
   components: {
     VCounter,
     MultipleChoice,
     ValidTime,
-    MyDialog
+    MyDialog,
+    BankChoose,
+    CheckOrder
   },
   data () {
     return {
@@ -118,6 +124,8 @@ export default {
       buyNum: 0,
       versions:[],
       period:{},
+      bankId:'',
+      isShowCheckOrder:false,
       periodList: [
         {
           label: '半年',
@@ -172,6 +180,29 @@ export default {
       this.$http.post('http://127.0.0.1:3000/getPrice',reqParams).then((res) => {
         console.log(res.data)
       })
+    },
+    onChangeBanks (bankObj) {
+      this.bankId = bankObj.id
+    }
+    ,
+    confirmBuy () {
+      let buyVersionsArray = _.map(this.versions,(item) =>{
+        return item.value
+      })
+      let reqParams = {
+        buyNum: this.buyNum,
+        version: buyVersionsArray.join(','),
+        period: this.period.value,
+        bankId: this.bankId
+      }
+      this.$http.post('http://127.0.0.1:3000/getPrice',reqParams).then((res) => {
+        console.log(res.data)
+        this.isShowCheckOrder = true;
+        this.inShowPayDialog = false
+      })
+    },
+    hideCheckDialog () {
+      this.isShowCheckOrder = false;
     }
   },
   mounted () {
