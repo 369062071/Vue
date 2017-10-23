@@ -29,8 +29,10 @@ footer, header, menu, nav, section {
     display: block;
 }
 
-body {
+html,body {
     line-height: 1;
+    font-weight: 200;
+    font-family: 'PingFang SC','STHeitiSC-Light','Helvetica-Light',arial,sans-serif;
 }
 
 blockquote, q {

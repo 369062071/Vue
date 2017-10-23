@@ -1,18 +1,15 @@
 {
-  "name": "demo11",
+  "name": "mystylus",
   "description": "A Vue.js project",
   "version": "1.0.0",
-  "author": "",
+  "author": "LiangBo <369062071@qq.com>",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "server": "json-server data.json"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "vue": "^2.4.4",
-    "vue-resource": "^1.3.4",
-    "vue-router": "^3.0.1"
+    "vue": "^2.4.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
