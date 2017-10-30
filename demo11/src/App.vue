@@ -38,7 +38,6 @@ export default {
     this.$http.get('http://127.0.0.1:3000/seller')
     .then( (res) => {
       this.seller = res.body;
-      console.log(this.seller)
     })
   }
 
