@@ -18,7 +18,7 @@
                 <span class="text">{{ seller.supports[0].description}}</span>
               </div>
             </div>
-            <div v-if="seller.supports" class="support-count">
+            <div v-if="seller.supports" class="support-count" @click="showDetail">
                 <span class="count">{{ seller.supports.length }}</span>
                 <i class="icon-keyboard_arrow_right">&gt;</i>
             </div>
@@ -31,7 +31,8 @@
         <div class="background">
             <img :src="seller.avatar" width="100%" height="100%">
         </div>
-        <div v-show="detailShow" class="detail">
+        <transition name="fade">
+          <div v-show="detailShow" class="detail" >
             <div class="detail-wrapper clearfix">
                 <div class="detail-main">
                     <h1 class="name"> {{ seller.name }}</h1>
@@ -57,14 +58,14 @@
                     <div class="bulletin">
                         <p class="content">{{ seller.bulletin }}</p>
                     </div>
-
-                </div>
-
-            </div>
-            <div class="detail-close">
+               </div>
+              </div>
+            <div class="detail-close" @click="hideDetail">
                 <i class="icon-close">x</i>
             </div>
         </div>
+        </transition>
+
 
     </div>
 </template>
@@ -83,12 +84,20 @@ import star from '../../components/star/star.vue'
       },
       data() {
           return {
-              detailShow: true
+              detailShow: false
           }
       },
       created () {
         this.classMap = ['decrease','discount','special','invoice','guarantee'];
-      }
+      },
+        methods:{
+            showDetail(){
+                this.detailShow = true;
+            },
+            hideDetail(){
+                this.detailShow = false;
+            }
+        }
     }
 </script>
 
@@ -202,6 +211,16 @@ import star from '../../components/star/star.vue'
         height :100%
         overflow :auto
         background :rgba(7,17,27,.8)
+        opacity :1
+        &.fade-enter
+            opacity : 0
+        &.fade-enter-active
+            transition :all .5s
+        &.fade-leave-active
+            opacity : 0
+            transition :all .5s
+
+
         .detail-wrapper
             min-height :100%
             &::before
