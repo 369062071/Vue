@@ -219,8 +219,6 @@ import star from '../../components/star/star.vue'
         &.fade-leave-active
             opacity : 0
             transition :all .5s
-
-
         .detail-wrapper
             min-height :100%
             &::before
