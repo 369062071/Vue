@@ -1,6 +1,6 @@
 <template>
     <div class="goods">
-        <div class="menu-wrapper">
+        <div class="menu-wrapper" v-el>
             <ul>
                 <li v-for="item in goods" class="menu-item">
                     <span class="text">
@@ -42,8 +42,8 @@
 </template>
 
 <script>
+    import BScroll from 'better-scroll';
 
-    const ERR_OK = 0;
 
     export default {
         props:{
@@ -56,7 +56,11 @@
                 goods: []
             }
         },
-        methods: {},
+        methods: {
+            _initScroll(){
+                this.meunScroll = new BScroll()
+            }
+        },
         created () {
             this.$http.get("http://127.0.0.1:3000/goods")
                 .then( (res) => {
