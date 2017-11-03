@@ -1,6 +1,6 @@
 <template>
     <div class="goods">
-        <div class="menu-wrapper" v-el>
+        <div class="menu-wrapper" ref="menuWrapper">
             <ul>
                 <li v-for="item in goods" class="menu-item">
                     <span class="text">
@@ -11,7 +11,7 @@
                 </li>
             </ul>
         </div>
-        <div class="foods-wrapper">
+        <div class="foods-wrapper" ref="foodsWrapper">
             <ul>
                 <li v-for="item in goods" class="food-list">
                     <h1 class="title">{{ item.name }}</h1>
@@ -24,12 +24,10 @@
                                 <h2 class="name">{{ food.name }}</h2>
                                 <p class="desc">{{ food.description }} </p>
                                 <div class="extra">
-                                    <span class="count">月售{{ food.sellCount }}</span>
-                                    <span>好评率{{ food.rating }}%</span>
+                                    <span class="count">月售{{ food.sellCount }}</span><span>好评率{{ food.rating }}%</span>
                                 </div>
                                 <div class="price">
-                                    <span class="now">￥{{ food.price }}</span>
-                                    <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}  </span>
+                                    <span class="now">￥{{ food.price }}</span><span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}  </span>
                                 </div>
                             </div>
                         </li>
@@ -58,13 +56,18 @@
         },
         methods: {
             _initScroll(){
-                this.meunScroll = new BScroll()
+                this.meunScroll = new BScroll(this.$refs.menuWrapper,{});
+                this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{});
             }
         },
         created () {
             this.$http.get("http://127.0.0.1:3000/goods")
                 .then( (res) => {
                     this.goods = res.body;
+                    this.$nextTick( () => {
+                        this._initScroll();
+                    })
+
                 });
             this.classMap = ['decrease','discount','special','invoice','guarantee'];
         }
@@ -147,7 +150,7 @@
                         font-size 14px
                         color rgb(7,17,27)
                     .desc, .extra
-                        line-height 10px
+                        line-height 12px
                         font-size 10px
                         color rgb(147,153,159)
                         margin-bottom 8px
