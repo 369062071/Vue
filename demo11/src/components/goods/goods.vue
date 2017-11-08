@@ -2,7 +2,8 @@
     <div class="goods">
         <div class="menu-wrapper" ref="menuWrapper">
             <ul>
-                <li v-for="(item,index) in goods" class="menu-item" :class="{ 'current': currentIndex === index }">
+                <li v-for="(item,index) in goods" class="menu-item"
+                    :class="{'current':currentIndex == index}" @click="selectMenu(index,$event)">
                     <span class="text">
                         <span v-show="item.type > 0" class="icon"
                         :class="classMap[item.type]"></span>
@@ -11,7 +12,7 @@
                 </li>
             </ul>
         </div>
-        <div class="foods-wrapper" ref="foodsWrapper">
+        <div class="foods-wrapper" ref="foodsWrapper" >
             <ul>
                 <li v-for="item in goods" class="food-list food-list-hook">
                     <h1 class="title">{{ item.name }}</h1>
@@ -42,7 +43,6 @@
 <script>
     import BScroll from 'better-scroll';
 
-
     export default {
         props:{
           seller:{
@@ -52,37 +52,54 @@
         data() {
             return {
                 goods: [],
-                listHeight:[],
-                scrollY:0
+                listHeight: [],
+                scrollY: 0
             }
         },
         methods: {
             _initScroll(){
-                this.meunScroll = new BScroll(this.$refs.menuWrapper,{});
-                this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
-                    probeType:3
+                this.menuScroll = new BScroll(this.$refs.menuWrapper,{
+                    click: true //BScroll会阻止点击事件
                 });
+                this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
+                    probeType: 3 //监听实时滚动的位置
+                });
+                //监听滚动坐标，映射左侧索引值
                 this.foodsScroll.on("scroll",(pos) => {
                     this.scrollY = Math.abs(Math.round(pos.y));
                 })
-
             },
             _calculateHeight(){
                 let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
                 let height = 0;
+                //将高度push进foodList
                 this.listHeight.push(height);
-                for(let i=0 ; i<foodList.length; i++){
+                for(let i=0;i<foodList.length;i++){
                     let item = foodList[i];
                     height +=item.clientHeight;
                     this.listHeight.push(height);
                 }
+            },
+            selectMenu (index, event) {
+                //在PC端浏览器模式下点击事件执行两次
+                //event._constructed 我们主动派发这个事件会有这个属性，默认为true，
+                // 浏览器原生无此属性，当浏览器监听到这个事件return，逻辑不执行
+                if(!event._constructed) {
+                    return;
+                }
+                let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
+                let el = foodList[index];
+                console.log(el)
+                this.foodsScroll.scrollToElement(el,300);
+                console.log(index)
             }
         },
         computed:{
+            //计算滚动区间
           currentIndex(){
-              for(let i=0;i < this.listHeight.length; i++){
+              for(let i=0; i<this.listHeight.length; i++) {
                   let height1 = this.listHeight[i];
-                  let height2 = this.listHeight[i + 1];
+                  let height2 = this.listHeight[i+1];
                   if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)){
                       return i;
                   }
@@ -94,12 +111,10 @@
             this.$http.get("http://127.0.0.1:3000/goods")
                 .then( (res) => {
                     this.goods = res.body;
-                    this.$nextTick( () => {
+                    this.$nextTick(() => {
                         this._initScroll();
                         this._calculateHeight();
-                        console.log(this.scrollY)
                     })
-
                 });
             this.classMap = ['decrease','discount','special','invoice','guarantee'];
         }
