@@ -36,14 +36,18 @@
                 </li>
             </ul>
         </div>
+        <shop-cart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop-cart>
     </div>
 
 </template>
 
 <script>
     import BScroll from 'better-scroll';
-
+    import ShopCart from '../shopcart/shopcart.vue'
     export default {
+        components:{
+            ShopCart
+        },
         props:{
           seller:{
               type:Object
@@ -123,6 +127,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
     @import "../../common/stylus/minxin.styl"
+
     .goods
         display: flex
         position :absolute
