@@ -19,6 +19,13 @@
                  </div>
             </div>
         </div>
+        <div class="ball-container">
+            <div v-for="ball in balls" v-show="ball.show" class="ball">
+                <div class="inner">
+
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -48,6 +55,27 @@
                 type:Number,
                 default: 0
             }
+        },
+        data() {
+          return {
+              balls: [
+                  {
+                      show:false
+                  },
+                  {
+                      show:false
+                  },
+                  {
+                      show:false
+                  },
+                  {
+                      show:false
+                  },
+                  {
+                      show:false
+                  }
+              ]
+          }
         },
         computed:{
             totalPrice(){
@@ -82,10 +110,7 @@
                 }
             }
         }
-        ,
-        created(){
-            console.log( this.deliveryPrice)
-        }
+
     }
 </script>
 
@@ -178,4 +203,18 @@
                     &.enough
                         background #00b43c
                         color #fff
+        .ball-container
+            .ball
+                position fixed
+                left 32px
+                bottom 22px
+                z-index 200
+                &.drop-transition
+                    transition all .4s
+                    .inner
+                        width 16px
+                        height 16px
+                        border-radius 50%
+                        background rgb(0,160,220)
+                        transition  all .4s
 </style>

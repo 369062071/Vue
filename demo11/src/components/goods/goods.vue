@@ -25,10 +25,13 @@
                                 <h2 class="name">{{ food.name }}</h2>
                                 <p class="desc">{{ food.description }} </p>
                                 <div class="extra">
-                                    <span class="count">月售{{ food.sellCount }}</span><span>好评率{{ food.rating }}%</span>
+                                    <span class="count"> 月售{{ food.sellCount }}</span><span>好评率{{ food.rating }}%</span>
                                 </div>
                                 <div class="price">
                                     <span class="now">￥{{ food.price }}</span><span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}  </span>
+                                </div>
+                                <div class="cartcontrol-wrapper">
+                                    <cart-control :food="food"></cart-control>
                                 </div>
                             </div>
                         </li>
@@ -36,7 +39,8 @@
                 </li>
             </ul>
         </div>
-        <shop-cart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shop-cart>
+        <shop-cart :select-foods="selectFoods" :deliveryPrice="seller.deliveryPrice"
+                   :minPrice="seller.minPrice" ></shop-cart>
     </div>
 
 </template>
@@ -44,9 +48,12 @@
 <script>
     import BScroll from 'better-scroll';
     import ShopCart from '../shopcart/shopcart.vue'
+    import CartControl from '../../cartcontrol/cartcontrol.vue'
+
     export default {
         components:{
-            ShopCart
+            ShopCart,
+            CartControl
         },
         props:{
           seller:{
@@ -57,7 +64,7 @@
             return {
                 goods: [],
                 listHeight: [],
-                scrollY: 0
+                scrollY: 0,
             }
         },
         methods: {
@@ -66,6 +73,7 @@
                     click: true //BScroll会阻止点击事件
                 });
                 this.foodsScroll = new BScroll(this.$refs.foodsWrapper,{
+                    click: true,
                     probeType: 3 //监听实时滚动的位置
                 });
                 //监听滚动坐标，映射左侧索引值
@@ -96,11 +104,15 @@
                 console.log(el)
                 this.foodsScroll.scrollToElement(el,300);
                 console.log(index)
+            },
+            cartAdd(target){
+                console.log(target + "father")
             }
+
         },
         computed:{
             //计算滚动区间
-          currentIndex(){
+            currentIndex(){
               for(let i=0; i<this.listHeight.length; i++) {
                   let height1 = this.listHeight[i];
                   let height2 = this.listHeight[i+1];
@@ -109,7 +121,19 @@
                   }
               }
               return 0;
-          }
+            },
+            selectFoods(){
+                let foods  = [];
+                this.goods.forEach( (good) =>{
+                    good.foods.forEach( (food) => {
+                        if (food.count){
+                            foods.push(food);
+                        }
+                    } )
+                })
+                return foods;
+        }
+
         },
         created () {
             this.$http.get("http://127.0.0.1:3000/goods")
@@ -230,4 +254,8 @@
                             color rgb(147,153,159)
 
 
+                    .cartcontrol-wrapper
+                        position: absolute
+                        right 0
+                        bottom 12px
 </style>

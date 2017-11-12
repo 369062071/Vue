@@ -23,15 +23,17 @@
 <script>
   import VHeader from "./components/header/header.vue"
   import Goods from './components/goods/goods.vue'
+
 export default {
   components:{
       VHeader,
       Goods
   },
   data () {
-    return {
-      seller:{}
-    }
+      return {
+          seller:{}
+
+      }
   },
   created () {
     // 获取header内容

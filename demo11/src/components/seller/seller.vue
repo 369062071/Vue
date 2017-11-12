@@ -1,15 +1,22 @@
 <template lang="html">
     <div class="header">
-        i am seller
+        i am seller {{ msg }}
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import Bus from '../bus'
     export default {
-        data() {
+        data(){
             return {
-
+                msg:""
             }
+        },
+        created () {
+            console.log(1)
+            Bus.$on('addBar', value => {
+                this.msg = value
+            })
         }
     }
 </script>
