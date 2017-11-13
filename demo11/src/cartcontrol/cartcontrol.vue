@@ -15,7 +15,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Vue from 'vue';
+    import Vue from 'vue'
+    import Bus from '../bus'
     export  default {
         props:{
             food:{
@@ -24,7 +25,7 @@
         },
         data () {
           return {
-              son:"son"
+
           }
         },
         created () {
@@ -41,8 +42,8 @@
                 }else{
                     this.food.count++;
                 }
-                this.$emit('cart-add',this.son);
-                console.log(this.son)
+                //子组件传值
+                Bus.$emit('cart-add',event.target);
             },
             decreaseCart (event) {
                 if(!event._constructed){

@@ -20,16 +20,17 @@
             </div>
         </div>
         <div class="ball-container">
-            <div v-for="ball in balls" v-show="ball.show" class="ball">
-                <div class="inner">
 
+                <div v-for="ball in balls" v-show="ball.show" class="ball">
+                    <div class="inner"></div>
                 </div>
-            </div>
+
         </div>
     </div>
 </template>
 
 <script>
+    import Bus from '../../bus'
     export default{
         props:{
             selectFoods:{
@@ -56,6 +57,11 @@
                 default: 0
             }
         },
+        created(){
+            Bus.$on('cart-add', value => {
+                console.log(value)
+            })
+        },
         data() {
           return {
               balls: [
@@ -74,7 +80,8 @@
                   {
                       show:false
                   }
-              ]
+              ],
+              msg: ""
           }
         },
         computed:{

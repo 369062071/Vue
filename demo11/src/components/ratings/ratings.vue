@@ -5,7 +5,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Bus from '../bus'
+    import Bus from '../../bus'
     export default {
         data() {
             return {
