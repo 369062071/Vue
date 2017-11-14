@@ -105,10 +105,6 @@
                 this.foodsScroll.scrollToElement(el,300);
                 console.log(index)
             },
-            cartAdd(target){
-                console.log(target + "father")
-            }
-
         },
         computed:{
             //计算滚动区间

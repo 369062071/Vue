@@ -19,11 +19,12 @@
                  </div>
             </div>
         </div>
-        <div class="ball-container">
-
-                <div v-for="ball in balls" v-show="ball.show" class="ball">
-                    <div class="inner"></div>
-                </div>
+        <div class="ball-container" >
+            <transition-group name="drop" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave">
+                <span v-for="ball in balls" v-show="ball.show" class="ball" :key="ball.id">
+                    <span class="inner inner-hook"></span>
+                </span>
+            </transition-group>
 
         </div>
     </div>
@@ -57,32 +58,85 @@
                 default: 0
             }
         },
-        created(){
-            Bus.$on('cart-add', value => {
-                console.log(value)
-            })
-        },
         data() {
-          return {
-              balls: [
-                  {
-                      show:false
-                  },
-                  {
-                      show:false
-                  },
-                  {
-                      show:false
-                  },
-                  {
-                      show:false
-                  },
-                  {
-                      show:false
-                  }
-              ],
-              msg: ""
-          }
+            return {
+                balls: [
+                    {
+                        show:false,
+                        id:1
+                    },
+                    {
+                        show:false,
+                        id:2
+                    },
+                    {
+                        show:false,
+                        id:3
+                    },
+                    {
+                        show:false,
+                        id:4
+                    },
+                    {
+                        show:false,
+                        id:1
+                    }
+                ],
+                dropBalls:[]
+            }
+        },
+        methods: {
+            beforeEnter(el){
+                let count = this.balls.length;
+                while (count--) {
+                    let ball = this.balls[count];
+                    if (ball.show) {
+                        let rect = ball.el.getBoundingClientRect();
+                        let x = rect.left - 32;
+                        let y = -(window.innerHeight - rect.top - 22);
+
+                        el.style.display = '';
+                        el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+                        el.style.transform = `translate3d(0,${y}px,0)`;
+                        console.log(el)
+                        let inner = el.getElementsByClassName('inner-hook')[0];
+                        inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+                        inner.style.transform = `translate3d(${x}px,0,0)`;
+                        console.log(inner)
+                    }
+                }
+            },
+            enter(el){
+//               let rf = el.offsetHeight;
+                this.$nextTick( () => {
+                    el.style.webkitTransform = "translate3d(0,0,0)";
+                    el.style.transform = "translate3d(0,0,0)";
+                    let inner = el.getElementsByClassName('inner-hook')[0];
+                    inner.style.webkitTransform = "translate3d(0,0,0)";
+                    inner.style.transform = "translate3d(0,0,0)";
+                })
+            },
+            leave(el) {
+                let ball = this.dropBalls.shift();
+                if(ball){
+                    ball.show = false;
+                    el.style.display = 'none';
+                }
+            }
+        },
+        created(){
+            //接受小球dome
+            Bus.$on('cart-add', el => {
+                for(let i = 0; i < this.balls.length; i++ ) {
+                    let ball = this.balls[i];
+                    if (!ball.show) {
+                        ball.show = true;
+                        ball.el = el;
+                        this.dropBalls.push(ball);
+                        return;
+                    }
+                }
+            })
         },
         computed:{
             totalPrice(){
@@ -212,16 +266,20 @@
                         color #fff
         .ball-container
             .ball
-                position fixed
+                display block
+                position absolute
                 left 32px
                 bottom 22px
                 z-index 200
-                &.drop-transition
-                    transition all .4s
-                    .inner
-                        width 16px
-                        height 16px
-                        border-radius 50%
-                        background rgb(0,160,220)
-                        transition  all .4s
+                transition all 2.4s linear
+                //cubic-bezier(.49,-0.29,0.75,0.41)
+                .inner
+                    display block
+                    width 16px
+                    height 16px
+                    border-radius 50%
+                    background rgb(0,160,220)
+                    transition  all 2.4s linear
+
+
 </style>
