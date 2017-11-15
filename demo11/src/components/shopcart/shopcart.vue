@@ -1,6 +1,6 @@
 <template>
     <div class="shopcart">
-        <div class="content">
+        <div class="content" @click="toggleList">
             <div class="content-left">
                 <div class="logo-wrapper ">
                     <div class="logo" :class="{'highlight': totalCount > 0 }">
@@ -20,34 +20,49 @@
             </div>
         </div>
         <div class="ball-container" >
-            <transition-group name="drop" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave">
-                <span v-for="ball in balls" v-show="ball.show" class="ball" :key="ball.id">
-                    <span class="inner inner-hook"></span>
-                </span>
-            </transition-group>
-
+            <div v-for="ball in balls">
+                <transition name="drop" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+                    <span  v-show="ball.show" class="ball" >
+                        <span class="inner inner-hook"></span>
+                    </span>
+                </transition>
+            </div>
         </div>
+        <transition name="fold">
+            <div class="shopcart-list" v-show="listShow">
+                <div class="list-header">
+                    <h1 class="title">购物车</h1>
+                    <span class="empty">清空</span>
+                </div>
+                <div class="list-content">
+                    <ul>
+                        <li class="food" v-for="food in selectFoods">
+                            <span class="name">{{ food.name }}</span>
+                            <div class="price">
+                                <span>￥{{ food.price*food.count }}</span>
+                            </div>
+                            <div class="cartcontrol-wrapper">
+                                <cart-control :food="food"></cart-control>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </transition>
+
     </div>
 </template>
 
 <script>
     import Bus from '../../bus'
+    import CartControl from '../../cartcontrol/cartcontrol.vue'
     export default{
+        components:{
+          CartControl
+        },
         props:{
             selectFoods:{
-              type:Array,
-              default(){
-                  return [
-                      {
-                          price:10,
-                          count:1
-                      },
-                      {
-                          price:12,
-                          count:0
-                      }
-                  ]
-              }
+              type:Array
             },
             deliveryPrice:{
                 type:Number,
@@ -82,7 +97,8 @@
                         id:1
                     }
                 ],
-                dropBalls:[]
+                dropBalls:[],
+                fold: true
             }
         },
         methods: {
@@ -118,10 +134,17 @@
             },
             leave(el) {
                 let ball = this.dropBalls.shift();
+                console.log(ball);
                 if(ball){
                     ball.show = false;
                     el.style.display = 'none';
                 }
+            },
+            toggleList(){
+                if(!this.totalCount){
+                    return;
+                }
+                this.fold = !this.fold;
             }
         },
         created(){
@@ -169,6 +192,14 @@
                 }else {
                     return 'enough'
                 }
+            },
+            listShow(){
+                if( !this.totalCount ){
+                    this.fold = true;
+                    return false;
+                }
+                let show = !this.fold;
+                return show;
             }
         }
 
@@ -176,6 +207,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+    @import "../../common/stylus/minxin.styl"
     .shopcart
         position fixed
         left 0
@@ -235,7 +267,7 @@
                     vertical-align top
                     line-height 24px
                     padding-right 12px
-                    margin: 12px 0 0 12px
+                    margin: 12px 0 0 0
                     box-sizing border-box
                     border-right 1px solid rgba(255,255,255,.1)
                     font-size 16px
@@ -281,5 +313,56 @@
                     background rgb(0,160,220)
                     transition  all 2.4s linear
 
+
+
+        .shopcart-list
+            position:absolute
+            top:0
+            left 0
+            z-index -1
+            width 100%
+            transform translate(0,-100%)
+            &.fold-enter-active,&.fold-leave-active
+                transition all .5s linear
+            &.fold-enter,&.fold-leave-to
+                 transform translate(0,0)
+            .list-header
+                height 40px
+                line-height 40px
+                padding 0 18px
+                background #f3f5f7
+                border-bottom 1px solid rgba(7,17,27,.1)
+                .title
+                    float left
+                    font-size 14px
+                    color rgb(7,12,27)
+                .empty
+                    float right
+                    font-size 12px
+                    color rgb(0,160,220)
+            .list-content
+                padding 0 18px
+                max-height 217px
+                overflow hiden
+                background #fff
+                .food
+                    position: relative
+                    padding: 12px 0
+                    box-sizing border-box
+                    border-1px(rgba(7,17,27,.1))
+                    .name
+                        line-height 24px
+                        font-size 14px
+                        color rgb(7,17,27)
+                    .price
+                        position:absolute
+                        right 90px
+                        bottom 12px
+                        line-height 24px
+                        color rgb(240,20,20)
+                    .cartcontrol-wrapper
+                        position absolute
+                        right  0
+                        bottom 6px
 
 </style>
