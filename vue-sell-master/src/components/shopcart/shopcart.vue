@@ -221,6 +221,7 @@
         });
       },
       afterDrop(el) {
+
         let ball = this.dropBalls.shift();
         if (ball) {
           ball.show = false;

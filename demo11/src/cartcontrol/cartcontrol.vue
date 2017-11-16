@@ -42,7 +42,7 @@
                 }else{
                     this.food.count++;
                 }
-                //子组件传值
+                //组件传值
                 Bus.$emit('cart-add',event.target);
             },
             decreaseCart (event) {
