@@ -43,7 +43,7 @@
             <shop-cart :select-foods="selectFoods" :deliveryPrice="seller.deliveryPrice"
                        :minPrice="seller.minPrice" ></shop-cart>
         </div>
-        <food :food="selectedFood"></food>
+        <food :food="selectedFood" ref="food"></food>
     </div>
 
 
@@ -72,7 +72,7 @@
                 goods: [],
                 listHeight: [],
                 scrollY: 0,
-                selectedFood:[]
+                selectedFood:{}
             }
         },
         methods: {
@@ -120,7 +120,8 @@
                     return;
                 }
                 this.selectedFood = food;
-                console.log(this.selectedFood)
+                //子组件方法
+                this.$refs.food.show();
             }
         },
         computed:{
