@@ -1,9 +1,20 @@
 <template>
     <div class="ratingselect">
         <div class="rating-type">
-            <span>{{ desc.all }}</span>
-            <span>{{ desc.positive }}</span>
-            <span>{{ desc.negative  }}</span>
+            <span class="block positive" :class="{'active':selectType === 2}">
+                {{ desc.all }}
+                <span class="count">47</span>
+            </span>
+            <span class="block positive" :class="{'active' : selectType === 0}">
+                {{ desc.positive }}
+                <span class="count">47</span>    
+            </span>
+            <span class="block negative" :class="{'active' : selectType === 1}">
+                {{ desc.negative  }}
+                <span class="count">47</span>
+            </span>
+            
+        
         </div>
         <div class="switch">
             <span class="icon-check_circle"></span>
@@ -44,10 +55,32 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-   
+   @import "../../common/stylus/minxin";
     .ratingselect
         .rating-type
             padding 18px 0
             margin 0 18px
-            background url(../../)
+            border-1px(raba(7,17,27,.1))
+            font-size 0
+            .block
+                display inline-block
+                padding 8px 12px
+                margin-right 8px
+                border-radius 1px
+                font-size 12px
+                color rgb(77,85,93) 
+                &.active
+                    color #fff 
+                .count
+                    margin-left 2px
+                    font-size 8px
+                &.positive
+                    background rgba(0,160,220,.2)
+                    &.active
+                        background rgb(0,160,220)
+                &.negative
+                    background rgba(77,85,93,.2)
+                    &.active
+                        background rgb(77,85,93)
+
 </style>
