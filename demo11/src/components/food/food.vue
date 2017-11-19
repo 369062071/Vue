@@ -18,11 +18,26 @@
                         <span class="now">￥{{ food.price }}</span>
                         <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}  </span>
                     </div>
+                    <transition name="fade">
+                        <div class="cartcontrol-wrapper">
+                            <cart-control :food="food"></cart-control>
+                        </div>
+                    </transition>
+                    <transition name="fade">
+                        <div @click.stop="addFirst" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
+                    </transition>
                 </div>
-                <div class="cartcontrol-wrapper">
-                    <cart-control :food="food"></cart-control>
+                <split v-show="food.info"></split>
+                <div class="info" v-show="food.info">
+                    <h1 class="title">商品消息</h1>
+                    <p class="text">{{ food.info }}</p>
                 </div>
-                <div @click="addFirst" class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
+                <split></split>
+                <div class="rating">
+                    <h1 class="title">商品评价</h1>
+                    <rating-select :select-type="selectType"
+                    :only-content="onlyContent" :desc="desc" :ratings="food.ratings"></rating-select>
+                </div>
             </div>
         </div>
     </transition>
@@ -34,10 +49,19 @@
     import Bus from '../../bus'
     import BScroll from 'better-scroll'
     import CartControl from '../../cartcontrol/cartcontrol.vue'
+    import Split from '../split/split.vue'
+    import RatingSelect from '../ratingselect/ratingselect.vue'
+
+
+    const POSITIVE = 0;
+    const NEGATIVE = 1;
+    const ALL = 2;
 
     export default{
         components:{
-          CartControl
+            CartControl,
+            Split,
+            RatingSelect
         },
         props:{
             food:{
@@ -46,12 +70,21 @@
         },
         data(){
           return {
-              showFlag: false
+              showFlag: false,
+              selectType:ALL,
+              onlyContent:true,
+              desc:{
+                  all: '全部',
+                  positive: '推荐',
+                  negative: '吐槽'
+              }
           }
         },
         methods:{
             show() {
                 this.showFlag = true;
+                this.selectType = ALL;
+                this.onlyContent = true;
                 this.$nextTick( () => {
                     console.log(this.scroll)
                     if( !this.scroll ) {
@@ -114,6 +147,7 @@
                     color #fff
         .content
             padding 18px
+            position relative
             .title
                 line-height 14px
                 margin-bottom 8px
@@ -159,5 +193,22 @@
             font-size 10px
             color #fff
             background rgb(0,160,220)
+            opacity 1
+        .fade-enter-active,.fade-leave-active
+            transition all .5s
+        .fade-enter,.fade-leave-to
+            opacity 0
+        .info
+            padding 18px
+            .title
+                line-height 14px
+                margin-bottom 6px
+                font-size 14px
+                color rgb(7,17,27)
+            .text
+                line-height 24px
+                padding 0 8px
+                font-size 12px
+                color:rgb(77,85,93)
 
 </style>
