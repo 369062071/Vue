@@ -44,5 +44,10 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+   
+    .ratingselect
+        .rating-type
+            padding 18px 0
+            margin 0 18px
+            background url(../../)
 </style>
