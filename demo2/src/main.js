@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import Goods from './components/goods/goods.vue'
 import Ratings from './components/ratings/ratings.vue'
 import Seller from './components/seller/seller.vue'
 
 Vue.use(VueRouter)
-Vue.use(VueResource)
+Vue.use(VueAxios,axios)
 
 let router = new VueRouter({
     linkActiveClass:'active',

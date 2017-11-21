@@ -37,9 +37,10 @@ export default {
   },
   created () {
     // 获取header内容
-    this.$http.get('http://127.0.0.1:3000/seller')
+    this.axios.get('../data.json')
     .then( (res) => {
-      this.seller = res.body;
+      this.seller = res.data.seller;
+      console.log(res)
     })
   }
 

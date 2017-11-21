@@ -150,9 +150,9 @@
 
         },
         created () {
-            this.$http.get("http://127.0.0.1:3000/goods")
+            this.axios.get("../../../data.json")
                 .then( (res) => {
-                    this.goods = res.body;
+                    this.goods = res.data.goods;
                     this.$nextTick(() => {
                         this._initScroll();
                         this._calculateHeight();
