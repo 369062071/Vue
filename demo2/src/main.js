@@ -11,23 +11,26 @@ Vue.use(VueRouter)
 Vue.use(VueAxios,axios)
 
 let router = new VueRouter({
-    linkActiveClass:'active',
-   mode: "history",
-   routes:[
-       {
-         path:'/goods',
-         component: Goods
-       },
-       {
-           path:'/ratings',
-           component: Ratings
-       },
-       {
-           path:'/seller',
-           component: Seller
-       }
-   ]
+  linkActiveClass: 'active',
+  routes: [{
+      path: '/goods',
+      component: Goods
+    },
+    {
+      path: '/ratings', 
+      component: Ratings
+    },
+    {
+      path: '/seller',
+      component: Seller
+    },
+    {
+        path:'/',
+        redirect:'/goods'
+    }
+  ]
 });
+
 
 
 new Vue({

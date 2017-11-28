@@ -37,7 +37,7 @@ export default {
   },
   created () {
     // 获取header内容
-    this.axios.get('../data.json')
+    this.axios.get('src/common/data.json')
     .then( (res) => {
       this.seller = res.data.seller;
       console.log(res)

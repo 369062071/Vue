@@ -150,7 +150,7 @@
 
         },
         created () {
-            this.axios.get("../../../data.json")
+            this.axios.get("src/common/data.json")
                 .then( (res) => {
                     this.goods = res.data.goods;
                     this.$nextTick(() => {

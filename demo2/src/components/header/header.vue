@@ -20,7 +20,7 @@
             </div>
             <div v-if="seller.supports" class="support-count" @click="showDetail">
                 <span class="count">{{ seller.supports.length }}</span>
-                <i class="icon-keyboard_arrow_right">&gt;</i>
+                <i class="icon-keyboard_arrow_right"></i>
             </div>
         </div>
         <div class="bulletin-wrapper">
