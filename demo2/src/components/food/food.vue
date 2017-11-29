@@ -46,7 +46,7 @@
                                     <img :src="rating.avatar" width="12" height="12" class="avatar">
                                 </div>
                                 <div class="time">
-                                    {{ rating.rateTime }}
+                                    {{ rating.rateTime | formatDate}}
                                 </div>
                                 <p class="text">
                                     <span :class="{'icon-thumb_up' : rating.rateType === 0,
@@ -54,9 +54,9 @@
                                 </p>
                             </li>
                         </ul>
-                        <div class="no-rating" v-show="!food.ratings || food.ratings.length">
-
-                            </div>
+                        <div class="no-rating" v-show="!food.ratings  || !food.ratings.length">
+                            暂无评价    
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
     import CartControl from '../../cartcontrol/cartcontrol.vue'
     import Split from '../split/split.vue'
     import RatingSelect from '../ratingselect/ratingselect.vue'
-
+    import {formatDate} from '../../common/js/date.js'
 
     const POSITIVE = 0;
     const NEGATIVE = 1;
@@ -94,7 +94,7 @@
               showFlag: false,
               selectType:ALL,
               //只看有内容的评价
-              onlyContent:true,
+              onlyContent:false,
               desc:{
                   all: '全部',
                   positive: '推荐',
@@ -102,11 +102,15 @@
               }
           }
         },
+        mounted(){
+            console.log(this.food)
+        },
         methods:{
+            //父组件调用子组件show方法
             show() {
                 this.showFlag = true;
                 this.selectType = ALL;
-                this.onlyContent = true;
+                this.onlyContent = false;
                 this.$nextTick( () => {
                   
                     if( !this.scroll ) {
@@ -154,6 +158,12 @@
                 }else{
                     return type === this.selectType;
                 }
+            }
+        },
+        filters: {
+            formatDate(time){
+                let date = new Date(time);
+                return formatDate(date,"yyyy-MM-dd hh:mm")
             }
         }
     }
@@ -272,39 +282,46 @@
                     position relative
                     padding 16px 0
                     border-1px(rgba(7,17,27,0.1))
-                .user
-                    position:absolute
-                    right 0
-                    top 16px
-                    font-size 0
-                    .name
-                        display inline-block
+                    .user
+                        position:absolute
+                        right 0
+                        top 16px
+                        font-size 0
+                        .name
+                            display inline-block
+                            margin-right 6px
+                            vertical-align top
+                            font-size 10px
+                            color:rgb(147,153,159)
+                        .avatar
+                            border-radius 50%
+                    .time
                         margin-right 6px
-                        vertical-align top
-                        font-size 10px
+                        line-height 12px
+                        font-size 10px;
                         color:rgb(147,153,159)
-                    .avatar
-                        border-radius 50%
-                .time
-                    margin-right 6px
-                    line-height 12px
-                    font-size 10px;
-                    color:rgb(147,153,159)
-                .text
-                    padding 5px 0
-                    font-size 12px
-                    color rgb(7,17,27)
-                    .icon-thumb_down,icon-thumb_up
-                        line-height 24px
-                        margin-right 14px
+                    .text
+                        padding 5px 0
                         font-size 12px
-                    .icon-thumb_down
-                        color:rgb(147,153,159)
-                    .icon-thumb_up
-                        color:rgb(0,160,220)
-                    .icon-thumb_up:before
-                        margin-right 5px
-                    .icon-thumb_up:after
-                        margin-right 5px
+                        color rgb(7,17,27)
+                        .icon-thumb_down,icon-thumb_up
+                            line-height 24px
+                            margin-right 14px
+                            font-size 12px
+                        .icon-thumb_down
+                            color:rgb(147,153,159)
+                        .icon-thumb_up
+                            color:rgb(0,160,220)
+                        .icon-thumb_up:before
+                            margin-right 5px
+                        .icon-thumb_up:after
+                            margin-right 5px
+                .no-rating
+                    padding 16px 0
+                    font-size 12px
+                    color rgb(147,153,159)
+
+
+
 
 </style>
