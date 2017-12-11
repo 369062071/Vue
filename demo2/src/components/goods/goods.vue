@@ -4,7 +4,7 @@
             <div class="menu-wrapper" ref="menuWrapper">
                 <ul>
                     <li v-for="(item,index) in goods" class="menu-item"
-                        :class="{'current':currentIndex == index}" @click="selectMenu(index,$event)">
+                        :class="{'current':currentIndex == index}" @click="selectMenu(index,$event)" :key="index">
                     <span class="text">
                         <span v-show="item.type > 0" class="icon"
                               :class="classMap[item.type]"></span>
@@ -15,10 +15,10 @@
             </div>
             <div class="foods-wrapper" ref="foodsWrapper" >
                 <ul>
-                    <li  v-for="item in goods" class="food-list food-list-hook">
+                    <li  v-for="(item,index) in goods" class="food-list food-list-hook" :key="index">
                         <h1 class="title">{{ item.name }}</h1>
                         <ul>
-                            <li v-for="food in item.foods" class="food-item" @click="selectFood(food,$event)">
+                            <li v-for="(food,index) in item.foods" class="food-item" @click="selectFood(food,$event)" :key="index">
                                 <div class="icon">
                                     <img width="57" height="57" :src="food.icon" alt="">
                                 </div>
@@ -153,6 +153,7 @@
             this.axios.get("src/common/data.json")
                 .then( (res) => {
                     this.goods = res.data.goods;
+                    console.log(this.goods)
                     this.$nextTick(() => {
                         this._initScroll();
                         this._calculateHeight();

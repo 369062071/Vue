@@ -45,13 +45,19 @@
                 default: false
             },
             desc:{
-                type:Object
+                type:Object,
+                default:{
+                    all: '全部',
+                    positives: '推荐',
+                    negative: '吐槽'
+                }
             }
         },
         data(){
             return{
                  selectTypeChild:this.selectType,
-                 myOnlyContent: this.onlyContent
+                 myOnlyContent: this.onlyContent,
+               
             } 
         },
         computed:{
