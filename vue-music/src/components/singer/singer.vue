@@ -1,6 +1,6 @@
 <template>
   <div>
-      recommend
+      singer
   </div>
 </template>
 

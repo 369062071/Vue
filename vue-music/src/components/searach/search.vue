@@ -1,6 +1,6 @@
 <template>
   <div>
-      recommend
+      search
   </div>
 </template>
 
