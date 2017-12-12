@@ -14,6 +14,7 @@
                         <span class="sell-count">月售{{ food.sellCount }}份</span>
                         <span class="rating">好评率{{ food.rating }}%</span>
                     </div>
+                    
                     <div class="price">
                         <span class="now">￥{{ food.price }}</span>
                         <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}  </span>
@@ -40,7 +41,7 @@
                     @content-toggle="contentToggle"></rating-select>
                     <div class="rating-wrapper">
                         <ul v-show="food.ratings && food.ratings.length">
-                            <li v-show="needShow(rating.rateType,rating.text)" v-for="rating in food.ratings" class="rating-item">
+                            <li v-show="needShow(rating.rateType,rating.text)" v-for="(rating,index) in food.ratings" class="rating-item" :key="index">
                                 <div class="user">
                                     <span class="name">{{ rating.username }}</span>
                                     <img :src="rating.avatar" width="12" height="12" class="avatar">

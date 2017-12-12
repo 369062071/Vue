@@ -1,7 +1,9 @@
 <template lang="html">
     <div class="header">
         i am seller {{ msg }}
+        
     </div>
+    
 </template>
 
 <script type="text/ecmascript-6">
