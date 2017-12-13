@@ -20,9 +20,6 @@ module.exports = {
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "camelcase": 2,//强制驼峰法命名
-    'error' : 'off'
-    // "semi": [2, "always"],//语句强制分号结尾
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
 }
