@@ -35,8 +35,8 @@
                 </div>
                 <split></split>
                 <div class="rating">
-                    <h1 class="title">商品评价</h1>
-                    <rating-select :select-type.sync="selectType"
+                    <h1 class="title" @click='click'>商品评价</h1>
+                    <rating-select :select-type.sync="selectType" 
                     :only-content.sync="onlyContent" :desc.sync="desc" :ratings="food.ratings" @rating-type-select="ratingTypeSelect"
                     @content-toggle="contentToggle"></rating-select>
                     <div class="rating-wrapper">
@@ -55,7 +55,7 @@
                                 </p>
                             </li>
                         </ul>
-                        <div class="no-rating" v-show="!food.ratings  || !food.ratings.length">
+                        <div class="no-rating" v-show="!food.ratings  || !food.ratings.length" >
                             暂无评价    
                         </div>
                     </div>
@@ -97,16 +97,16 @@
               //只看有内容的评价
               onlyContent:false,
               desc:{
-                  all: '全部',
-                  positive: '推荐',
-                  negative: '吐槽'
+                  all: '父全部',
+                  positive: '父推荐',
+                  negative: '父吐槽'
               }
           }
         },
-        mounted(){
-            console.log(this.food)
-        },
         methods:{
+            click () {
+                console.log(this.desc)
+            },
             //父组件调用子组件show方法
             show() {
                 this.showFlag = true;
@@ -136,14 +136,14 @@
             },
             //ratingselect子组件传值
             ratingTypeSelect(type){
-                console.log(type);
+    
                 this.selectType = type;
                  this.$nextTick( () => {
                     this.scroll.refresh();
                 });
             },
             contentToggle(content){
-                console.log(content);
+             
                 this.onlyContent = content;
                 this.$nextTick( () => {
                     this.scroll.refresh();

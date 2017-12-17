@@ -18,12 +18,13 @@
         </div>
         <div @click="toggleContent($event)" class="switch" :class="{ 'on' : myOnlyContent }">
             <span class="icon-check_circle"></span>
-            <span class="text">只看有内容的评价</span>
+            <span class="text" @click="click">只看有内容的评价</span>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import Vue from 'vue'
     const POSITIVE = 0;
     const NEGATIVE = 1;
     const ALL = 2;
@@ -91,6 +92,12 @@
                 }
                 this.myOnlyContent = !this.myOnlyContent;
                 this.$emit('content-toggle',this.myOnlyContent)
+            },
+            click() {
+                
+                Vue.set(this.desc,'all','zengjiala')
+                this.desc = [1]
+                console.log(this.desc);
             }
         }
     }

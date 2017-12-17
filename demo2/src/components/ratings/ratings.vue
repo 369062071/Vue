@@ -1,7 +1,5 @@
 <template>
-<<<<<<< HEAD
-    <div></div>
-=======
+
     <div class="ratings">
         <div class="ratings-content">
             <div class="overview">
@@ -31,7 +29,7 @@
             <rating-select :select-type.sync="selectType" :only-content.sync="onlyContent"  :ratings="ratings" :desc="desc"></rating-select>
             <div class="rating-wrapper">
                 <ul>
-                    <!-- <li v-for="(rating,index) in ratings" :key="index" class="">
+                     <!-- <li v-for="(rating,index) in ratings" :key="index" class="">
                         <div class="avatar">
                             <img :src="rating.avatar" >
                         </div>
@@ -39,7 +37,7 @@
                             <h1 class="name">{{ rating.username }}</h1>
                             <div class="star-wrapper">
                                 <star :size="24" :score="rating"></star>
-                                <!-- <span class="delivery" v-show="">{{ rating.deliveryTime }}</span>
+                                <span class="delivery" v-show="">{{ rating.deliveryTime }}</span>
                                 <p class="text">{{ rating.text }}</p>
                                 <div class="recommend">
                                     <span class="icon-thumb_up"></span>
@@ -48,13 +46,12 @@
 
                             </div>
                         </div>
-                    </li> -->
+                    </li>  -->
                 </ul>
             </div>
         </div>
     </div>
 
->>>>>>> f3a9037701050aace6b5c514dc77074be720df4d
     
 </template>
 
@@ -93,7 +90,7 @@
         },
         created () {
             this.axios.get("src/common/data.json").then( (res) => {
-                console.log(res.data.ratings)
+                // console.log(res.data.ratings)
                 this.ratings = res.data.ratings;
             })
         }

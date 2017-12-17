@@ -1,13 +1,15 @@
-export function addClass (el, classNmae) {
-  if (hasClass(el, classNmae)) {
+// 添加class
+export function addClass (el, className) {
+  if (hasClass(el, className)) {
     return
   }
-  let newClass = el.classNmae.split(' ')
-  newClass.push(classNmae)
-  el.classNmae = newClass.join('')
+
+  let newClass = el.className.split(' ')
+  newClass.push(className)
+  el.className = newClass.join('')
 }
 
-export function hasClass (el, classNmae) {
-  let reg = new RegExp('(^|\\s)' + classNmae + '(\\s|$)')
+export function hasClass (el, className) {
+  let reg = new RegExp('(^|\\s)' + className + '(\\s|$)')
   return reg.test(el.classNmae)
 }
