@@ -1,6 +1,6 @@
 <template>
-  <div class="slider" ref="slider">
-    <div class="slider-group" ref="sliderGroup">
+  <div class="slider" ref="slide">
+    <div class="slider-group" ref="slideGroup">
       <slot></slot>
     </div>
     <div class="dots">
@@ -10,15 +10,18 @@
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import {addClass} from '../../common/js/dom'
 
-  export default{
+  const COMPONENT_NAME = 'slide'
+
+  export default {
+    name: COMPONENT_NAME,
     props: {
       loop: {
         type: Boolean,
-        default: false
+        default: true
       },
       autoPlay: {
         type: Boolean,
@@ -27,6 +30,14 @@
       interval: {
         type: Number,
         default: 4000
+      },
+      showDot: {
+        type: Boolean,
+        default: true
+      },
+      click: {
+        type: Boolean,
+        default: true
       }
     },
     data () {
@@ -36,81 +47,140 @@
       }
     },
     mounted () {
-      setTimeout(() => {
-        // 设置宽度
-        this._setSliderWidth()
-        // 初始dots
-        this._initDots()
-        // 初始化slider
-        this._initSlider()
-
+      this.update()
+      // 监听resize（窗口视窗大小）
+      window.addEventListener('resize', () => {
+        if (!this.slide || !this.slide.enabled) {
+          return
+        }
+        clearTimeout(this.resizeTimer)
+        this.resizeTimer = setTimeout(() => {
+          if (this.slide.isInTransition) {
+            this._onScrollEnd()
+          } else {
+            if (this.autoPlay) {
+              this._play()
+            }
+          }
+          this.refresh()
+        }, 60)
+      })
+    },
+    // keep-alive组件被激活是调用
+    activated () {
+      if (!this.slide) {
+        return
+      }
+      this.slide.enable()
+      let pageIndex = this.slide.getCurrentPage().pageX
+      console.log(pageIndex)
+      this.slide.goToPage(pageIndex, 0, 0)
+      this.currentPageIndex = pageIndex
+      if (this.autoPlay) {
+        this._play()
+      }
+    },
+    // 组件销毁的时候清除计时器
+    deactivated () {
+      this.slide.disable()
+      clearTimeout(this.timer)
+    },
+    beforeDestroy () {
+      this.slide.disable()
+      clearTimeout(this.timer)
+    },
+    methods: {
+      update () {
+        if (this.slide) {
+          this.slide.destroy()
+        }
+        this.$nextTick(() => {
+          this.init()
+        })
+      },
+      refresh () {
+        this._setSlideWidth(true)
+        this.slide.refresh()
+      },
+      next () {
+        this.slide.next()
+      },
+      init () {
+        clearTimeout(this.timer)
+        this.currentPageIndex = 0
+        this._setSlideWidth()
+        if (this.showDot) {
+          this._initDots()
+        }
+        this._initSlide()
+        // 自动轮播
         if (this.autoPlay) {
           this._play()
         }
-      }, 20)
-    },
-    methods: {
-      _setSliderWidth () {
-        // 获得slider子元素的宽度
-        this.children = this.$refs.sliderGroup.children
-
+      },
+      _setSlideWidth (isResize) {
+        this.children = this.$refs.slideGroup.children
         let width = 0
-        let sliderWidth = this.$refs.slider.clientWidth
+        // 获取可见内容区域宽度
+        let slideWidth = this.$refs.slide.clientWidth
         for (let i = 0; i < this.children.length; i++) {
           let child = this.children[i]
-          // 添加class
           addClass(child, 'slider-item')
-          child.style.width = sliderWidth + 'px'
-          width += sliderWidth
+
+          child.style.width = slideWidth + 'px'
+          width += slideWidth
         }
-        // 循环滚动会clone两个dom
-        if (this.loop) {
-          width += 2 * sliderWidth
+        // 循环轮播需要复制两个dom
+        if (this.loop && !isResize) {
+          width += 2 * slideWidth
         }
-        console.log(width)
-        this.$refs.sliderGroup.style.width = width + 'px'
+        this.$refs.slideGroup.style.width = width + 'px'
       },
-      // 初始dots
-      _initDots () {
-        this.dots = new Array(this.children.length)
-      },
-      // 初始化slider
-      _initSlider () {
-        this.slider = new BScroll(this.$refs.slider, {
+      _initSlide () {
+        this.slide = new BScroll(this.$refs.slide, {
           scrollX: true,
-          scrollY: false,
           momentum: false,
           snap: {
             loop: this.loop,
             threshold: 0.3,
             speed: 400
           },
-          click: true
+          click: this.click
         })
-        // 维护currentPageIndex
-        this.slider.on('scrollEnd', () => {
-          // 获取当前激活view
-          let pageIndex = this.slider.getCurrentPage().pageX
-          this.currentPageIndex = pageIndex
-          // 手动拖动先清除之前的轮播
+
+        this.slide.on('scrollEnd', this._onScrollEnd)
+
+        this.slide.on('touchend', () => {
           if (this.autoPlay) {
-            clearTimeout(this.timer)
             this._play()
           }
         })
+
+        this.slide.on('beforeScrollStart', () => {
+          if (this.autoPlay) {
+            clearTimeout(this.timer)
+          }
+        })
       },
-      // 自动播放
+      _onScrollEnd () {
+        let pageIndex = this.slide.getCurrentPage().pageX
+        this.currentPageIndex = pageIndex
+        if (this.autoPlay) {
+          this._play()
+        }
+      },
+      _initDots () {
+        this.dots = new Array(this.children.length)
+      },
       _play () {
-        let pageIndex = this.currentPageIndex + 1
+        clearTimeout(this.timer)
         this.timer = setTimeout(() => {
-          // 0：X轴；400间隔
-          this.slider.goToPage(pageIndex, 0, 400)
+          this.slide.next()
         }, this.interval)
       }
     }
   }
 </script>
-
 <style lang="stylus" scoped>
 @import '../../common/stylus/variable';
 

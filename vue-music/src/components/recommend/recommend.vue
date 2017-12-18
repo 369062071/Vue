@@ -22,7 +22,7 @@
 
 <script>
   import Slider from '../../base/slider/slider'
-  import {getRecommend} from '../../api/recommend'
+  import {getRecommend, getDiscList} from '../../api/recommend'
   import {ERR_OK} from '../../api/config'
 
   export default {
@@ -35,14 +35,25 @@
       }
     },
     created () {
+      // 获取轮播数据
       this._getRecommend()
+      // 获取
+      this._getDiscList()
     },
     methods: {
       _getRecommend () {
         getRecommend().then((res) => {
           if (res.code === ERR_OK) {
             this.recommends = res.data.slider
-            console.log(this.recommends)
+          }
+        })
+      },
+      _getDiscList () {
+        getDiscList().then((res) => {
+          console.log(1)
+          console.log(res)
+          if (res.code === ERR_OK) {
+
           }
         })
       }
