@@ -17,7 +17,7 @@ export function getRecommend () {
 
 // 获取歌单数据
 export function getDiscList () {
-  const url = '/api'
+  const url = '/api/getDiscList'
 
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',
@@ -37,3 +37,4 @@ export function getDiscList () {
     return Promise.resolve(res.data)
   })
 }
+    

@@ -1,21 +1,33 @@
 <template>
   <div class="recommend">
     <div class="recommend-content">
-      <div class="slider-wrapper" v-if="recommends.length">
-        <slider>
-          <div  v-for="(item,index) in recommends" :key="index">
-            <a :href="item.linkUrl">
-              <img :src="item.picUrl">
-            </a>
-          </div>
-        </slider>
+      <!-- better-scroll 父子级 begin -->
+      <div >
+        <div class="slider-wrapper" v-if="recommends.length">
+          <slider>
+            <div  v-for="(item,index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img :src="item.picUrl">
+              </a>
+            </div>
+          </slider>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li v-for="item in discList" class="item">
+              <div class="icon">
+                <img width="60" height="60" :src="item.imgurl" alt="">
+              </div>
+              <div class="text">
+                <h2 class="name">{{ item.creator.name }}</h2>
+                <p class="desc">{{ item.dissname }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul>
-
-        </ul>
-      </div>
+      <!-- better-scroll 父子级 end-->
     </div>
   </div>
 </template>
@@ -31,7 +43,8 @@
     },
     data () {
       return {
-        recommends: []
+        recommends: [],
+        discList: []
       }
     },
     created () {
@@ -50,10 +63,10 @@
       },
       _getDiscList () {
         getDiscList().then((res) => {
-          console.log(1)
-          console.log(res)
           if (res.code === ERR_OK) {
-
+            console.log('抓取过来的音乐数据是')
+            console.log(res.data.list)
+            this.discList = res.data.list
           }
         })
       }

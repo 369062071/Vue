@@ -7,13 +7,14 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+
+// 后端代理 绕过host和referer begin
 const express = require('express')// 引入express
 const axios = require('axios') // 引入axios
-
 const app = express()
 const apiRoutes = express.Router()
 app.use('/api',apiRoutes)
-
+// 后端代理 绕过host和referer end
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -45,7 +46,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     },
     before(app) {
       console.log(1)
-      app.get('/getDiscList',(req, res) => {
+      app.get('/api/getDiscList',(req, res) => {
         var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         console.log(url) 
         axios.get(url,{
