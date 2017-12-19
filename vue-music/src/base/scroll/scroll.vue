@@ -33,6 +33,7 @@
     methods: {
       // 初始化
       _initScroll () {
+        // wrapper 没有值的时候就return
         if (!this.$refs.wrapper) {
           return
         }
@@ -48,7 +49,16 @@
         this.scroll && this.scroll.disable()
       },
       refresh () {
+        console.log('我是子组件scroll')
         this.scroll && this.scroll.refresh()
+      }
+    },
+    watch: {
+      // data变化就刷新scroll,重新计算
+      data () {
+        setTimeout(() => {
+          this.refresh()
+        }, 20)
       }
     }
   }

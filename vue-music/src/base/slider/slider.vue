@@ -1,18 +1,18 @@
 <template>
-  <div class="slider" ref="slide">
-    <div class="slider-group" ref="slideGroup">
-      <slot></slot>
+  <div class="slide" ref="slide">
+    <div class="slide-group" ref="slideGroup">
+      <slot>
+      </slot>
     </div>
-    <div class="dots">
-      <span class="dot" v-for="(item,index) in dots" :key="index" 
-      :class="{active : currentPageIndex === index}"></span>
+    <div v-if="showDot" class="dots">
+      <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import { addClass } from '../../common/js/dom'
   import BScroll from 'better-scroll'
-  import {addClass} from '../../common/js/dom'
 
   const COMPONENT_NAME = 'slide'
 
@@ -48,7 +48,7 @@
     },
     mounted () {
       this.update()
-      // 监听resize（窗口视窗大小）
+
       window.addEventListener('resize', () => {
         if (!this.slide || !this.slide.enabled) {
           return
@@ -66,21 +66,18 @@
         }, 60)
       })
     },
-    // keep-alive组件被激活是调用
     activated () {
       if (!this.slide) {
         return
       }
       this.slide.enable()
       let pageIndex = this.slide.getCurrentPage().pageX
-      console.log(pageIndex)
       this.slide.goToPage(pageIndex, 0, 0)
       this.currentPageIndex = pageIndex
       if (this.autoPlay) {
         this._play()
       }
     },
-    // 组件销毁的时候清除计时器
     deactivated () {
       this.slide.disable()
       clearTimeout(this.timer)
@@ -113,24 +110,23 @@
           this._initDots()
         }
         this._initSlide()
-        // 自动轮播
+
         if (this.autoPlay) {
           this._play()
         }
       },
       _setSlideWidth (isResize) {
         this.children = this.$refs.slideGroup.children
+
         let width = 0
-        // 获取可见内容区域宽度
         let slideWidth = this.$refs.slide.clientWidth
         for (let i = 0; i < this.children.length; i++) {
           let child = this.children[i]
-          addClass(child, 'slider-item')
+          addClass(child, 'slide-item')
 
           child.style.width = slideWidth + 'px'
           width += slideWidth
         }
-        // 循环轮播需要复制两个dom
         if (this.loop && !isResize) {
           width += 2 * slideWidth
         }
@@ -181,59 +177,46 @@
     }
   }
 </script>
-<style lang="stylus" scoped>
-@import '../../common/stylus/variable';
 
-.slider {
-  min-height: 1px;
+<style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/variable"
 
-  .slider-group {
-    position: relative;
-    overflow: hidden;
-    white-space: nowrap;
-
-    .slider-item {
-      float: left;
-      box-sizing: border-box;
-      overflow: hidden;
-      text-align: center;
-
-      a {
-        display: block;
-        width: 100%;
-        overflow: hidden;
-        text-decoration: none;
-      }
-
-      img {
-        display: block;
-        width: 100%;
-      }
-    }
-  }
-
-  .dots {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 12px;
-    text-align: center;
-    font-size: 0;
-
-    .dot {
-      display: inline-block;
-      margin: 0 4px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: $color-text-l;
-
-      &.active {
-        width: 20px;
-        border-radius: 5px;
-        background: $color-text-ll;
-      }
-    }
-  }
-}
+  .slide
+    min-height: 1px
+    .slide-group
+      position: relative
+      overflow: hidden
+      white-space: nowrap
+      .slide-item
+        float: left
+        box-sizing: border-box
+        overflow: hidden
+        text-align: center
+        a
+          display: block
+          width: 100%
+          overflow: hidden
+          text-decoration: none
+        img
+          display: block
+          width: 100%
+    .dots
+      position: absolute
+      right: 0
+      left: 0
+      bottom: 12px
+      transform: translateZ(1px)
+      text-align: center
+      font-size: 0
+      .dot
+        display: inline-block
+        margin: 0 4px
+        width: 8px
+        height: 8px
+        border-radius: 50%
+        background: $color-text-d
+        &.active
+          width: 20px
+          border-radius: 5px
+          background: $color-text-ll
 </style>
