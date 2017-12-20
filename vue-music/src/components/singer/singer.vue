@@ -30,7 +30,7 @@
           }
         })
       },
-      //  数据处理
+      //  数据处理，重新分类
       _normalizeSinger (list) {
         let map = {
           hot: {
@@ -38,14 +38,15 @@
             items: []
           }
         }
-  
         list.forEach((item, index) => {
+          // 提取前十个hot数据
           if (index < HOT_SINGER_LEN) {
             map.hot.items.push(new Singer({
               id: item.Fsinger_mid,
               name: item.Fsinger_name
             }))
           }
+          // 创建key
           const key = item.Findex
           if (!map[key]) {
             map[key] = {
@@ -53,13 +54,28 @@
               items: []
             }
           }
+          // key.items添加数据
           map[key].items.push(new Singer({
             id: item.Fsinger_mid,
             name: item.Fsinger_name
           }))
         })
-
-        console.log(map)
+        // 为了得到有序列表，需要处理 map
+        let hot = []
+        let ret = []
+        for (let key in map) {
+          let val = map[key]
+          if (val.title.match(/[a-zA-Z]/)) {
+            ret.push(val)
+          } else if (val.title === HOT_NAME) {
+            hot.push(val)
+          }
+        }
+        // 排序
+        ret.sort((a, b) => {
+          return a.title.charCodeAt(0) - b.title.charCodeAt(0)
+        })
+        return hot.concat(ret)
       }
     }
   }
