@@ -5,7 +5,7 @@
       </slot>
     </div>
     <div v-if="showDot" class="dots">
-      <span class="dot" :class="{active: currentPageIndex === index }" v-for="(item, index) in dots"></span>
+      <span class="dot"  v-for="(item, index) in dots" :class="{active: currentPageIndex === index }"></span>
     </div>
   </div>
 </template>
@@ -48,7 +48,7 @@
     },
     mounted () {
       this.update()
-
+      // 这里是调用resize
       window.addEventListener('resize', () => {
         if (!this.slide || !this.slide.enabled) {
           return
@@ -66,6 +66,7 @@
         }, 60)
       })
     },
+    // 这里是激活的时候，就是来回vue-router切换
     activated () {
       if (!this.slide) {
         return
@@ -78,6 +79,7 @@
         this._play()
       }
     },
+    // 路由切换清除计时器
     deactivated () {
       this.slide.disable()
       clearTimeout(this.timer)
@@ -116,9 +118,11 @@
         }
       },
       _setSlideWidth (isResize) {
+        // 容器下面轮播的图片盒子
         this.children = this.$refs.slideGroup.children
 
         let width = 0
+        // 获取宽度=屏幕宽度
         let slideWidth = this.$refs.slide.clientWidth
         for (let i = 0; i < this.children.length; i++) {
           let child = this.children[i]
@@ -127,12 +131,15 @@
           child.style.width = slideWidth + 'px'
           width += slideWidth
         }
+        // loop需要多两个dom结构
         if (this.loop && !isResize) {
           width += 2 * slideWidth
         }
+        // 总的宽度
         this.$refs.slideGroup.style.width = width + 'px'
       },
       _initSlide () {
+        // 初始化
         this.slide = new BScroll(this.$refs.slide, {
           scrollX: true,
           momentum: false,
@@ -165,6 +172,7 @@
           this._play()
         }
       },
+      // 小圆点
       _initDots () {
         this.dots = new Array(this.children.length)
       },

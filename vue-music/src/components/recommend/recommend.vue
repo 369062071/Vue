@@ -2,28 +2,34 @@
   <div class="recommend">
     <!-- better-scroll 父子级 begin -->
     <scroll ref="scroll" class="recommend-content" :data="discList">
-      <div class="slider-wrapper" v-if="recommends.length">
-        <slider>
-          <div  v-for="(item,index) in recommends" :key="index">
-            <a :href="item.linkUrl">
-              <img @load="loadImage" :src="item.picUrl" >
-            </a>
-          </div>
-        </slider>
+      <div>
+        <div class="slider-wrapper" v-if="recommends.length">
+          <slider>
+            <div  v-for="(item,index) in recommends" :key="index">
+              <a :href="item.linkUrl">
+                <img class="needsclick" @load="loadImage" :src="item.picUrl" >
+              </a>
+            </div>
+          </slider>
+        </div>
+        <div class="recommend-list">
+          <h1 class="list-title">热门歌单推荐</h1>
+          <ul>
+            <li v-for="(item,index) in discList" class="item" :key="index">
+              <div class="icon">
+                <img width="60" height="60" v-lazy="item.imgurl">
+              </div>
+              <div class="text">
+                <h2 class="name">{{ item.creator.name }}</h2>
+                <p class="desc">{{ item.dissname }}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="recommend-list">
-        <h1 class="list-title">热门歌单推荐</h1>
-        <ul>
-          <li v-for="(item,index) in discList" class="item" :key="index">
-            <div class="icon">
-              <img width="60" height="60" :src="item.imgurl">
-            </div>
-            <div class="text">
-              <h2 class="name">{{ item.creator.name }}</h2>
-              <p class="desc">{{ item.dissname }}</p>
-            </div>
-          </li>
-        </ul>
+      <!-- loading -->
+      <div class="loading-container" v-show="!discList.length">
+        <loading></loading>
       </div>
     </scroll>
     <!-- better-scroll 父子级 end-->
@@ -31,6 +37,7 @@
 </template>
 
 <script>
+  import Loading from '../../base/loading/loading.vue'
   import Slider from '../../base/slider/slider'
   import Scroll from '../../base/scroll/scroll'
   import {getRecommend, getDiscList} from '../../api/recommend'
@@ -39,7 +46,8 @@
   export default {
     components: {
       Slider,
-      Scroll
+      Scroll,
+      Loading
     },
     data () {
       return {
@@ -50,7 +58,7 @@
     created () {
       // 获取轮播数据
       this._getRecommend()
-      // 获取
+      // 获取音乐列表数据
       this._getDiscList()
     },
     methods: {

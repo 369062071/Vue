@@ -49,7 +49,7 @@
         this.scroll && this.scroll.disable()
       },
       refresh () {
-        console.log('我是子组件scroll')
+        console.log('我是子组件scroll,初始化ing')
         this.scroll && this.scroll.refresh()
       }
     },
