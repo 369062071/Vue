@@ -29,6 +29,7 @@
       width: 30px
       height: 32px
       margin-right: 9px
+      border-radius: 50%;
       bg-image('logo')
       background-size: 30px 32px
     .text

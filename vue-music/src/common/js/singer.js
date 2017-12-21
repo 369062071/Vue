@@ -1,3 +1,4 @@
+// 头像地址封装
 export default class Singer {
   constructor ({id, name}) {
     this.id = id
