@@ -23,6 +23,11 @@
       data: {
         type: Array,
         default: null
+      },
+      // 是否监听滚动事件
+      listenScroll: {
+        type: Boolean,
+        default: false
       }
     },
     mounted () {
@@ -34,6 +39,7 @@
       // 初始化
       _initScroll () {
         // wrapper 没有值的时候就return
+        console.log('我是wrapper', this.$refs.wrapper)
         if (!this.$refs.wrapper) {
           return
         }
@@ -41,6 +47,14 @@
           probeType: this.probeType,
           click: this.click
         })
+
+        if (this.listenScroll) {
+          let me = this
+          // pos 位置信息
+          this.scroll.on('scroll', (pos) => {
+            me.$emit('scroll', pos)
+          })
+        }
       },
       enable () {
         this.scroll && this.scroll.enable()

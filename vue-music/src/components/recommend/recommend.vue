@@ -1,39 +1,41 @@
 <template>
-  <div class="recommend">
-    <!-- better-scroll 父子级 begin -->
-    <scroll ref="scroll" class="recommend-content" :data="discList">
-      <div>
-        <div class="slider-wrapper" v-if="recommends.length">
-          <slider>
-            <div  v-for="(item,index) in recommends" :key="index">
-              <a :href="item.linkUrl">
-                <img class="needsclick" @load="loadImage" :src="item.picUrl" >
-              </a>
-            </div>
-          </slider>
-        </div>
-        <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
-          <ul>
-            <li v-for="(item,index) in discList" class="item" :key="index">
-              <div class="icon">
-                <img width="60" height="60" v-lazy="item.imgurl">
+  <transition name="fade">
+    <div class="recommend">
+      <!-- better-scroll 父子级 begin -->
+      <scroll ref="scroll" class="recommend-content" :data="discList">
+        <div>
+          <div class="slider-wrapper" v-if="recommends.length">
+            <slider>
+              <div  v-for="(item,index) in recommends" :key="index">
+                <a :href="item.linkUrl">
+                  <img class="needsclick" @load="loadImage" :src="item.picUrl" >
+                </a>
               </div>
-              <div class="text">
-                <h2 class="name">{{ item.creator.name }}</h2>
-                <p class="desc">{{ item.dissname }}</p>
-              </div>
-            </li>
-          </ul>
+            </slider>
+          </div>
+          <div class="recommend-list">
+            <h1 class="list-title">热门歌单推荐</h1>
+            <ul>
+              <li v-for="(item,index) in discList" class="item" :key="index">
+                <div class="icon">
+                  <img width="60" height="60" v-lazy="item.imgurl">
+                </div>
+                <div class="text">
+                  <h2 class="name">{{ item.creator.name }}</h2>
+                  <p class="desc">{{ item.dissname }}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <!-- loading -->
-      <div class="loading-container" v-show="!discList.length">
-        <loading></loading>
-      </div>
-    </scroll>
-    <!-- better-scroll 父子级 end-->
-  </div>
+        <!-- loading -->
+        <div class="loading-container" v-show="!discList.length">
+          <loading></loading>
+        </div>
+      </scroll>
+      <!-- better-scroll 父子级 end-->
+    </div>
+  </transition>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-      <list-view :data="singers"></list-view>
+    <list-view :data="singers"></list-view>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
   import {getSingerList} from '../../api/singer'
   import {ERR_OK} from '../../api/config'
 
-  const HOT_NAME = '热门数据'
+  const HOT_NAME = '热门歌手'
   const HOT_SINGER_LEN = 10
 
   export default {
@@ -85,11 +85,13 @@
 </script>
 
 <style lang="stylus" scoped>
+
   .singer
     position fixed
     top 88px
     bottom 0
     width 100%
+      
 </style>
 
 

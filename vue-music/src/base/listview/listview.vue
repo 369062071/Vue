@@ -1,5 +1,10 @@
 <template>
-  <scroll class="listview" :data="data" ref="listview">
+  <scroll class="listview" 
+          :data="data" 
+          ref="listview" 
+          :listen-scroll="listenScroll" 
+          :probeType="probeType"
+          @scroll = "scroll">
     <ul>
       <li v-for="group in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{ group.title }}</h2>
@@ -11,20 +16,25 @@
         </ul>
       </li>
     </ul>
-    <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent>
+    <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
       <ul>
-        <li v-for="(item,index) in shortcutList" class="item" :data-index="index">
+        <li v-for="(item,index) in shortcutList" 
+        class="item" 
+        :data-index="index"
+        :class="{'current' : currentIndex === index}"
+        >
           {{ item }}
         </li>
       </ul>
     </div>
-
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
   import Scroll from '../../base/scroll/scroll.vue'
   import {getData} from '../../common/js/dom'
+
+  const ANCHOR_HEIGHT = 18
 
   export default {
     components: {
@@ -36,6 +46,12 @@
         default: []
       }
     },
+    data () {
+      return {
+        scrollY: -1,
+        currentIndex: 0
+      }
+    },
     computed: {
       shortcutList () {
         return this.data.map((group) => {
@@ -43,12 +59,95 @@
         })
       }
     },
+    created () {
+      this.touch = {}
+      this.listenScroll = true
+      this.listHeight = []
+      // 不截流 3
+      this.probeType = 3
+    },
     methods: {
+      // 手指点击移动
       onShortcutTouchStart (e) {
         let anchorIndex = getData(e.target, 'index')
-        console.log(this.$refs.listGroup[anchorIndex])
-        // 侧栏联动（传入el）
-        this.$refs.listview.scrollToElement(this.$refs.listGroup[anchorIndex], 0)
+        let firstTouch = e.touches[0]
+        // 记录初始 Y值
+        this.touch.y1 = firstTouch.pageY
+
+        // 记录初始 anchorIndex值
+        this.touch.anchorIndex = anchorIndex
+        console.log(e.touches, this.touch)
+        // 跟新侧栏位置（传入el）
+        this._scrollTo(anchorIndex)
+      },
+      // 滚动  start的时候获取到 Y值，move的时候也获取到 Y值
+      onShortcutTouchMove (e) {
+        let firstTouch = e.touches[0]
+        this.touch.y2 = firstTouch.pageY
+        // data在 Y轴 上的偏移锚点数
+        let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+
+        // console.log('data在 Y轴 上的偏移锚点数' + delta)
+        // 歌手dom的偏移量
+        let anchorIndex = parseInt(this.touch.anchorIndex) + delta
+        // console.log('这是歌手dom的偏移量' + anchorIndex)
+
+        // 更新侧栏位置
+        this._scrollTo(anchorIndex)
+      },
+      scroll (pos) {
+        // console.log('子组件传来的', pos.y)
+        // better-scroll滚动到Y轴的距离
+        this.scrollY = pos.y
+      },
+       // 更新侧栏位置（传入el）
+      _scrollTo (index) {
+        this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 1000)
+      },
+      // 计算歌手列表高度
+      _calculateHeight () {
+        this.listHeight = []
+        const list = this.$refs.listGroup
+        let height = 0
+        this.listHeight.push(height)
+        // 遍历歌手dom，获取clintHeight
+        for (let item of list) {
+          // console.log(item.clientHeight)
+          height += item.clientHeight
+          this.listHeight.push(height)
+        }
+        // console.log(this.listHeight)
+      }
+    },
+    watch: {
+      data () {
+        setTimeout(() => {
+          console.log('data变化啦')
+          this._calculateHeight()
+        }, 20)
+      },
+      scrollY (newY) {
+        const listHeight = this.listHeight
+        // console.log(listHeight)
+        // 当滚动到顶部， newY > 0
+        if (newY >= 0) {
+          this.currentIndex = 0
+          return
+        }
+        // 在中间滚动
+        for (let i = 0; i < listHeight.length - 1; i++) {
+          let height1 = listHeight[i]
+          let height2 = listHeight[i + 1]
+          // 某个区间的上限和下限
+          if (-newY >= height1 && -newY < height2) {
+            this.currentIndex = i
+            // console.log(this.currentIndex)
+            return
+          }
+        }
+        // 当滚动到底部，且 -newY大于最后一个元素的上限
+        this.currentIndex = listHeight.length - 2
+        // console.log('我到底部啦' + this.currentIndex)
       }
     }
   }
