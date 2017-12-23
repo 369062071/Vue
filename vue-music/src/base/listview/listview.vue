@@ -6,10 +6,10 @@
           :probeType="probeType"
           @scroll = "scroll">
     <ul>
-      <li v-for="group in data" class="list-group" ref="listGroup">
+      <li v-for="(group,index) in data" class="list-group" ref="listGroup" :key="index">
         <h2 class="list-group-title">{{ group.title }}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item">
+          <li v-for="(item,index) in group.items" class="list-group-item" :key="index">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{ item.name }}</span>
           </li>
@@ -22,6 +22,7 @@
         class="item" 
         :data-index="index"
         :class="{'current' : currentIndex === index}"
+        :key="index"
         >
           {{ item }}
         </li>
@@ -102,6 +103,18 @@
       },
        // 更新侧栏位置（传入el）
       _scrollTo (index) {
+        // 点击侧栏条空白位置处理
+        if (!index && index !== 0) {
+          return
+        }
+        // 处理边界情况
+        if (index < 0) {
+          index = 0
+        } else if (index > this.listHeight.length - 2) {
+          index = this.listHeight.length - 2
+        }
+        this.scrollY = -this.listHeight[index]
+        console.log(index, 'scrolly', this.scrollY)
         this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 1000)
       },
       // 计算歌手列表高度
@@ -128,6 +141,7 @@
       },
       scrollY (newY) {
         const listHeight = this.listHeight
+        console.log('watch观察到了scrollY更新')
         // console.log(listHeight)
         // 当滚动到顶部， newY > 0
         if (newY >= 0) {
