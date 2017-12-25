@@ -28,6 +28,9 @@
         </li>
       </ul>
     </div>
+    <div class="list-fixed" v-show="fixedTitle" ref="fixed">
+      <h1 class="fixed-title">{{ fixedTitle }}</h1>
+    </div>
   </scroll>
 </template>
 
@@ -36,6 +39,7 @@
   import {getData} from '../../common/js/dom'
 
   const ANCHOR_HEIGHT = 18
+  const TITLE_HEIGHT = 30
 
   export default {
     components: {
@@ -50,7 +54,8 @@
     data () {
       return {
         scrollY: -1,
-        currentIndex: 0
+        currentIndex: 0,
+        diff: -1 // 歌手nav偏移值
       }
     },
     computed: {
@@ -58,6 +63,14 @@
         return this.data.map((group) => {
           return group.title.substr(0, 1)
         })
+      },
+      // 歌手顶部nav显示及内容
+      fixedTitle () {
+        if (this.scrollY > 0) {
+          return ''
+        }
+        // currentIndex 被watch监听
+        return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
       }
     },
     created () {
@@ -77,7 +90,7 @@
 
         // 记录初始 anchorIndex值
         this.touch.anchorIndex = anchorIndex
-        console.log(e.touches, this.touch)
+        // console.log(e.touches, this.touch)
         // 跟新侧栏位置（传入el）
         this._scrollTo(anchorIndex)
       },
@@ -135,13 +148,13 @@
     watch: {
       data () {
         setTimeout(() => {
-          console.log('data变化啦')
+          // console.log('data变化啦')
           this._calculateHeight()
         }, 20)
       },
       scrollY (newY) {
         const listHeight = this.listHeight
-        console.log('watch观察到了scrollY更新')
+        // console.log('watch观察到了scrollY更新')
         // console.log(listHeight)
         // 当滚动到顶部， newY > 0
         if (newY >= 0) {
@@ -156,12 +169,27 @@
           if (-newY >= height1 && -newY < height2) {
             this.currentIndex = i
             // console.log(this.currentIndex)
+            this.diff = height2 + newY
+            console.log('diff的值', this.diff, 'newY的值', newY)
             return
           }
         }
         // 当滚动到底部，且 -newY大于最后一个元素的上限
         this.currentIndex = listHeight.length - 2
         // console.log('我到底部啦' + this.currentIndex)
+      },
+      diff (newVal) {
+        console.log('diff的newVal', newVal)
+        // 偏移量赋值
+        let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+        // 有值才计算
+        if (this.fixedTop === fixedTop) {
+          return
+        }
+        this.fixedTop = fixedTop
+        console.log('fixed的值', fixedTop, 'this.fiexedTop的值', this.fixedTop)
+        // 修改偏移
+        this.$refs.fixed.style.transform = `translate3d(0,${fixedTop}px,0)`
       }
     }
   }

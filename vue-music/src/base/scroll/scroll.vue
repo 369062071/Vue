@@ -39,7 +39,7 @@
       // 初始化
       _initScroll () {
         // wrapper 没有值的时候就return
-        console.log('我是wrapper', this.$refs.wrapper)
+        // console.log('我是wrapper', this.$refs.wrapper)
         if (!this.$refs.wrapper) {
           return
         }
