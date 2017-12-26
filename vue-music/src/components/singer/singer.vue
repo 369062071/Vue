@@ -1,6 +1,8 @@
 <template>
   <div class="singer">
-    <list-view :data="singers"></list-view>
+    <list-view :data="singers" @select='selectSinger'></list-view>
+    <!-- router-view 承载子路由 -->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -9,6 +11,7 @@
   import ListView from '../../base/listview/listview.vue'
   import {getSingerList} from '../../api/singer'
   import {ERR_OK} from '../../api/config'
+  import {mapMutations} from 'vuex' // vuex 语法糖
 
   const HOT_NAME = '热门歌手'
   const HOT_SINGER_LEN = 10
@@ -26,6 +29,15 @@
       this._getSingerList()
     },
     methods: {
+      // 接受ID 跳转路由
+      selectSinger (singer) {
+        console.log(singer.id)
+        this.$router.push({
+          path: `/singer/${singer.id}`
+        })
+        // 通过setSinger将数据传入
+        this.setSinger(singer)
+      },
       _getSingerList () {
         getSingerList().then((res) => {
           if (res.code === ERR_OK) {
@@ -79,7 +91,11 @@
           return a.title.charCodeAt(0) - b.title.charCodeAt(0)
         })
         return hot.concat(ret)
-      }
+      },
+      // 对象映射,把对mutation的修改映射成一个方法名
+      ...mapMutations({
+        setSinger: 'SET_SINGER'
+      })
     }
   }
 </script>

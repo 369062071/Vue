@@ -3,6 +3,7 @@
     <m-header></m-header>
     <tab></tab>
     <keep-alive>
+      <!-- router-view 承载子路由 -->
       <router-view></router-view>
     </keep-alive>
   </div>

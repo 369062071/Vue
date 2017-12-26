@@ -4,6 +4,7 @@ import Reacommend from '../components/recommend/recommend'
 import Singer from '../components/singer/singer.vue'
 import Rank from '../components/rank/rank.vue'
 import Search from '../components/searach/search.vue'
+import SingerDetail from '../components/singerDetail/singDetail.vue'
 
 Vue.use(Router)
 
@@ -15,7 +16,13 @@ export default new Router({
     },
     {
       path: '/singer',
-      component: Singer
+      component: Singer,
+      children: [
+        {
+          path: ':id', // 传入不同的id值跳转到不同的子页面
+          component: SingerDetail
+        }
+      ]
     },
     {
       path: '/rank',

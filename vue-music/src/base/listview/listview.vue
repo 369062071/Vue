@@ -9,7 +9,7 @@
       <li v-for="(group,index) in data" class="list-group" ref="listGroup" :key="index">
         <h2 class="list-group-title">{{ group.title }}</h2>
         <ul>
-          <li v-for="(item,index) in group.items" class="list-group-item" :key="index">
+          <li v-for="(item,index) in group.items" class="list-group-item" :key="index" @click="selectItem(item)">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{ item.name }}</span>
           </li>
@@ -31,19 +31,24 @@
     <div class="list-fixed" v-show="fixedTitle" ref="fixed">
       <h1 class="fixed-title">{{ fixedTitle }}</h1>
     </div>
+    <div v-show="!data.length" class="loading-container">
+      <loading></loading>
+    </div>
   </scroll>
 </template>
 
 <script type="text/ecmascript-6">
   import Scroll from '../../base/scroll/scroll.vue'
   import {getData} from '../../common/js/dom'
+  import Loading from '../../base/loading/loading.vue'
 
   const ANCHOR_HEIGHT = 18
   const TITLE_HEIGHT = 30
 
   export default {
     components: {
-      Scroll
+      Scroll,
+      Loading
     },
     props: {
       data: {
@@ -81,6 +86,10 @@
       this.probeType = 3
     },
     methods: {
+      // 点击传递歌手信息
+      selectItem (item) {
+        this.$emit('select', item)
+      },
       // 手指点击移动
       onShortcutTouchStart (e) {
         let anchorIndex = getData(e.target, 'index')

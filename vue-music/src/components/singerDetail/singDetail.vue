@@ -1,0 +1,77 @@
+<template>
+  <transition name="slide">
+    <div class="singer-detail">
+
+  </div>
+  </transition>
+  
+</template>
+
+<script type="text/ecmascript-6">
+  import {mapGetters} from 'vuex'
+  import {getSingerDetail} from '../../api/singer'
+  import {ERR_OK} from '../../api/config'
+  import {createSong} from '../../common/js/song'
+
+  export default{
+    data () {
+      return {
+        songs: []
+      }
+    },
+    computed: {
+      // 通过mapGetters扩展到computed
+      ...mapGetters([
+        'singer' // 对应的是 store/getters.js 中的 singer，相当于在vue实例中挂载一个叫singer的属性
+      ])
+    },
+    created () {
+      console.log('我是vuex传递过来的数据', this.singer)
+      this._getSingerDetail()
+      console.log('请求歌曲列表数据结束')
+    },
+    methods: {
+      _getSingerDetail () {
+        // 边界情况处理
+        if (!this.singer.id) {
+          this.$router.push('/singer')
+          return
+        }
+        getSingerDetail(this.singer.id).then((res) => {
+          if (res.code === ERR_OK) {
+            this.songs = this._normalizeSongs(res.data.list)
+            console.log('转换过的songs', this.songs)
+          }
+        })
+      },
+      _normalizeSongs (list) {
+        let ret = []
+        list.forEach((item) => {
+          let {musicData} = item
+          if (musicData.songid && musicData.albummid) {
+            ret.push(createSong(musicData))
+          }
+        })
+        return ret
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/variable"
+
+  .singer-detail
+    position fixed
+    z-index 100
+    top 0
+    left 0
+    right 0
+    bottom 0
+    background $color-background
+
+  .slide-enter-active,.slide-leave-active
+    transition all .3s
+  .slide-enter,.slide-leave-to
+    transform translate3d(100%,0,0)
+</style>
