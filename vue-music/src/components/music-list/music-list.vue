@@ -5,7 +5,7 @@
     </div>
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImage">
-      <div class="filter"></div>
+      <div class="filter" ref="filter"></div>
     </div>
     <div class="bg-layer" ref="layer"></div>
     <scroll :probe-type="probeType" :listen-scroll="listenScroll" @scroll="scroll" :data="songs" class="list" ref="list">
@@ -20,7 +20,7 @@
   import Scroll from '../../base/scroll/scroll.vue'
   import SongList from '../../base/song-list/song-list.vue'
 
-  
+  const RESERVED_HEIGHT = 40
 
   export default{
     components: {
@@ -55,9 +55,36 @@
       scrollY (newY) {
         // 取最大值
         let translateY = Math.max(this.minTranslateY, newY)
-        console.log('translateY:', translateY, 'newY的值', newY, 'minTranslateY', this.minTranslateY)
+        let zIndex = 0
+        let scale = 1 // 下拉图片变化尺寸
+        let blur = 0 // 上拉图片模糊
+        // console.log('translateY:', translateY, 'newY的值', newY, 'minTranslateY', this.minTranslateY)
         this.$refs.layer.style['transform'] = `translate3d(0,${translateY}px,0)`
         this.$refs.layer.style['webkitTransform'] = `translate3d(0,${translateY}px,0)`
+        const percent = Math.abs(newY / this.imageHeight) // 拉动变化比率
+        console.log('percent:', percent)
+        // 下拉图片变大
+        if (newY > 0) {
+          scale = 1 + percent
+          zIndex = 10 // 修改图片的zindex
+        } else {
+          blur = Math.min(20 * percent, 20)
+        }
+        // ios才显示高斯模糊，安卓无此效果
+        this.$refs.filter.style['backdrop-filter'] = `blur(${blur}px)`
+        this.$refs.filter.style['backdrop-filter'] = `blur(${blur}px)`
+        // 向上滚动控制图片显示
+        if (newY < this.minTranslateY) {
+          zIndex = 10
+          this.$refs.bgImage.style.paddingTop = 0
+          this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+        } else {
+          this.$refs.bgImage.style.paddingTop = '70%'
+          this.$refs.bgImage.style.height = `0`
+        }
+        this.$refs.bgImage.style['transform'] = `scale(${scale})`
+        this.$refs.bgImage.style['webkitTransform'] = `scale(${scale})`
+        this.$refs.bgImage.style.zIndex = zIndex
       }
     },
     created () {
@@ -69,7 +96,7 @@
       // 获取图片高度（缓存值，不用时刻计算）
       this.imageHeight = this.$refs.bgImage.clientHeight
       // 高度赋值
-      this.minTranslateY = -this.imageHeight
+      this.minTranslateY = -this.imageHeight + RESERVED_HEIGHT
       this.$refs.list.$el.style.top = `${this.imageHeight}px`
     },
     methods: {
