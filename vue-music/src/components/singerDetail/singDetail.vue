@@ -1,8 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="singer-detail">
-
-  </div>
+    <music-list :songs="songs" :title="title" :bg-image="bgImage"></music-list>
   </transition>
   
 </template>
@@ -12,8 +10,12 @@
   import {getSingerDetail} from '../../api/singer'
   import {ERR_OK} from '../../api/config'
   import {createSong} from '../../common/js/song'
+  import MusicList from '../music-list/music-list.vue'
 
   export default{
+    components: {
+      MusicList
+    },
     data () {
       return {
         songs: []
@@ -23,12 +25,17 @@
       // 通过mapGetters扩展到computed
       ...mapGetters([
         'singer' // 对应的是 store/getters.js 中的 singer，相当于在vue实例中挂载一个叫singer的属性
-      ])
+      ]),
+      title () {
+        return this.singer.name
+      },
+      bgImage () {
+        return this.singer.avatar
+      }
     },
     created () {
       console.log('我是vuex传递过来的数据', this.singer)
       this._getSingerDetail()
-      console.log('请求歌曲列表数据结束')
     },
     methods: {
       _getSingerDetail () {
@@ -40,7 +47,7 @@
         getSingerDetail(this.singer.id).then((res) => {
           if (res.code === ERR_OK) {
             this.songs = this._normalizeSongs(res.data.list)
-            console.log('转换过的songs', this.songs)
+            // console.log('转换过的songs', this.songs)
           }
         })
       },

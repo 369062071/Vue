@@ -23,5 +23,6 @@ export default {
 
 <style  lang="stylus">
   @import './common/stylus/reset';
+  @import './common/stylus/icon';
 </style>
 

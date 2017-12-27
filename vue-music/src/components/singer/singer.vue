@@ -31,7 +31,7 @@
     methods: {
       // 接受ID 跳转路由
       selectSinger (singer) {
-        console.log(singer.id)
+        // console.log('点击选中的歌手信息', singer)
         this.$router.push({
           path: `/singer/${singer.id}`
         })
@@ -40,8 +40,10 @@
       },
       _getSingerList () {
         getSingerList().then((res) => {
+          // console.log('这里是请求过来的res', res)
           if (res.code === ERR_OK) {
             this.singers = this._normalizeSinger(res.data.list)
+            // console.log('歌手信息', this.singers)
           }
         })
       },
