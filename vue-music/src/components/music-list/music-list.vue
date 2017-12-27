@@ -20,6 +20,8 @@
   import Scroll from '../../base/scroll/scroll.vue'
   import SongList from '../../base/song-list/song-list.vue'
 
+  
+
   export default{
     components: {
       Scroll,
@@ -64,7 +66,7 @@
       this.listenScroll = true
     },
     mounted () {
-      // 获取图片高度
+      // 获取图片高度（缓存值，不用时刻计算）
       this.imageHeight = this.$refs.bgImage.clientHeight
       // 高度赋值
       this.minTranslateY = -this.imageHeight
