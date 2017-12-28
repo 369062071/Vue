@@ -30,7 +30,7 @@
   import SongList from '../../base/song-list/song-list.vue'
   import Loading from '../../base/loading/loading.vue'
   import {prefixStyle} from '../../common/js/dom'
-  import {mapActions} from 'vuex'
+  import {mapActions} from 'vuex'  // 获取vuex的actions方法
 
   const RESERVED_HEIGHT = 40
   const transform = prefixStyle('transform')
