@@ -1,5 +1,13 @@
+import {playMode} from '../common/js/config'
+
 const state = {
-  singer: {}
+  singer: {},
+  playing: false,
+  fullScreen: false, // 全屏
+  playlist: [], // 播放列表
+  swquenceList: [], // 顺序列表
+  mode: playMode.sequence,
+  currentIndex: -1 // 当前播放的索引
 }
 
 export default state
