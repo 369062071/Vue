@@ -14,6 +14,6 @@ export const mode = state => state.mode
 
 export const currentIndex = state => state.currentIndex
 
-export const currenntSong = (state) => {
-  return state.playlist[state.currentIdndex] || {}
+export const currentSong = (state) => {
+  return state.playlist[state.currentIndex] || {}
 }
