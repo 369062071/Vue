@@ -1,6 +1,6 @@
 <template>
   <div class="player" v-show="playlist.length > 0">
-    <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="leaveEnter">
+    <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
           <img src="" width="100%" height="100%" :src="currentSong.image">
@@ -14,8 +14,8 @@
         </div>
         <div class="middle">
           <div class="middle-l">
-            <div class="cd-wrapper">
-              <div class="cd">
+            <div class="cd-wrapper" ref="cdWrapper">
+              <div class="cd" :class="cdCls">
                 <img src="" class="image" :src="currentSong.image" @click="click">
               </div>
             </div>
@@ -30,7 +30,7 @@
               <i class="icon-prev"></i>
             </div>
             <div class="icon i-center">
-              <i class="icon-play"></i>
+              <i :class="playIcon" @click="togglePlaying"></i>
             </div>
             <div class="icon i-right">
               <i class="icon-next"></i>
@@ -46,32 +46,49 @@
     <transition name="mini">
       <div class="mini-player" v-show="!fullScreen" @click="open">
         <div class="icon">
-          <img width="40" height="40" :src="currentSong.image">
+          <img width="40" height="40" :src="currentSong.image" :class="cdCls">
         </div>
         <div class="text">
           <h2 class="name" v-html="currentSong.name"></h2>
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control">
-
+          <i @click.stop="togglePlaying" :class="miniIcon"></i>
         </div>
         <div class="control">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+
+    <audio :src="currentSong.url" ref="audio"></audio>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {mapGetters, mapMutations} from 'vuex'
+  import animations from 'create-keyframe-animation'
+  import {prefixStyle} from '../../common/js/dom'
+
+  const transform = prefixStyle('transform')
 
   export default{
     computed: {
+      cdCls () {
+        return this.playing ? 'play' : 'play pause'
+      },
+      // 播放图标控制
+      playIcon () {
+        return this.playing ? 'icon-pause' : 'icon-play'
+      },
+      miniIcon () {
+        return this.playing ? 'icon-pause-mini' : 'icon-play-mini'
+      },
       ...mapGetters([
         'fullScreen',
         'playlist',
-        'currentSong'
+        'currentSong',
+        'playing' // 播放状态
       ])
     },
     methods: {
@@ -85,20 +102,84 @@
         this.setFullScreen(true)
       },
       enter (el, done) {
+        const {x, y, scale} = this._getPosAndScale()
 
+        let animation = {
+          0: {
+            transform: `translate3d(${x}px,${y}px,0) scale(${scale})`
+          },
+          60: {
+            transform: `translate3d(0,0,0) scale(1.1)`
+          },
+          100: {
+            transform: `translate3d(0,0,0) scale(1)`
+          }
+        }
+
+        animations.registerAnimation({
+          name: 'move',
+          animation,
+          presets: {
+            duration: 400,
+            easing: 'linear'
+          }
+        })
+        // 动画执行完毕调用done函数
+        animations.runAnimation(this.$refs.cdWrapper, 'move', done)
       },
       afterEnter () {
-
+        animations.unregisterAnimation('move')
+        this.$refs.cdWrapper.style.animation = ''
       },
       leave (el, done) {
-
+        this.$refs.cdWrapper.style.transition = 'all .4s'
+        const {x, y, scale} = this._getPosAndScale()
+        this.$refs.cdWrapper.style[transform] = `translate3d(${x}px,${y}px,0) scale(${scale})`
+        // 动画完成执行回调done
+        this.$refs.cdWrapper.addEventListener('transitionend', done)
       },
-      after () {
-
+      afterLeave () {
+        this.$refs.cdWrapper.style.transition = ''
+        this.$refs.cdWrapper.style[transform] = ''
+      },
+      // 提交状态
+      togglePlaying () {
+        this.setPlayingState(!this.playing)
+      },
+      _getPosAndScale () {
+        const targetWidth = 40
+        const paddingLeft = 40
+        const paddingBottom = 30
+        const paddingTop = 80
+        const width = window.innerWidth * 0.8
+        const scale = targetWidth / width
+        const x = -(window.innerWidth / 2 - paddingLeft)
+        const y = window.innerHeight - paddingTop - width / 2 - paddingBottom
+        console.log('_getPosAndScale:', x, y, scale)
+        return {
+          x,
+          y,
+          scale
+        }
       },
       ...mapMutations({
-        setFullScreen: 'SET_FULL_SCREEN'
+        setFullScreen: 'SET_FULL_SCREEN',
+        setPlayingState: 'SET_PLAYING_STATE'
       })
+    },
+    watch: {
+      currentSong () {
+        this.$nextTick(() => {
+          this.$refs.audio.play()
+        })
+      },
+      // 控制音乐播放暂停
+      playing (newPlaying) {
+        const audio = this.$refs.audio
+        this.$nextTick(() => {
+          newPlaying ? audio.play() : audio.pause()
+        })
+      }
     }
   }
 </script>
