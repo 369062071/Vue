@@ -3,7 +3,7 @@
     <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
-          <img src="" width="100%" height="100%" :src="currentSong.image">
+          <img width="100%" height="100%" :src="currentSong.image">
         </div>
         <div class="top">
           <div class="back">
@@ -16,7 +16,7 @@
           <div class="middle-l">
             <div class="cd-wrapper" ref="cdWrapper">
               <div class="cd" :class="cdCls">
-                <img src="" class="image" :src="currentSong.image" @click="click">
+                <img class="image" :src="currentSong.image" @click="click">
               </div>
             </div>
           </div>
@@ -27,13 +27,13 @@
               <i class="icon-sequence"></i>
             </div>
             <div class="icon i-left">
-              <i class="icon-prev"></i>
+              <i class="icon-prev" @click="prev"></i>
             </div>
             <div class="icon i-center">
               <i :class="playIcon" @click="togglePlaying"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon-next"></i>
+              <i class="icon-next" @click="next"></i>
             </div>
             <div class="icon i-right">
               <i class="icon icon-not-favorite"></i>
@@ -61,7 +61,7 @@
       </div>
     </transition>
 
-    <audio :src="currentSong.url" ref="audio"></audio>
+    <audio :src="currentSong.url" ref="audio" @canplay="ready" @error="error"></audio>
   </div>
 </template>
 
@@ -73,6 +73,11 @@
   const transform = prefixStyle('transform')
 
   export default{
+    data () {
+      return {
+        songReady: false // 标志位
+      }
+    },
     mounted () {
       console.log(this.fullScreen)
     },
@@ -91,7 +96,8 @@
         'fullScreen',
         'playlist',
         'currentSong',
-        'playing' // 播放状态
+        'playing', // 播放状态
+        'currentIndex'
       ])
     },
     methods: {
@@ -149,6 +155,43 @@
       togglePlaying () {
         this.setPlayingState(!this.playing)
       },
+      // 下一首
+      next () {
+        // 防止连点
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex + 1
+        if (index === this.playlist.length) {
+          index = 0
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
+      },
+      // 上一首
+      prev () {
+        // 防止连点
+        if (!this.songReady) {
+          return
+        }
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playlist.length - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
+        this.songReady = false
+      },
+      // 表示歌曲已经准备好可以播放
+      ready () {
+        this.songReady = true
+      },
+      error () {},
       _getPosAndScale () {
         const targetWidth = 40
         const paddingLeft = 40
@@ -167,7 +210,8 @@
       },
       ...mapMutations({
         setFullScreen: 'SET_FULL_SCREEN',
-        setPlayingState: 'SET_PLAYING_STATE'
+        setPlayingState: 'SET_PLAYING_STATE',
+        setCurrentIndex: 'SET_CURRENT_INDEX'
       })
     },
     watch: {
