@@ -11,6 +11,9 @@
   import {mapGetters} from 'vuex'
 
   export default{
+    mounted () {
+      console.log(this.fullScreen)
+    },
     computed: {
       ...mapGetters([
         'fullScreen',
