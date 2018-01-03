@@ -45,6 +45,7 @@
           return
         }
         getSingerDetail(this.singer.id).then((res) => {
+          console.log('歌手数据：', res)
           if (res.code === ERR_OK) {
             this.songs = this._normalizeSongs(res.data.list)
             // console.log('转换过的songs', this.songs)
