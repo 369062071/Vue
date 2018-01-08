@@ -6,7 +6,7 @@
                 <span class="count">{{ ratings.length }}</span>
             </span>
             <span @click="select(0,$event)" class="block positive" :class="{'active' : selectTypeChild === 0}">
-                {{ desc.positive }}
+                {{ desc.positives }}
                 <span class="count">{{ positives.length }}</span>    
             </span>
             <span @click="select(1,$event)" class="block negative" :class="{'active' : selectTypeChild === 1}">
@@ -77,6 +77,9 @@
 
         },
         methods:{
+            click() {
+                console.log(this.positives)
+            },
             //商品评价按钮切换
             select(type,event){
                 if(!event._constructed) {
