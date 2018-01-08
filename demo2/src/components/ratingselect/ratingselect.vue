@@ -99,7 +99,6 @@
             click() {
                 
                 Vue.set(this.desc,'all','zengjiala')
-                this.desc = [1]
                 console.log(this.desc);
             }
         }

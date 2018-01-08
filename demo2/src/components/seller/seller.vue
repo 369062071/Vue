@@ -28,10 +28,10 @@
                         </div>
                     </li>
                 </ul>
-                <div class="favorite" @click="toggleFavorite">
+                <!-- <div class="favorite" @click="toggleFavorite">
                     <span class="icon-favorite" :class="{'active':favorite}"></span>
                     <span class="text">{{favoriteText}}</span>
-                </div>
+                </div> -->
             </div>
             <split></split>
             <div class="bulletin">
@@ -39,11 +39,11 @@
                 <div class="content-wrapper border-1px">
                 <p class="content">{{seller.bulletin}}</p>
                 </div>
-                <ul v-if="seller.supports" class="supports">
-                <li class="support-item border-1px" v-for="(item,index) in seller.supports">
-                    <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-                    <!-- <span class="text">{{seller.supports[index].description}}</span> -->
-                </li>
+                <ul  class="supports">
+                    <li class="support-item border-1px" v-for="(item,index) in seller.supports">
+                        <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                        <!-- <span class="text">{{seller.supports[index].description}}</span> -->
+                    </li>
                 </ul>
             </div>
         </div>
@@ -77,17 +77,27 @@
         },
         methods: {
             _initScroll() {
-                this.scroll = new BScroll(this.$refs.seller, {
-                    click: true
-                })
+                if (!this.scroll) {
+                    this.scroll = new BScroll(this.$refs.seller, {
+                        click: true
+                    })
+                } else {
+                    this.scroll.refresh()
+                }
+                
+               
             }
         },
         mounted() {
-            
+            this.$nextTick(() => {
+                this._initScroll()
+            })
         },
         watch: {
-            'seller'() {
-                this._initScroll();
+            seller() {
+                this.$nextTick(() => {
+                    this._initScroll()
+                })
             }
         }
     }

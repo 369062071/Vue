@@ -95,6 +95,7 @@
             this.axios.get("src/common/data.json").then( (res) => {
                 // console.log(res.data.ratings)
                 this.ratings = res.data.ratings;
+                console.log('this.ratings', this.ratings)
                 this.$nextTick(() => {
                     this.scroll = new BScroll(this.$refs.ratings,{
                         click: true
@@ -126,7 +127,8 @@
                     this.scroll.refresh();
                 });
             },
-            toggleContent() {
+            toggleContent(e) {
+                console.log('这是子组件传过来的：', e)
                 this.onlyContent = !this.onlyContent;
                 this.$nextTick(() => {
                     this.scroll.refresh();

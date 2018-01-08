@@ -106,6 +106,8 @@
         methods:{
             click () {
                 console.log(this.desc)
+                console.log('food.rating', this.food.ratings)
+                
             },
             //父组件调用子组件show方法
             show() {
