@@ -12,17 +12,19 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <div>
-        <keep-alive>
-            <router-view :seller="seller"></router-view>
-        </keep-alive>
-    </div>
+    
+   <keep-alive>
+      <router-view :seller="seller"></router-view>
+   </keep-alive>
+   
+    
   </div>
 </template>
 
 <script>
   import VHeader from "./components/header/header.vue"
   import Goods from './components/goods/goods.vue'
+  import {urlParse} from './common/js/until'
 
 export default {
   components:{
@@ -31,16 +33,22 @@ export default {
   },
   data () {
       return {
-          seller:{}
+          seller:{
+            id:(() => {
+              let queryParam = urlParse();
+              console.log(queryParam);
+              return queryParam.id; 
+            })()
+          }
 
       }
   },
   created () {
     // 获取header内容
-    this.axios.get('src/common/data.json')
+    this.axios.get('src/common/data.json?id='+this.seller.id)
     .then( (res) => {
-      this.seller = res.data.seller;
-      console.log(res)
+      this.seller = Object.assign({},res.data.seller, this.seller)
+      console.log(this.seller.id)
     })
   }
 
