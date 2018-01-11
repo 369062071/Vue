@@ -54,7 +54,10 @@
       // 点击移动
       progressClick (e) {
         console.log(e)
-        this._offset(e.offsetX)
+        const rect = this.$refs.progressBar.getBoundingClientRect()
+        const offsetWidth = e.pageX - rect.left
+        // 当我们点击 progressBtn 的时候，e.offsetX 获取不对
+        this._offset(offsetWidth)
         this._triggerPercent()
       },
       _offset (offsetWidth) {
