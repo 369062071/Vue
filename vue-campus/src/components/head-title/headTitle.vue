@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="head-title">
     <a class="back" @click="back"></a>
     <h1>{{title}}</h1>
   </div>
@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style  scoped>
-  .container{
+  .head-title{
     height: 44px;
     line-height: 44px;
     text-align: center;

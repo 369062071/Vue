@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="student">
       <head-title :title="title"></head-title>
       <div class="main">
         <form @submit.prevent="submit">
@@ -151,13 +151,18 @@ export default {
 }
 </script>
 
-<style>
-
-  .main{
+<style scoped>
+  .student{
     width: 100%;
     position: fixed;
-    top: 44px;
+    top: 0;
     bottom: 0;
+    display: inline-flex;
+    flex-direction: column;
+  }
+  .main{
+    flex-grow: 1;
+    width: 100%;
     padding: .18rem .35rem 0;
     box-sizing: border-box;
     background: #f6f6f6;
@@ -174,7 +179,7 @@ export default {
     padding: .1rem .15rem;
     line-height: .21rem;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     box-shadow: 0 0 10px rgba(35, 22, 19, 0.14);
   }
   .btn-send{

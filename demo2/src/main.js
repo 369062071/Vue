@@ -25,8 +25,8 @@ let router = new VueRouter({
       component: Seller
     },
     {
-        path:'/',
-        redirect:'/goods'
+      path:'/',
+      redirect:'/goods'
     }
   ]
 });

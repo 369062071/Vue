@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="footer-nav">
     <ul class="link-list">
       <li class="link-item">
           <a href="javascript:;">
@@ -34,10 +34,7 @@ export default {}
 </script>
 
 <style scoped>
-.container{
-  position: fixed;
-  left: 0;
-  bottom: 0;
+.footer-nav{
   width: 100%;
   padding: .06rem 0;
   background: #fff;

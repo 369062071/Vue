@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="start-model">
     <head-title :title="title"></head-title>
     <div class="main">
       <div class="u-bg"></div>
@@ -25,11 +25,16 @@ export default {
 </script>
 
 <style scoped>
+.start-model{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
   .main{
-    position: fixed;
-    top: 44px;
-    bottom: 0;
-    width: 100%;
+    flex-grow: 1;
     background: #F9C3AB;
   }
   .u-bg{

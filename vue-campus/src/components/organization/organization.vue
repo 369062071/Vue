@@ -1,43 +1,42 @@
 <template>
-    <div>
+    <div class="organization-model">
       <head-title :title="title"></head-title>
       <div class="main">
         <form @submit.prevent="submit">
-          <div class="input-box">
+          <div class="input-box box-shadow">
               <input type="text" v-model.trim="formData.school" @blur="checkSchool" @focus="emptyHintMsg"
-              class="school" placeholder="学校">
+               placeholder="学校">
           </div>
-          <div class="input-box">
+          <div class="input-box box-shadow">
               <input type="text" v-model.trim="formData.organization"
-              @blur="checkOrganization" @focus="emptyHintMsg"
-              class="organization" placeholder="机构名称">
+              @blur="checkOrganization" @focus="emptyHintMsg" placeholder="机构名称">
           </div>
-          <div class="input-box">
+          <div class="input-box box-shadow">
               <input type="text" v-model.trim="formData.headName"
-              @blur="checkHeadName" @focus="emptyHintMsg"
-              class="header-name" placeholder="负责人姓名">
+              @blur="checkHeadName" @focus="emptyHintMsg" placeholder="负责人姓名">
           </div>
-          <div class="input-box">
+          <div class="input-box box-shadow">
               <input type="number" v-model.trim="formData.phone"
-               @blur="checkPhone" @focus="emptyHintMsg"
-               class="phone-num" placeholder="请输入手机号码">
+               @blur="checkPhone" @focus="emptyHintMsg" placeholder="请输入手机号码">
           </div>
 
-          <div class="input-box">
-            <input type="text" v-model.trim="formData.shortMsg"
+          <div class="input-box ">
+            <div class="box-shadow flex-wrap">
+              <input type="text" v-model.trim="formData.shortMsg"
              @blur="checkShortMsg" @focus="emptyHintMsg"  class="short-msg" placeholder="短信验证码">
+            </div>
             <button type="button" class="btn-send" @click="sendMsg">
               <span v-show="isShow">发送</span>
               <span v-show="!isShow" class="disable">{{ count }}</span>
             </button>
           </div>
 
-          <div class="input-box">
+          <div class="input-box box-shadow">
               <input type="text" v-model.trim="formData.command"
                @blur="checkCommand" @focus="emptyHintMsg"
                class="command" placeholder="我的省钱口令">
           </div>
-          <div class="input-box">
+          <div class="input-box box-shadow">
               <input type="text" v-model.trim="formData.invitatoryCommand"
                @foucus="emptyHintMsg" class="invitatory-command" placeholder="邀请人的省钱口令（选填）">
           </div>
@@ -185,12 +184,17 @@ export default {
 </script>
 
 <style>
-
+.organization-model{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
   .main{
+    flex-grow: 1;
     width: 100%;
-    position: fixed;
-    top: 44px;
-    bottom: 0;
     padding: .18rem .35rem 0;
     box-sizing: border-box;
     background: #f6f6f6;
@@ -205,10 +209,10 @@ export default {
   .input-box input{
     width: 100%;
     padding: .1rem .15rem;
+    box-sizing: border-box;
     line-height: .21rem;
     border: none;
-    border-radius: 3px;
-    box-shadow: 0 0 10px rgba(35, 22, 19, 0.14);
+    border-radius: 5px;
   }
   .btn-send{
     width: 1rem;
@@ -302,6 +306,9 @@ export default {
     padding-bottom: .12rem;
     font-size: 0.12rem;
     color: #FF0000;
+}
+.flex-wrap {
+  flex-grow: 1;F
 }
 @media screen and (max-width: 321px) {
     .g-main {

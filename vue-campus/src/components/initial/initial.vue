@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-      <head-title :title="title"></head-title>
+    <div class="initial">
+      <head-title class="head-title" :title="title"></head-title>
       <div class="main">
         <div class="m-container">
               <div class="u-title">学生报名条件</div>
@@ -37,15 +37,26 @@ export default {
       studentText: '我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件',
       organizationText: '我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件我是学生报名条件'
     }
+  },
+  created () {
+    this.axios.get('').then((res) => {
+      console.log(res)
+    })
   }
 }
 </script>
 
 <style scoped>
-.main{
+.initial{
+  width: 100%;
   position: fixed;
-  top: 44px;
-  bottom: .5rem;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+.main{
+  flex-grow: 1;
   padding: .78rem .38rem 0;
   background: #F9C3AB
 }
