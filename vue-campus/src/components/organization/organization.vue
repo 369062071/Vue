@@ -308,7 +308,7 @@ export default {
     color: #FF0000;
 }
 .flex-wrap {
-  flex-grow: 1;F
+  flex-grow: 1;
 }
 @media screen and (max-width: 321px) {
     .g-main {
