@@ -1,27 +1,43 @@
 <template>
   <div id="app">
-    <m-header></m-header>
+    <m-search></m-search>
+    <navigator class="nav-box" :navList="navList" :currentTabIndex="currentTabIndex"></navigator>
+    <recommend></recommend>
   </div>
 </template>
 
 <script>
-import MHeader from '@/components/m-header/m-header'
+import MSearch from '@/components/m-search/'
+import Navigator from '@/components/navigator/'
+import Recommend from '@/components/recommend/'
 
 export default {
   name: 'App',
   components: {
-    MHeader
+    MSearch,
+    Navigator,
+    Recommend
+  },
+  data () {
+    return {
+      navList: [],
+      currentTabIndex: 1
+    }
+  },
+  created () {
+    this.getCateforizeList()
+  },
+  methods: {
+    getCateforizeList () {
+      this.axios.get('/shop/categorize').then(res => {
+        this.navList = res.data.data
+        console.log(this.navList)
+      })
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus">
+
 </style>

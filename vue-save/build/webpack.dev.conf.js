@@ -10,6 +10,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+// 本地数据模拟 start
+const express = require('express')
+const app = express()
+var appData = require('../data.json')//加载本地数据文件
+var categorize = appData.categorize//获取对应的本地数据
+var shopInfo = appData.shopInfo
+// var ratings = appData.ratings
+var apiRoutes = express.Router()
+app.use(apiRoutes)
+// 本地数据模拟 end
+
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
@@ -42,6 +53,26 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
+    },
+    before(app) {
+      app.get('/shop/categorize', (req, res) => {
+        res.json({
+          errno: 0,
+          data: categorize
+        })//接口返回json数据，上面配置的数据seller就赋值给data请求后调用
+      }),
+      app.get('/shop/info', (req, res) => {
+        res.json({
+          errno: 0,
+          data: shopInfo
+        })
+      })
+      // app.get('/api/ratings', (req, res) => {
+      //   res.json({
+      //     errno: 0,
+      //     data: ratings
+      //   })
+      // })
     }
   },
   plugins: [
