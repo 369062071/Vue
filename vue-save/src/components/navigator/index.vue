@@ -134,6 +134,8 @@ export default {
       flex-wrap wrap
       justify-content center
       padding .14rem .17rem 0
+      position relative
+      z-index 99
       .categoty-item
         display inline-block
         width 33.33%

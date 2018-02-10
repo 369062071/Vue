@@ -39,5 +39,7 @@ export default {
 </script>
 
 <style lang="stylus">
-
+  #app
+    max-width 980px
+    margin 0 auto
 </style>
