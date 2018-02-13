@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Scroll from '@/base/scroll/'
+import Scroll from '@/base/scroll/scroll'
 // import CategotyList from '../categoryList'
 
 const EVENT_CHANGE = 'change'
@@ -136,6 +136,7 @@ export default {
       padding .14rem .17rem 0
       position relative
       z-index 99
+      background $color-background
       .categoty-item
         display inline-block
         width 33.33%
@@ -160,7 +161,6 @@ export default {
       top 0
       right 0
       background $color-background
-      z-index 10
       &:after
         content ''
         position absolute
@@ -186,7 +186,6 @@ export default {
         height 22px
         border-right 1px solid $color-border
         transform translateY(-50%)
-        z-index 20
     .list-wrapper
       border-bottom 1px solid $color-border
       background: none

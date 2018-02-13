@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import MSearch from '@/components/m-search/'
-import Navigator from '@/components/navigator/'
-import Recommend from '@/components/recommend/'
+import MSearch from '@/components/m-search/m-search'
+import Navigator from '@/components/navigator/navigator'
+import Recommend from '@/components/recommend/recommend'
 
 export default {
   name: 'App',
