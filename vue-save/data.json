@@ -1,0 +1,187 @@
+{
+    "categorize":[
+        {
+            "name": "每日精选",
+            "cid": 1201,
+            "id": 1
+        },
+        {
+            "name": "车载运动",
+            "cid": 1201,
+            "id": 2
+        },
+        {
+            "name": "男士精选",
+            "cid": 1201,
+            "id": 3
+        },
+        {
+            "name": "数码家电",
+            "cid": 1201,
+            "id": 4
+        },
+        {
+            "name": "日用百货",
+            "cid": 1201,
+            "id": 5
+        },
+        {
+            "name": "斜巷",
+            "cid": 1201,
+            "id": 6
+        },
+        {
+            "name": "每日精选",
+            "cid": 1201,
+            "id": 7
+        },
+        {
+            "name": "每日33",
+            "cid": 1201,
+            "id": 8
+        },
+        {
+            "name": "每日44",
+            "cid": 1201,
+            "id": 9
+        },
+        {
+            "name": "每日33",
+            "cid": 1201,
+            "id": 10
+        },
+        {
+            "name": "每日22",
+            "cid": 1201,
+            "id": 11
+        },
+        {
+            "name": "每日11",
+            "cid": 1201,
+            "id": 12
+        }
+    ],
+    "shopInfo":[
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 0
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 0
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 0
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 0
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        },
+        {
+            "picUrls": "https://img.alicdn.com/imgextra/i2/2412594807/TB2KxZ6pHsTMeJjy1zbXXchlVXa_!!2412594807.png_200x200.jpg?x-oss-process=image/format,webp",
+            "title": "【九阳】多功能原汁机全自动榨汁机",
+            "typePrice": 1,
+            "zkPrice": 7900,
+            "reservePrice": 11900,
+            "coupon":  1000,
+            "sellCount": 3234,
+            "shopType" : 1
+        }
+       
+    ]
+}

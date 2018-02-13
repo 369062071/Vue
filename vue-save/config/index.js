@@ -1,9 +1,8 @@
 'use strict'
-// Template version: 1.2.6
+// Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-const axios = require('axios')
 
 module.exports = {
   dev: {
@@ -11,23 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {
-      // '/api': {
-      //   target: 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg',
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     '^/api':''
-      //   }
-      // }
-    },
+    proxyTable: {},
 
     // Various Dev Server settings
+<<<<<<< HEAD:vue-campus/config/index.js
     // host: 'localhost', // can be overwritten by process.env.HOST
-<<<<<<< HEAD
-    host: '192.168.1.101',
+    host: '192.168.1.100',
 =======
-    host: '192.168.1.145',
->>>>>>> a01177bb86fe7a583dcd09e0fd86f22af6d99589
+    host: 'localhost', // can be overwritten by process.env.HOST
+>>>>>>> a01177bb86fe7a583dcd09e0fd86f22af6d99589:vue-save/config/index.js
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -37,7 +28,7 @@ module.exports = {
     // Use Eslint Loader?
     // If true, your code will be linted during bundling and
     // linting errors and warnings will be shown in the console.
-    useEslint: true,
+    useEslint: false,
     // If true, eslint errors and warnings will also be shown in the error overlay
     // in the browser.
     showEslintErrorsInOverlay: false,
@@ -47,20 +38,14 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    // devtool: 'eval-source-map',
-    devtool:'inline-source-map',
+    devtool: 'cheap-module-eval-source-map',
 
     // If you have problems debugging vue-files in devtools,
     // set this to false - it *may* help
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    // CSS Sourcemaps off by default because relative paths are "buggy"
-    // with this option, according to the CSS-Loader README
-    // (https://github.com/webpack/css-loader#sourcemaps)
-    // In our experience, they generally work as expected,
-    // just be aware of this issue when enabling this option.
-    cssSourceMap: false,
+    cssSourceMap: true
   },
 
   build: {
