@@ -67,5 +67,6 @@ export default {
         display flex
         .item-pic
           width 1rem
+          flex 0 0 1rem
           height 1rem
 </style>
