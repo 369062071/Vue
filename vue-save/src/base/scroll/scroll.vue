@@ -47,7 +47,6 @@
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll'
 import Loading from '@/components/loading/loading'
-// import Bubble from '../bubble/bubble.vue'
 import { getRect } from '../../common/js/dom'
 
 const COMPONENT_NAME = 'scroll'
@@ -288,11 +287,6 @@ export default {
   .list-wrapper
     position: relative
     height: 100%
-    /*position: absolute*/
-    /*left: 0*/
-    /*top: 0*/
-    /*right: 0*/
-    /*bottom: 0*/
     overflow: hidden
     background: #fff
     .scroll-content

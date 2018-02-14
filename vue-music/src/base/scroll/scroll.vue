@@ -28,6 +28,11 @@
       listenScroll: {
         type: Boolean,
         default: false
+      },
+      // 是否开启下拉刷新
+      pullup: {
+        type: Boolean,
+        default: false
       }
     },
     mounted () {
@@ -53,6 +58,14 @@
           // pos 位置信息
           this.scroll.on('scroll', (pos) => {
             me.$emit('scroll', pos)
+          })
+        }
+
+        if (this.pullup) {
+          this.scroll.on('scrollEnd', () => {
+            if (this.scroll.y <= this.scroll.maxScrollY + 50) {
+              this.$emit('scrollToEnd')
+            }
           })
         }
       },

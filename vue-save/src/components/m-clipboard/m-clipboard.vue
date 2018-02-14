@@ -4,7 +4,12 @@
       <div class="command" v-show="isShowCode">
         <div class="command-bg">
           <p class="code" v-text="code"></p>
-          <div class="btn-copy" :class="isCopy ? 'btn-success' : ''" @click="onCopyCode"></div>
+          <div class="btn-copy"
+            :class="isCopy ? 'btn-success' : ''"
+            v-clipboard:copy="code"
+            v-clipboard:success="onCopy"
+            >
+          </div>
           <p class="u-open">打开手机淘宝购买</p>
           <p class="u-open">没有安装手淘？<span class="u-jump">点击浏览器购买</span></p>
         </div>
@@ -15,11 +20,16 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
+
 export default {
   props: {
     code: {
       type: String,
-      default: 'default'
+      default: '￥AADg0n6umi9￥'
     },
     isShowCode: {
       type: Boolean,
@@ -32,11 +42,11 @@ export default {
     }
   },
   methods: {
-    onCopyCode () {
+    onCopy (e) {
       this.isCopy = true
+      console.log(e.text)
     },
     onClose () {
-      console.log(111)
       this.isCopy = false
       this.$emit('isHideCopy')
     }
@@ -70,9 +80,11 @@ export default {
         background url(../../images/command-bg.png) no-repeat center
         background-size cover
         .code
-          padding-top .9rem
+          padding-top .95rem
           text-align center
-          color #333
+          font-weight bold
+          font-size .16rem
+          color #ff430a
         .btn-copy
           width 1.35rem
           height .31rem

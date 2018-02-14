@@ -27,18 +27,18 @@
         </li>
       </ul>
     </scroll>
-    <m-command :isShowCode="isShowCode" @isHideCopy="isHideCopy"></m-command>
+    <m-clipboard :isShowCode="isShowCode" @isHideCopy="isHideCopy"></m-clipboard>
   </div>
 </template>
 
 <script>
 import Scroll from '@/base/scroll/scroll'
-import MCommand from '@/components/m-command/m-command'
+import MClipboard from '@/components/m-clipboard/m-clipboard'
 
 export default {
   components: {
     Scroll,
-    MCommand
+    MClipboard
   },
   created () {
     this.getShopInfo()

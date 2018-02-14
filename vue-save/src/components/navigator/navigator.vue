@@ -109,12 +109,15 @@ export default {
       let width = 0
       this.navList.every((item, index) => {
         if (item.id === tabId) {
+          console.log(item.id, index, items[index].clientWidth)
+          width += items[index].clientWidth / 2
           return false
         }
         width += items[index].clientWidth
         return true
       })
       let translate = middleTranslate - width
+      console.log('width', width, 'translate', translate)
       translate = Math.max(minTranslate, Math.min(0, translate))
       console.log(translate, minTranslate)
       this.$refs.scroll.scrollTo(translate, 0, 300)
@@ -155,8 +158,8 @@ export default {
           color $color-text-d
           background $color-background
     .category-more
-      width .4rem
-      height .4rem
+      width .38rem
+      height .38rem
       position absolute
       top 0
       right 0
