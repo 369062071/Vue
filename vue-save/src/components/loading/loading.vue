@@ -12,8 +12,10 @@ export default {
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   .mf-loading-container
+    padding-bottom .1rem
     img
-      width: 20px
-      height: 20px
+      width: .24rem
+      height: .24rem
       display: block
+      margin  0 auto
 </style>

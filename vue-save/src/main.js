@@ -5,10 +5,15 @@ import App from './App'
 import axios from 'axios'
 import VueAxiops from 'vue-axios'
 import router from './router'
+import fastclick from 'fastclick'
+import VueLazyLoad from 'vue-lazyload'
 
 Vue.use(VueAxiops, axios)
 Vue.config.productionTip = false
 
+Vue.use(VueLazyLoad, {
+  loading: require('./images/default.png')
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

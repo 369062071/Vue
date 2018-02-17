@@ -17,7 +17,9 @@
 
     <ul class="categoty-list" v-show="categoryShow">
       <li class="categoty-item" v-for="(item, index) in navList" :key="index">
-        <span class="name" :class="{'link-active':isCurrentTab(item.id)}" @click="selectNav(item)">{{item.name}}</span>
+        <span class="name" :class="{'link-active':isCurrentTab(item.id)}" @click="selectNav(item)">
+          {{item.name}}
+        </span>
       </li>
     </ul>
   </div>
@@ -26,6 +28,7 @@
 <script type="text/ecmascript-6">
 import Scroll from '@/base/scroll/scroll'
 // import CategotyList from '../categoryList'
+import Bus from '@/bus.js'
 
 const EVENT_CHANGE = 'change'
 
@@ -46,7 +49,6 @@ export default {
   },
   components: {
     Scroll
-    // CategotyList
   },
   data () {
     return {
@@ -54,6 +56,13 @@ export default {
       current: 1,
       categoryShow: false
     }
+  },
+  created () {
+    Bus.$on('categoryHide', () => {
+      console.log(111)
+      this.categoryShow = false
+      this.$refs.more.className = 'icon-more'
+    })
   },
   mounted () {
     setTimeout(() => {
@@ -77,8 +86,10 @@ export default {
       return index === this.current
     },
     selectNav (item) {
+      this.categoryShow = false
+      this.$refs.more.className = 'icon-more'
+
       this.current = item.id
-      console.log(this.current, item)
       this._adjust(item.id)
       this.$emit(EVENT_CHANGE, item)
     },
@@ -132,11 +143,14 @@ export default {
 
   .navigator-component
     position relative
+    background $color-background
+    z-index 10
     .categoty-list
       display flex
       flex-wrap wrap
       justify-content center
-      padding .14rem .17rem 0
+      padding .14rem .17rem
+      box-shadow 0px 2px  5px 0px #aaa
       position relative
       z-index 99
       background $color-background

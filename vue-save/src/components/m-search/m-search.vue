@@ -1,19 +1,26 @@
 <template>
   <div class="m-search">
-    <div class="input-container">
-      <em class="search-icon"></em>
-      <input class="search-input" placeholder="搜索你想要的商品" v-model="search" type="text">
-      <button class="search-btn" type="button">搜索</button>
+    <div class="search-container">
+      <search-box></search-box>
     </div>
+    <show-data class="search-save"></show-data>
   </div>
 </template>
 
 <script>
+import ShowData from '@/components/showData/showData'
+import SearchBox from '@/base/SearchBox/SearchBox'
+
 export default {
+  components: {
+    ShowData,
+    SearchBox
+  },
   data () {
     return {
-      search: ''
     }
+  },
+  methods: {
   }
 }
 </script>
@@ -21,11 +28,20 @@ export default {
 <style lang="stylus">
   @import "../../common/stylus/variable"
 
-  .m-search
+.m-search
+  position relative
+  .search-save
+    position absolute
+    width 100%
+  .search-container
     height .52rem
     padding .09rem .1rem
     box-sizing border-box
     background $color-theme
+    .search-save
+      position relative
+      color #000
+      z-index 11
     .input-container
       display flex
       justify-content center

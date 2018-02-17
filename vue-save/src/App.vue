@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <m-search></m-search>
-    <navigator class="nav-box" :navList="navList" :currentTabIndex="currentTabIndex"></navigator>
+    <navigator
+      class="nav-box"
+      :navList="navList"
+      :currentTabIndex="currentTabIndex"
+    >
+      </navigator>
     <recommend></recommend>
   </div>
 </template>

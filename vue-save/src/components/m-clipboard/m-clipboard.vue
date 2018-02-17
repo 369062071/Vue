@@ -11,7 +11,7 @@
             >
           </div>
           <p class="u-open">打开手机淘宝购买</p>
-          <p class="u-open">没有安装手淘？<span class="u-jump">点击浏览器购买</span></p>
+          <!-- <p class="u-open">没有安装手淘？<span class="u-jump">点击浏览器购买</span></p> -->
         </div>
         <div class="close" @click="onClose"></div>
       </div>
@@ -56,6 +56,7 @@ export default {
 
 <style lang="stylus" scoped>
   @import "../../common/stylus/variable"
+
   .main
     width 100%
     position absolute
@@ -75,7 +76,7 @@ export default {
         background url(../../images/close.png) no-repeat center
         background-size cover
       .command-bg
-        margin-top 1rem
+        margin-top 1.6rem
         height 2.8rem
         background url(../../images/command-bg.png) no-repeat center
         background-size cover
