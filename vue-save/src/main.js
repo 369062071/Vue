@@ -5,9 +5,13 @@ import App from './App'
 import axios from 'axios'
 import VueAxiops from 'vue-axios'
 import router from './router'
-import fastclick from 'fastclick'
+import 'babel-polyfill'
+import '@/common/js/t-rem'
+// import fastclick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
+import '@/common/js/fingerprint2'
 
+// console.log(fqId)
 Vue.use(VueAxiops, axios)
 Vue.config.productionTip = false
 
