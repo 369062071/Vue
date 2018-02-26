@@ -15,7 +15,8 @@
 * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-var fqId
+import {saveFq} from '@/common/js/cache'
+
 (function (name, context, definition) {
   'use strict'
   if (typeof window.define === 'function' && window.define.amd) { window.define(definition) } else if (typeof module !== 'undefined' && module.exports) { module.exports = definition() } else if (context.exports) { context.exports = definition() } else { context[name] = definition() }
@@ -1340,9 +1341,7 @@ var fqId
   var fp = new Fingerprint2()
   fp.get(function (result) {
     // document.querySelector("#fp").textContent = result
-    fqId = result
-    console.log(fqId)
+    console.log('fqid：', result)
+    saveFq(result)
   })
-
-  // return newRes()
 })

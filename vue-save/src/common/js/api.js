@@ -52,3 +52,12 @@ export function search (query, page) {
     return Promise.resolve(res.data)
   })
 }
+
+// 跑马灯文字
+export function marquee () {
+  const url = '/user/marquee'
+
+  return axios.get(url).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

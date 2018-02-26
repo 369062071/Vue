@@ -14,8 +14,11 @@ const portfinder = require('portfinder')
 const express = require('express')
 const app = express()
 var appData = require('../data.json')//加载本地数据文件
+
 var categorize = appData.categorize//获取对应的本地数据
 var shopInfo = appData.shopInfo
+var marquee = appData.marquee
+
 // var ratings = appData.ratings
 var apiRoutes = express.Router()
 app.use(apiRoutes)
@@ -65,6 +68,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         res.json({
           errno: 0,
           data: shopInfo
+        })
+      }),
+      app.get('/user/marquee', (req, res) => {
+        res.json({
+          errno: 0,
+          data: marquee
         })
       })
       // app.get('/api/ratings', (req, res) => {

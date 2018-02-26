@@ -1,5 +1,6 @@
 <template>
   <div class="recommend">
+
     <scroll
       class="recommend-container"
       :data="dataList"
@@ -33,6 +34,7 @@
         </li>
         <loading v-show="hasMore" title=""></loading>
       </ul>
+      <p v-show="!dataList || dataList.length === 0" class="no-data">没有更多了</p>
     </scroll>
   </div>
 </template>
@@ -133,6 +135,11 @@ export default {
       color $color-text-info
       overflow hidden
       background $color-background-d
+      .no-data
+        padding .1rem 0
+        text-align center
+        font-size .14rem
+        color #999
       .data-list
         .data-item
           display flex
