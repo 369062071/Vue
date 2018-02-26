@@ -59,7 +59,7 @@ export default {
 
   .main
     width 100%
-    position absolute
+    position fixed
     top -0.41rem
     bottom 0
     background rgba(0,0,0,.7)

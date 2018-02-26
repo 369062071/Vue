@@ -126,9 +126,10 @@ export default {
 
   .recommend
     position: fixed;
-    width: 100%;
-    top: .93rem;
-    bottom: 0;
+    width: 100%
+    max-width 980px
+    top: .93rem
+    bottom: 0
     .recommend-container
       height 100%
       font-size $font-size-medium
