@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <m-search></m-search>
-    <m-banner></m-banner>
     <navigator
       class="nav-box"
       :navList="navList"
