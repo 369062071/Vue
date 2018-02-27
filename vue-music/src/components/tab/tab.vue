@@ -11,13 +11,31 @@
       </span>
     </router-link>
     <router-link tag="div" class="tab-item" to="/search">
-      <span class="tab-link">搜索</span>
+      <span class="tab-link" ref="box">搜索</span>
     </router-link>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  export default {
+    created () {
+      setTimeout(() => {
+        console.log(this.$refs.box)
+        this.loadScript()
+      }, 20)
+    },
+    mounted () {
+    },
+    methods: {
+      loadScript () {
+        var script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.src = 'http://code.jquery.com/jquery-latest.js'
+        console.log(this.$refs.box)
+        this.$refs.box.appendChild(script)
+      }
+    }
+  }
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
