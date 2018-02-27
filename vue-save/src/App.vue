@@ -18,7 +18,6 @@ import MMarquee from '@/components/m-marquee/m-marquee'
 import MSearch from '@/components/m-search/m-search'
 import Navigator from '@/components/navigator/navigator'
 import Recommend from '@/components/recommend/recommend'
-import MBanner from '@/components/m-banner/m-banner'
 import {getCategorize} from '@/common/js/api'
 
 export default {
@@ -27,8 +26,7 @@ export default {
     MSearch,
     Navigator,
     Recommend,
-    MMarquee,
-    MBanner
+    MMarquee
   },
   data () {
     return {

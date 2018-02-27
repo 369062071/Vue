@@ -8,32 +8,35 @@
       @pullingUp="loadMore"
       ref="dataBox"
     >
-      <ul class="data-list">
-        <li class="data-item" v-for="(item, index) in dataList" :key="index" @click="onShowCode(item.command)">
-          <img v-lazy="item.picUrls" class="item-pic">
-          <div class="item-info">
-            <div class="info-title">
-              <em class="i-new"></em>
-              <em class="i-tb" v-show="item.shopType == 1"></em>
-              <em class="i-tm" v-show="item.shopType == 0"></em>
-              <span v-text="item.title" class="i-title"></span>
+      <div>
+        <m-banner></m-banner>
+        <ul class="data-list">
+          <li class="data-item" v-for="(item, index) in dataList" :key="index" @click="onShowCode(item.command)">
+            <img v-lazy="item.picUrls" class="item-pic">
+            <div class="item-info">
+              <div class="info-title">
+                <em class="i-new"></em>
+                <em class="i-tb" v-show="item.shopType == 1"></em>
+                <em class="i-tm" v-show="item.shopType == 0"></em>
+                <span v-text="item.title" class="i-title"></span>
+              </div>
+              <p class="sell-count">以抢<span v-text="item.sellCount"></span>件</p>
+              <div class="item-price">
+                <p class="zk-price">优惠价￥<span v-text="item.zkPrice * 0.01" class="text-big"></span></p>
+                <p class="reserve-price">￥<span v-text="item.reservePrice * 0.01"></span></p>
+              </div>
             </div>
-            <p class="sell-count">以抢<span v-text="item.sellCount"></span>件</p>
-            <div class="item-price">
-              <p class="zk-price">优惠价￥<span v-text="item.zkPrice * 0.01" class="text-big"></span></p>
-              <p class="reserve-price">￥<span v-text="item.reservePrice * 0.01"></span></p>
+            <div class="item-coupon">
+              <div class="coupon-container">
+                <p class="coupon-title">优惠价</p>
+                <p class="coupon-price">￥<span class="text-big" v-text="item.coupon / 100"></span></p>
+                <button class="btn-pull">领券购买</button>
+              </div>
             </div>
-          </div>
-          <div class="item-coupon">
-            <div class="coupon-container">
-              <p class="coupon-title">优惠价</p>
-              <p class="coupon-price">￥<span class="text-big" v-text="item.coupon / 100"></span></p>
-              <button class="btn-pull">领券购买</button>
-            </div>
-          </div>
-        </li>
-        <loading v-show="hasMore" title=""></loading>
-      </ul>
+          </li>
+          <loading v-show="hasMore" title=""></loading>
+        </ul>
+      </div>
       <p v-show="!dataList || dataList.length === 0" class="no-data">没有更多了</p>
     </scroll>
   </div>
@@ -42,6 +45,7 @@
 <script>
 import Scroll from '@/base/scroll/scroll'
 import Loading from '@/components/loading/loading'
+import MBanner from '@/components/m-banner/m-banner'
 import Bus from '@/bus.js'
 import {shopInfo, search} from '@/common/js/api'
 
@@ -50,7 +54,8 @@ import {shopInfo, search} from '@/common/js/api'
 export default {
   components: {
     Scroll,
-    Loading
+    Loading,
+    MBanner
   },
   data () {
     return {

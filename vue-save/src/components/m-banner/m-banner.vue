@@ -9,7 +9,7 @@ export default {
   created () {
     setTimeout(() => {
       console.log(this.$refs.box)
-      // this.loadScript()
+      this.loadScript()
     }, 20)
   },
   mounted () {
@@ -18,7 +18,7 @@ export default {
     loadScript () {
       var script = document.createElement('script')
       script.type = 'text/javascript'
-      script.src = 'http://libs.baidu.com/jquery/2.0.0/jquery.js'
+      script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'
       console.log(this.$refs.box)
       this.$refs.box.appendChild(script)
     }
