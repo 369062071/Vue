@@ -8,6 +8,7 @@
     >
       </navigator>
     <m-marquee class="m-marquee"></m-marquee>
+    <move-link></move-link>
     <recommend></recommend>
   </div>
 </template>
@@ -17,7 +18,8 @@ import MMarquee from '@/components/m-marquee/m-marquee'
 import MSearch from '@/components/m-search/m-search'
 import Navigator from '@/components/navigator/navigator'
 import Recommend from '@/components/recommend/recommend'
-import {getCategorize} from '@/common/js/api'
+import MoveLink from '@/components/move-link/move-link'
+import {getCategorize} from '@/common/js/api.js'
 
 export default {
   name: 'App',
@@ -25,7 +27,8 @@ export default {
     MSearch,
     Navigator,
     Recommend,
-    MMarquee
+    MMarquee,
+    MoveLink
   },
   data () {
     return {
@@ -34,7 +37,7 @@ export default {
     }
   },
   created () {
-    this._getCateforizeList()
+    // this._getCateforizeList()
   },
   methods: {
     _getCateforizeList () {

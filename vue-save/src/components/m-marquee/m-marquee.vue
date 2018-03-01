@@ -16,19 +16,6 @@ import {marquee} from '@/common/js/api'
 const LATENCY_TIME = 2500
 
 export default {
-  // props: {
-  //   data: {
-  //     type: Array,
-  //     default () {
-  //       return [
-  //         {
-  //           'user': '',
-  //           'msg': ''
-  //         }
-  //       ]
-  //     }
-  //   }
-  // },
   data () {
     return {
       timer: '',
@@ -43,7 +30,6 @@ export default {
     this._getMarquee()
   },
   mounted () {
-    this.onInterval()
   },
   methods: {
     onInterval () {
@@ -75,6 +61,12 @@ export default {
         console.log(res)
         this.data = res.data
       })
+    }
+  },
+  watch: {
+    userName (now, old) {
+      console.log(now, old)
+      this.onInterval()
     }
   },
   destroyed () {

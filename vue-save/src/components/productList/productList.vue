@@ -9,21 +9,25 @@
       ref="dataBox"
     >
       <div>
-        <m-banner></m-banner>
+        <m-banner class="m-banner"></m-banner>
         <ul class="data-list">
-          <li class="data-item" v-for="(item, index) in dataList" :key="index" @click="onShowCode(item.command)">
-            <img v-lazy="item.picUrls" class="item-pic">
-            <div class="item-info">
-              <div class="info-title">
-                <em class="i-new"></em>
-                <em class="i-tb" v-show="item.shopType == 1"></em>
-                <em class="i-tm" v-show="item.shopType == 0"></em>
-                <span v-text="item.title" class="i-title"></span>
-              </div>
-              <p class="sell-count">以抢<span v-text="item.sellCount"></span>件</p>
-              <div class="item-price">
-                <p class="zk-price">优惠价￥<span v-text="item.zkPrice * 0.01" class="text-big"></span></p>
-                <p class="reserve-price">￥<span v-text="item.reservePrice * 0.01"></span></p>
+          <li class="data-item" v-for="(item, index) in dataList" :key="index">
+            <div class="link-left">
+              <img v-lazy="item.picUrls" class="item-pic">
+              <div class="item-info">
+                <div class="info-title">
+                  <em class="i-new"></em>
+                  <em class="i-tb" v-show="item.shoptype == 1"></em>
+                  <em class="i-tm" v-show="item.shoptype == 0"></em>
+                  <span v-text="item.title" class="i-title"></span>
+                </div>
+                <div class="info-bottom">
+                  <p class="sell-count">以抢<span v-text="item.sellcount"></span>件</p>
+                  <div class="item-price">
+                    <p class="zk-price">优惠价￥<span v-text="item.zkprice" class="text-big"></span></p>
+                    <p class="reserve-price">￥<span v-text="item.reserveprice"></span></p>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="item-coupon">
@@ -34,10 +38,11 @@
               </div>
             </div>
           </li>
-          <loading v-show="hasMore" title=""></loading>
+          <loading v-show="hasMore" :class="dataList ? 'loading-padding' : '' "></loading>
+
         </ul>
       </div>
-      <p v-show="!dataList || dataList.length === 0" class="no-data">没有更多了</p>
+      <p v-show="!hasMore" class="no-data">没有更多了</p>
     </scroll>
   </div>
 </template>
@@ -47,7 +52,7 @@ import Scroll from '@/base/scroll/scroll'
 import Loading from '@/components/loading/loading'
 import MBanner from '@/components/m-banner/m-banner'
 import Bus from '@/bus.js'
-import {shopInfo, search} from '@/common/js/api'
+import {getItemVo} from '@/common/js/api'
 
 // const PAGE_START = 1
 
@@ -63,11 +68,16 @@ export default {
       isShowCode: false,
       pullUpLoad: true,
       page: 1,
+      cid: 1204,
       hasMore: true
     }
   },
   created () {
-    this._getShopInfo()
+    setTimeout(() => {
+      // this._getShopInfo()
+      this._getItemVo()
+    }, 1500)
+
     Bus.$on('changeCid', cid => {
       console.log('我是cid', cid)
       this.$refs.dataBox.scrollTo(0, 0)
@@ -76,25 +86,26 @@ export default {
 
     Bus.$on('updateQuery', query => {
       console.log('传递过来的query', query)
-      search(query).then(res => {
-        console.log(res)
-        console.log(this.$refs.dataBox)
-        this.$refs.dataBox.scrollTo(0, 0)
-        this.dataList = res.data
-      })
+      // search(query).then(res => {
+      //   console.log(res)
+      //   console.log(this.$refs.dataBox)
+      //   this.$refs.dataBox.scrollTo(0, 0)
+      //   this.dataList = res.data
+      // })
     })
   },
   methods: {
-    _getShopInfo () {
+    _getItemVo () {
       this.page = 1
       this.hasMore = true
-      shopInfo().then(res => {
-        this.dataList = res.data
+      getItemVo(this.page, this.cid).then(res => {
+        console.log(res)
+        this.dataList = res.list
       })
     },
-    onShowCode (command) {
-      this.$emit('clipboardShow', command)
-    },
+    // onShowCode (command) {
+    //   this.$emit('clipboardShow', command)
+    // },
     isHideCopy () {
       console.log('父组件接收到了值')
       this.isShowCode = false
@@ -146,19 +157,29 @@ export default {
         text-align center
         font-size .14rem
         color #999
+      .m-banner
+        // height 300px
       .data-list
+        // padding-top .1rem
+        .loading-padding
+          padding 0 0 .1rem 0
         .data-item
           display flex
+          justify-content space-between
           padding .1rem .05rem
           margin .05rem
           border-radius .05rem
           background $color-background
+          .link-left
+            display flex
+            flex-grow 1
           .item-coupon
             display flex
             flex-direction column
             width .8rem
             flex 0 0 .8rem
             position relative
+            padding-top .1rem
             &:after,&:before
               content ''
               width .1rem
@@ -179,6 +200,7 @@ export default {
               flex-direction column
               justify-content space-between
               margin  0 0 .1rem
+              padding-left .05rem
               text-align center
               box-sizing border-box
               border-left 1.5px dashed #f3f3f3
@@ -196,6 +218,7 @@ export default {
                 margin 0 auto
                 border none
                 border-radius .4rem
+                outline none
                 font-size $font-size-small
                 color $color-text
                 background $color-theme
@@ -204,7 +227,11 @@ export default {
             flex 0 0 1rem
             height 1rem
           .item-info
-            margin 0 .05rem
+            display flex
+            flex-grow 1
+            flex-direction column
+            justify-content space-between
+            margin 0 .1rem 0 .05rem
             .info-title
               font-size 0
               .i-new
@@ -228,21 +255,22 @@ export default {
                 line-height .2rem
                 font-size $font-size-medium
                 // vertical-align middle
-            .sell-count
-              margin-top .2rem
-              font-size .11rem
-              line-height .2rem
-              color $color-text-list
-            .item-price
-              display flex
-              justify-content space-between
-              font-size .11rem
-              .zk-price
-                color $color-text-d
-                .text-big
-                  font-size .16rem
-                  font-weight bold
-              .reserve-price
-                margin-top .05rem
-                text-decoration line-through
+            .info-bottom
+              .sell-count
+                margin-top .2rem
+                font-size .11rem
+                line-height .2rem
+                color $color-text-list
+              .item-price
+                display flex
+                justify-content space-between
+                font-size .11rem
+                .zk-price
+                  color $color-text-d
+                  .text-big
+                    font-size .16rem
+                    font-weight bold
+                .reserve-price
+                  margin-top .05rem
+                  text-decoration line-through
 </style>

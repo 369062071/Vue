@@ -1130,7 +1130,7 @@ import {saveFq} from '@/common/js/cache'
       return results
     },
 
-    /// MurmurHash3 related functions
+    // MurmurHash3 related functions
 
     //
     // Given two 64bit ints (as an array of two 32bit ints) returns the two
