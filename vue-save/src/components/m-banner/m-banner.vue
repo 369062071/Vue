@@ -23,7 +23,7 @@ export default {
     loadScript () {
       var script = document.createElement('script')
       script.type = 'text/javascript'
-      script.src = '1.js'
+      script.src = 'banner.js'
       console.log(this.$refs.box)
       this.$refs.box.appendChild(script)
     },

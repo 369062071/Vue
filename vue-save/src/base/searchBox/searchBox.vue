@@ -46,7 +46,7 @@ export default {
         return
       }
       console.log(this.query)
-
+      window.location.href = 'https://ai.m.taobao.com/search.html?q=' + this.query + '&pid=mm_130388949_42628004_245686860'
       saveSearch(this.query) // 保存搜索记录
       Bus.$emit('updateQuery', this.query)
     }

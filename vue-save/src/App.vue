@@ -20,6 +20,7 @@ import Navigator from '@/components/navigator/navigator'
 import Recommend from '@/components/recommend/recommend'
 import MoveLink from '@/components/move-link/move-link'
 import {getCategorize} from '@/common/js/api.js'
+import {data} from './data'
 
 export default {
   name: 'App',
@@ -32,7 +33,7 @@ export default {
   },
   data () {
     return {
-      navList: [],
+      navList: data.categorize,
       currentTabIndex: 1
     }
   },
@@ -43,6 +44,7 @@ export default {
     _getCateforizeList () {
       getCategorize().then(res => {
         this.navList = res.data
+        console.log(data)
       })
     }
   }
