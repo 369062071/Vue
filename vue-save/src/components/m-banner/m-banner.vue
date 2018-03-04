@@ -24,7 +24,6 @@ export default {
       var script = document.createElement('script')
       script.type = 'text/javascript'
       script.src = '1.js'
-      console.log(this.$refs.box)
       this.$refs.box.appendChild(script)
     },
     _getCategorize () {

@@ -9,7 +9,7 @@
       </navigator>
     <m-marquee class="m-marquee"></m-marquee>
     <move-link></move-link>
-    <recommend></recommend>
+    <product></product>
   </div>
 </template>
 
@@ -17,22 +17,23 @@
 import MMarquee from '@/components/m-marquee/m-marquee'
 import MSearch from '@/components/m-search/m-search'
 import Navigator from '@/components/navigator/navigator'
-import Recommend from '@/components/recommend/recommend'
+import Product from '@/components/product/product'
 import MoveLink from '@/components/move-link/move-link'
 import {getCategorize} from '@/common/js/api.js'
+import {data} from './data'
 
 export default {
   name: 'App',
   components: {
     MSearch,
     Navigator,
-    Recommend,
+    Product,
     MMarquee,
     MoveLink
   },
   data () {
     return {
-      navList: [],
+      navList: data.navList,
       currentTabIndex: 1
     }
   },

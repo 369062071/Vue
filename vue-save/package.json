@@ -1,7 +1,7 @@
 {
-  "name": "vue-music",
+  "name": "vue-duilu",
   "version": "1.0.0",
-  "description": "音乐播放器",
+  "description": "对路电商",
   "author": "songhao",
   "private": true,
   "scripts": {

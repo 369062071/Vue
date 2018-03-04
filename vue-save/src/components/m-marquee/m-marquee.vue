@@ -27,7 +27,7 @@ export default {
     }
   },
   created () {
-    this._getMarquee()
+    // this._getMarquee()
   },
   mounted () {
   },

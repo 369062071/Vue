@@ -47,6 +47,7 @@ export default {
       }
       console.log(this.query)
 
+      window.location.href = 'https://ai.m.taobao.com/search.html?q=' + this.query
       saveSearch(this.query) // 保存搜索记录
       Bus.$emit('updateQuery', this.query)
     }

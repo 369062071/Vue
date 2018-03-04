@@ -1,12 +1,40 @@
 <template>
   <div ref="wrapper" class="list-wrapper">
-    <slot></slot>
+    <div class="scroll-content">
+      <div ref="listWrapper">
+        <slot>
+          <ul class="list-content">
+            <li @click="clickItem($event,item)" class="list-item" v-for="item in data">{{item}}</li>
+          </ul>
+        </slot>
+      </div>
+    </div>
+    <slot name="pulldown"
+          :pullDownRefresh="pullDownRefresh"
+          :pullDownStyle="pullDownStyle"
+          :beforePullDown="beforePullDown"
+          :isPullingDown="isPullingDown"
+          :bubbleY="bubbleY"
+    >
+      <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
+        <div class="before-trigger" v-if="beforePullDown">
+          <bubble :y="bubbleY"></bubble>
+        </div>
+        <div class="after-trigger" v-else>
+          <div v-if="isPullingDown" class="loading">
+            <loading></loading>
+          </div>
+          <!-- <div v-else><span>{{refreshTxt}}</span></div> -->
+        </div>
+      </div>
+    </slot>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll'
 import Loading from '@/components/loading/loading'
+import Bubble from '../bubble/bubble.vue'
 import { getRect } from '../../common/js/dom'
 
 const COMPONENT_NAME = 'scroll'
@@ -232,8 +260,8 @@ export default {
     }
   },
   components: {
-    Loading
-    // Bubble
+    Loading,
+    Bubble
   }
 }
 

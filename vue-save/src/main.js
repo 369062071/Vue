@@ -2,17 +2,20 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import axios from 'axios'
-import VueAxiops from 'vue-axios'
+// import axios from 'axios'
+// import VueAxiops from 'vue-axios'
 import router from './router'
 import 'babel-polyfill'
 import '@/common/js/t-rem'
+import fastclick from 'fastclick'
 // import fastclick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
 import '@/common/js/fingerprint2'
 
 // console.log(fqId)
-Vue.use(VueAxiops, axios)
+fastclick.attach(document.body)
+
+// Vue.use(VueAxiops, axios)
 Vue.config.productionTip = false
 
 Vue.use(VueLazyLoad, {
