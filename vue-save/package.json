@@ -2,7 +2,7 @@
   "name": "vue-duilu",
   "version": "1.0.0",
   "description": "对路电商",
-  "author": "songhao",
+  "author": "ruli",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

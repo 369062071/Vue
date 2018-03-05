@@ -1,12 +1,15 @@
 <template>
   <div class="product">
+    <!-- 
+      下拉 action
+      :pullDownRefresh="pullDownRefreshObj"
+      @pullingDown="onPullingDown"
+     -->
     <scroll
       class="product-container"
       :data="dataList"
-      :pullDownRefresh="pullDownRefreshObj"
       :pullUpLoad="pullUpLoad"
       @pullingUp="loadMore"
-      @pullingDown="onPullingDown"
       ref="scroll"
     >
       <div>
@@ -20,33 +23,67 @@
           </slider>
         </div>
         <ul class="data-list">
-          <li class="data-item" v-for="(item, index) in dataList" :key="index">
-            <div class="link-left">
-              <img v-lazy="item.picurls" class="item-pic">
-              <div class="item-info">
-                <div class="info-title">
-                  <em class="i-new"></em>
-                  <em class="i-tb" v-show="item.shoptype == 1"></em>
-                  <em class="i-tm" v-show="item.shoptype == 0"></em>
-                  <span v-text="item.title" class="i-title"></span>
-                </div>
-                <div class="info-bottom">
-                  <p class="sell-count">以抢<span v-text="item.sellcount"></span>件</p>
-                  <div class="item-price">
-                    <p class="zk-price">优惠价￥<span v-text="item.zkprice" class="text-big"></span></p>
-                    <p class="reserve-price">￥<span v-text="item.reserveprice"></span></p>
+          <li  v-for="(item, index) in dataList" :key="index">
+            <div class="data-item">
+               <div class="link-left">
+                <img v-lazy="item.picurls" class="item-pic" >
+                <div class="item-info">
+                  <div class="info-title" ref="info" style="-webkit-box-orient: vertical">
+                    <em class="i-new"></em>
+                    <em class="i-tb" v-show="item.shoptype == 1"></em>
+                    <em class="i-tm" v-show="item.shoptype == 0"></em>
+                    <!-- <span v-text="item.title" class="i-title"></span> -->
+                    {{ item.title }}
+                  </div>
+                  <div class="info-bottom">
+                    <p class="sell-count">以抢<span v-text="item.sellcount"></span>件</p>
+                    <div class="item-price">
+                      <p class="zk-price">优惠价￥<span v-text="item.zkprice" class="text-big"></span></p>
+                      <p class="reserve-price">￥<span v-text="item.reserveprice"></span></p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="item-coupon">
-              <div class="coupon-container">
-                <p class="coupon-title">优惠价</p>
-                <p class="coupon-price">￥<span class="text-big" v-text="item.coupon / 100"></span></p>
-                <button class="btn-pull">领券购买</button>
+              <div class="item-coupon">
+                <div class="coupon-container">
+                  <p class="coupon-title">优惠价</p>
+                  <p class="coupon-price">￥<span class="text-big" v-text="item.coupon / 100"></span></p>
+                  <button class="btn-pull">领券购买</button>
+                </div>
               </div>
             </div>
+           
+
+            <div class="inset-item" v-show="item.sum">
+             
+              <img v-lazy="item.picurls" class="inset-pic">
+              <div class="inset-info">
+            
+                <span class="title">免费体验 满意付款</span>
+        
+                <div class="info-bottom">
+                  <p class="sell-count">以抢<span v-text="item.sellcount"></span>件</p>
+                  <div class="inset-price">
+                    <p class="zk-price">优惠券￥<span v-text="item.zkprice" class="text-big"></span></p>
+                    <p class="reserve-price">￥
+                      <span v-text="item.reserveprice"></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+          
+             
+              <div class="coupon-container">
+                <p class="title">优惠</p>
+                <p class="coupon-price">￥
+                  <span class="text-big" v-text="item.coupon"></span>
+                </p>
+                <button class="btn-pull">马上抢</button>
+              </div>
+
+            </div>
           </li>
+
           <loading v-show="hasMore" :class="dataList ? 'loading-padding' : '' "></loading>
 
         </ul>
@@ -60,6 +97,7 @@
 import Scroll from '@/base/scroll/scroll'
 import Loading from '@/components/loading/loading'
 import Slider from '@/base/slider/slider'
+import InsertItem from '@/components/insert-item/insert-item'
 import Bus from '@/bus.js'
 import {getItemVo} from '@/common/js/api'
 import {data} from '../../data'
@@ -69,7 +107,8 @@ export default {
   components: {
     Scroll,
     Loading,
-    Slider
+    Slider,
+    InsertItem
   },
   data () {
     return {
@@ -82,13 +121,15 @@ export default {
       hasMore: true,
       pullDownRefresh: true,
       pullDownRefreshThreshold: 90,
-      pullDownRefreshStop: 60
+      pullDownRefreshStop: 60,
+      insert: ''
     }
   },
   created () {
     setTimeout(() => {
       // this._getShopInfo()
       // this._getItemVo()
+      this.dataList = this.dataList.concat(data.productList.insert)
       console.log(this.dataList)
     }, 1500)
 
@@ -107,6 +148,8 @@ export default {
       //   this.dataList = res.data
       // })
     })
+  },
+  mounted () {
   },
   methods: {
     onPullingDown() {
@@ -225,6 +268,87 @@ export default {
         // padding-top .1rem
         .loading-padding
           padding 0 0 .1rem 0
+        .inset-item
+          display flex
+          justify-content space-between
+          margin .05rem
+          border-radius .05rem
+          color $color-theme
+          background #fff
+          .inset-pic
+            width 1rem
+            flex 0 0 1rem
+            height 1rem
+            padding .1rem 0 .1rem .05rem 
+          .inset-info
+            display flex
+            flex-grow 1
+            flex-direction column
+            justify-content space-between
+            margin 0 .1rem 0 .05rem
+            padding .1rem 0 .1rem .05rem 
+            .title
+              font-size .18rem
+              font-weight bold
+            .info-bottom
+              .sell-count
+                font-size .11rem
+                line-height .2rem
+                color $color-text-list
+              .inset-price
+                display flex
+                justify-content space-between
+                font-size .11rem
+                .zk-price
+                  color $color-text-d
+                  .text-big
+                    font-size .16rem
+                    font-weight bold
+                .reserve-price
+                  margin-top .05rem
+                  text-decoration line-through
+                  color #666
+          .coupon-container
+            display flex
+            flex-direction column
+            justify-content space-around
+            width .85rem
+            flex 0 0 .85rem
+            position relative
+            padding .15rem 0 .1rem 
+            border-radius .05rem
+            align-items center
+            color #fff
+            background $color-theme
+            &:after,&:before
+              content ''
+              width .1rem
+              height .1rem
+              border-radius 50%
+              background $color-background-d
+            &:before
+              position absolute
+              top -0.05rem
+              left -0.04rem
+            &:after
+              position absolute
+              bottom -0.05rem
+              left -0.04rem
+            .title
+              font-size .16rem
+            .coupon-price
+              .text-big
+                font-size .24rem
+            .btn-pull
+              width 90%
+              padding .05rem 0
+              margin 0 auto
+              border none
+              border-radius .4rem
+              outline none
+              font-size $font-size-small
+              color $color-theme
+              background #fff
         .data-item
           display flex
           justify-content space-between
@@ -295,7 +419,16 @@ export default {
             justify-content space-between
             margin 0 .1rem 0 .05rem
             .info-title
-              font-size 0
+              line-height .2rem
+              font-size $font-size-medium
+              color $color-theme
+              display -webkit-box
+              overflow hidden
+              -webkit-box-orient vertical
+              -webkit-line-clamp 2
+              .insert-title
+                font-weight bold
+                font-size .18rem
               .i-new
                 display inline-block
                 width .24rem
@@ -306,7 +439,6 @@ export default {
                 display inline-block
                 width .15rem
                 height .15rem
-                margin-left .05rem
               .i-tb
                 background url(../../images/tb.png) no-repeat center
                 background-size contain
@@ -314,6 +446,7 @@ export default {
                 background url(../../images/tm.png) no-repeat center
                 background-size contain
               .i-title
+                display inline
                 line-height .2rem
                 font-size $font-size-medium
                 // vertical-align middle
@@ -334,4 +467,5 @@ export default {
                 .reserve-price
                   margin-top .05rem
                   text-decoration line-through
+                  color #666
 </style>
