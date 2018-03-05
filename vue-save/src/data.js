@@ -1,6 +1,5 @@
-let data = {
-  categorize:
-  [
+const data = {
+  'navList': [
     {
       name: '每日精选',
       cid: 1201,
@@ -42,24 +41,112 @@ let data = {
       id: 8
     },
     {
-      name: '美妆个护',
+      name: '美食保健',
       cid: 1209,
       id: 9
     },
     {
-      name: '美食保健',
-      cid: 1210,
+      name: '美妆个护',
+      cid: 10,
       id: 10
     },
     {
       name: '母婴玩具',
-      cid: 1211,
+      cid: 1201,
       id: 11
+    }
+  ],
+  'productList': {
+    pageSize: 3,
+    list: [
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      },
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      },
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      },
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      },
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      },
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      },
+      {
+        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
+        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
+        typeprice: 1,
+        zkprice: 79,
+        reserveprice: 119,
+        coupon: 10,
+        sellCount: 323,
+        shopType: 1
+      }
+    ]
+  },
+  'banner': [
+    {
+      linkUrl: '#',
+      picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'
     },
     {
-      name: '图书音像',
-      cid: 1212,
-      id: 12
+      linkUrl: '#',
+      picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'
+    },
+    {
+      linkUrl: '#',
+      picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'
+    },
+    {
+      linkUrl: '#',
+      picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'
     }
   ]
 }

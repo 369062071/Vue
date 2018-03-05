@@ -23,8 +23,7 @@ export default {
     loadScript () {
       var script = document.createElement('script')
       script.type = 'text/javascript'
-      script.src = 'banner.js'
-      console.log(this.$refs.box)
+      script.src = '1.js'
       this.$refs.box.appendChild(script)
     },
     _getCategorize () {

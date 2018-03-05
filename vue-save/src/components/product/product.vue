@@ -1,19 +1,28 @@
 <template>
-  <div class="recommend">
-
+  <div class="product">
     <scroll
-      class="recommend-container"
+      class="product-container"
       :data="dataList"
+      :pullDownRefresh="pullDownRefreshObj"
       :pullUpLoad="pullUpLoad"
       @pullingUp="loadMore"
-      ref="dataBox"
+      @pullingDown="onPullingDown"
+      ref="scroll"
     >
       <div>
-        <m-banner class="m-banner"></m-banner>
+        <div class="slider-wrapper" v-if="banners.length" style="height: 180px">
+          <slider>
+            <div  v-for="(item,index) in banners" :key="index">
+              <a :href="item.linkUrl">
+                <img class="needsclick" @load="loadImage" :src="item.picUrl" >
+              </a>
+            </div>
+          </slider>
+        </div>
         <ul class="data-list">
           <li class="data-item" v-for="(item, index) in dataList" :key="index">
             <div class="link-left">
-              <img v-lazy="item.picUrls" class="item-pic">
+              <img v-lazy="item.picurls" class="item-pic">
               <div class="item-info">
                 <div class="info-title">
                   <em class="i-new"></em>
@@ -50,37 +59,42 @@
 <script>
 import Scroll from '@/base/scroll/scroll'
 import Loading from '@/components/loading/loading'
-import MBanner from '@/components/m-banner/m-banner'
+import Slider from '@/base/slider/slider'
 import Bus from '@/bus.js'
 import {getItemVo} from '@/common/js/api'
-
+import {data} from '../../data'
 // const PAGE_START = 1
 
 export default {
   components: {
     Scroll,
     Loading,
-    MBanner
+    Slider
   },
   data () {
     return {
-      dataList: [],
+      dataList: data.productList.list,
+      banners: data.banner,
       isShowCode: false,
       pullUpLoad: true,
       page: 1,
       cid: 1204,
-      hasMore: true
+      hasMore: true,
+      pullDownRefresh: true,
+      pullDownRefreshThreshold: 90,
+      pullDownRefreshStop: 60
     }
   },
   created () {
     setTimeout(() => {
       // this._getShopInfo()
-      this._getItemVo()
+      // this._getItemVo()
+      console.log(this.dataList)
     }, 1500)
 
     Bus.$on('changeCid', cid => {
       console.log('我是cid', cid)
-      this.$refs.dataBox.scrollTo(0, 0)
+      this.$refs.scroll.scrollTo(0, 0)
       // 切换后输出
     })
 
@@ -95,17 +109,34 @@ export default {
     })
   },
   methods: {
+    onPullingDown() {
+        // 模拟更新数据
+      console.log('pulling down and load data')
+      setTimeout(() => {
+        if (this._isDestroyed) {
+          return
+        }
+        // if (Math.random() > 0.5) {
+        //   // 如果有新数据
+        //   this.items.unshift(this.$i18n.t('normalScrollListPage.newDataTxt') + +new Date())
+        // } else {
+        //   // 如果没有新数据
+        //   this.$refs.scroll.forceUpdate()
+        // }
+        this.$refs.scroll.forceUpdate()
+      }, 2000)
+    },
     _getItemVo () {
       this.page = 1
       this.hasMore = true
+      if (this.$refs.scroll) {
+        this.$refs.scroll.scrollTo(0, 0)
+      }
       getItemVo(this.page, this.cid).then(res => {
         console.log(res)
         this.dataList = res.list
       })
     },
-    // onShowCode (command) {
-    //   this.$emit('clipboardShow', command)
-    // },
     isHideCopy () {
       console.log('父组件接收到了值')
       this.isShowCode = false
@@ -117,21 +148,50 @@ export default {
       this.page++
 
       let timer
+      console.log('下拉加载了,page=', this.page)
+
       timer = setTimeout(() => {
         if (timer) {
           clearTimeout(timer)
         }
-        this.axios.get('/shop/info').then(res => {
-          console.log('下拉加载了')
-          this.dataList = this.dataList.concat(res.data.data)
-        })
+        // this.axios.get('/shop/info').then(res => {
+        //   console.log('下拉加载了')
+        //   this.dataList = this.dataList.concat(res.data.data)
+        // })
+        this.dataList = this.dataList.concat(data.productList.list)
+        this._checkMore(data)
       }, 1500)
     },
+    loadImage () {
+      if (!this.checkLoaded) {
+        this.$refs.scroll.refresh()
+        console.log('执行了')
+        this.checkLoaded = true
+      }
+    },
     _checkMore (res) {
-      const data = res.data
-      if (!data.list.length || this.page >= res.pageSize) {
+      const data = res.productList
+      console.log(this.page, data.pageSize)
+      if (!data.list.length || this.page >= data.pageSize) {
+        console.log('hasmore')
         this.hasMore = false
       }
+    }
+  },
+  computed: {
+    pullDownRefreshObj: function () {
+      return this.pullDownRefresh ? {
+        threshold: parseInt(this.pullDownRefreshThreshold),
+        stop: parseInt(this.pullDownRefreshStop)
+      } : false
+    }
+  },
+  watch: {
+    pullDownRefreshObj: {
+      handler() {
+        this.rebuildScroll()
+      },
+      deep: true
     }
   }
 }
@@ -140,13 +200,13 @@ export default {
 <style lang="stylus" scoped>
   @import "../../common/stylus/variable"
 
-  .recommend
+  .product
     position: fixed;
     width: 100%
     max-width 980px
     top: .93rem
     bottom: 0
-    .recommend-container
+    .product-container
       height 100%
       font-size $font-size-medium
       color $color-text-info
@@ -157,8 +217,10 @@ export default {
         text-align center
         font-size .14rem
         color #999
-      .m-banner
-        // height 300px
+      .slider-wrapper
+        position relative
+        width 100%
+        overflow hidden
       .data-list
         // padding-top .1rem
         .loading-padding
@@ -257,7 +319,6 @@ export default {
                 // vertical-align middle
             .info-bottom
               .sell-count
-                margin-top .2rem
                 font-size .11rem
                 line-height .2rem
                 color $color-text-list

@@ -1,6 +1,6 @@
 <template>
   <div class="mf-loading-container">
-    <img src="./loading.gif">
+    <img src="../../images/loading.gif">
     <p class="desc">{{title}}</p>
   </div>
 </template>

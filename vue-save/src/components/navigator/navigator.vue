@@ -146,7 +146,6 @@ export default {
     .categoty-list
       display flex
       flex-wrap wrap
-      justify-content center
       padding .14rem .17rem
       box-shadow 0px 2px  5px 0px #aaa
       position relative
