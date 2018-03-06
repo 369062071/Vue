@@ -46,7 +46,7 @@ export default {
 <style lang="stylus">
   @import './common/stylus/'
   #app
-    max-width 1190px
+    // max-width 1190px
     margin 0 auto
     padding 30px 0
     position relative

@@ -167,16 +167,6 @@ const data = {
         coupon: 10,
         sellcount: 323,
         shoptype: 1
-      },
-      {
-        picUrls: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp',
-        title: '小熊绞肉机家用电动不锈钢多功能全自动大容量饺馅切菜碎肉机正品',
-        typeprice: 1,
-        zkprice: 79,
-        reserveprice: 119,
-        coupon: 10,
-        sellcount: 323,
-        shoptype: 1
       }
     ],
     insert: {

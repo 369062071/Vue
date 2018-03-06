@@ -1,12 +1,14 @@
 <template>
-  <div class="slider-wrapper" v-if="banners.length">
-    <slider>
-      <div  v-for="(item,index) in banners" :key="index">
-        <a :href="item.linkUrl">
-          <img class="needsclick" :src="item.picUrl" >
-        </a>
-      </div>
-    </slider>
+  <div class="slider-box" v-if="banners.length">
+    <div class="slider-wrapper">
+      <slider>
+        <div  v-for="(item,index) in banners" :key="index">
+          <a :href="item.linkUrl">
+            <img class="needsclick" :src="item.picUrl" >
+          </a>
+        </div>
+      </slider>
+    </div>
   </div>
 </template>
 
@@ -30,10 +32,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.slider-box
+  width 100%
+  background #0689d5
   .slider-wrapper
     position relative
+    width 1190px
     height 400px
-    width 100%
+    margin 0 auto
     margin-bottom 26px
     overflow hidden
+    // .slider-bg
+    //   position absolute
+    //   top 0
+    //   left 0
+    //   width 100%
+    //   height 400px
+    //   background #0689d5
+    //   z-index -10
 </style>

@@ -2,7 +2,9 @@
   <div class="product">
     <ul class="data-list1">
       <li class="item" v-for="(item, index) in dataList" :key="index">
-        <img :src="item.picUrls" class="item-img">
+        <div class="img-wrapper">
+          <img v-lazy="item.picUrls" class="item-img">
+        </div>
         <div class="item-info">
           <em class="t-icon"></em>
           <p class="title" v-text="item.title"></p>
@@ -13,26 +15,90 @@
         <div class="item-price">
           <div class="ticket">
             <p class="ticket-name">优惠券</p>
-            <p class="ticket-name" v-text="item.coupon"></p>
+            <p>￥<span class="text-big" v-text="item.coupon"></span></p>
           </div>
           <div class="original">
-            <p class="before-price" v-text="item.reserveprice"></p>
-            <p class="after-price" v-text="item.zkprice"></p>
+            <p class="before-price" >
+              ￥<span v-text="item.reserveprice"></span>
+            </p>
+            <p class="after-price">
+              券后价￥<span class="text-big" v-text="item.zkprice"></span>
+            </p>
           </div>
-          <button type="button">领券购买</button>
+          <button class="sell-btn" type="button">领券购买</button>
         </div>
       </li>
       <!-- <loading v-show="hasMore" :class="dataList ? 'loading-padding' : '' "></loading> -->
     </ul>
     
+    <ul class="data-list2">
+      <li class="item" v-for="(item, index) in dataList" :key="index">
+        <div class="img-wrapper">
+          <img v-lazy="item.picUrls" class="item-img">
+        </div>
+        <div class="item-info">
+          <em class="t-icon"></em>
+          <p class="title" v-text="item.title"></p>
+          <p class="count">
+            已抢<span v-text="item.sellcount"></span>件
+          </p>
+        </div>
+        <div class="item-price">
+          <div class="ticket">
+            <p class="ticket-name">优惠券</p>
+            <p>￥<span class="text-big" v-text="item.coupon"></span></p>
+          </div>
+          <div class="original">
+            <p class="before-price" >
+              ￥<span v-text="item.reserveprice"></span>
+            </p>
+            <p class="after-price">
+              券后价￥<span class="text-big" v-text="item.zkprice"></span>
+            </p>
+          </div>
+          <button class="sell-btn" type="button">领券购买</button>
+        </div>
+      </li>
+    </ul>
+
+    <ul class="data-list3">
+      <li class="item" v-for="(item, index) in dataList" :key="index">
+        <div class="img-wrapper">
+          <img v-lazy="item.picUrls" class="item-img">
+        </div>
+        <div class="item-info">
+          <em class="t-icon"></em>
+          <p class="title" v-text="item.title"></p>
+          <p class="count">
+            已抢<span v-text="item.sellcount"></span>件
+          </p>
+        </div>
+
+        <div class="item-price">
+          <div class="original">
+            <p class="before-price" >
+              ￥<span v-text="item.reserveprice"></span>
+            </p>
+            <p>券后价</p>
+            <p class="after-price">
+              ￥<span v-text="item.zkprice" class="text-big"></span>
+            </p>
+          </div>
+          <div class="ticket-wrapper">
+            <div class="ticket">
+              <p class="ticket-name">优惠券</p>
+              <p>￥<span class="text-big" v-text="item.coupon"></span></p>
+            </div>
+            <button class="sell-btn" type="button">领券购买></button>
+          </div>
+        </div>
+      </li>
+    </ul>
+
   </div>
 </template>
 
 <script>
-import Scroll from '@/base/scroll/scroll'
-// import Loading from '@/components/loading/loading'
-import Slider from '@/base/slider/slider'
-// import InsertItem from '@/components/insert-item/insert-item'
 import Bus from '@/bus.js'
 import {getItemVo} from '@/common/js/api'
 import {data} from '../../data'
@@ -40,22 +106,15 @@ import {data} from '../../data'
 
 export default {
   components: {
-    Scroll,
-    Slider
   },
   data () {
     return {
       dataList: data.productList.list,
       banners: data.banner,
-      isShowCode: false,
-      pullUpLoad: true,
-      page: 1,
-      cid: 1204,
-      hasMore: true,
-      pullDownRefresh: true,
-      pullDownRefreshThreshold: 90,
-      pullDownRefreshStop: 60,
-      insert: ''
+      scrollTop: 0,
+      clientHeight: 0,
+      scrollHeight: 0,
+      isLoad: true
     }
   },
   created () {
@@ -83,24 +142,46 @@ export default {
     })
   },
   mounted () {
+    window.addEventListener('scroll', () => {
+      this.getScrollTop()
+      this.getClientHeight()
+      this.getScrollHeight()
+      console.log(this.scrollTop, this.clientHeight, this.scrollHeight)
+
+      if (this.scrollTop + this.clientHeight >= this.scrollHeight - 300) {
+        console.log(this.scrollTop + this.clientHeight, this.scrollHeight - 300)
+        console.log('到底部了')
+        if (this.isLoad) {
+          console.log('加载执行了')
+          this.isLoad = false
+          setTimeout(() => {
+            this.isLoad = true
+            this.dataList = this.dataList.concat(data.productList.list)
+          }, 500)
+        }
+      }
+    })
   },
   methods: {
-    onPullingDown() {
-        // 模拟更新数据
-      console.log('pulling down and load data')
-      setTimeout(() => {
-        if (this._isDestroyed) {
-          return
-        }
-        // if (Math.random() > 0.5) {
-        //   // 如果有新数据
-        //   this.items.unshift(this.$i18n.t('normalScrollListPage.newDataTxt') + +new Date())
-        // } else {
-        //   // 如果没有新数据
-        //   this.$refs.scroll.forceUpdate()
-        // }
-        this.$refs.scroll.forceUpdate()
-      }, 2000)
+    // 获取当前滚动条的位置
+    getScrollTop () {
+      if (document.documentElement && document.documentElement.scrollTop) {
+        this.scrollTop = document.documentElement.scrollTop
+      } else if (document.body) {
+        this.scrollTop = document.body.scrollTop
+      }
+    },
+    // 获取当前可视范围的高度
+    getClientHeight () {
+      if (document.body.clientHeight && document.documentElement.clientHeight) {
+        this.clientHeight = Math.min(document.body.clientHeight, document.documentElement.clientHeight)
+      } else {
+        this.clientHeight = Math.max(document.body.clientHeight, document.documentElement.clientHeight)
+      }
+    },
+    // 获取文档完整的高度
+    getScrollHeight () {
+      this.scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight)
     },
     _getItemVo () {
       this.page = 1
@@ -155,12 +236,6 @@ export default {
     }
   },
   computed: {
-    pullDownRefreshObj: function () {
-      return this.pullDownRefresh ? {
-        threshold: parseInt(this.pullDownRefreshThreshold),
-        stop: parseInt(this.pullDownRefreshStop)
-      } : false
-    }
   },
   watch: {
     pullDownRefreshObj: {
@@ -177,6 +252,8 @@ export default {
   @import "../../common/stylus/variable"
 
   .product
+    width 1190px
+    margin 0 auto
     .data-list1
       font-size 0
       .item
@@ -184,16 +261,18 @@ export default {
         width 290px
         margin-bottom 7px
         margin-right 7px
-        border 1px solid #999
+        border 1px solid #ddd
         box-sizing border-box
-        .item-img
-          width 100%
-          height 100%
-          background #000
+        .img-wrapper
+          width 288px
+          height 288px
+          .item-img
+            width 100%
+            height 100%
         .item-info
           display flex
           height 40px
-          margin 0 5px
+          margin 0 5px 4px 5px
           font-size $font-size-small
           color $color-text
           position relative
@@ -212,219 +291,207 @@ export default {
             bottom 0
             line-height 20px
             color $color-text-d
-
-          
-      .no-data
-        padding .1rem 0
-        text-align center
-        font-size .14rem
-        color #999
-      .slider-wrapper
-        position relative
-        width 100%
-        overflow hidden
-      .data-list
-        // padding-top .1rem
-        .loading-padding
-          padding 0 0 .1rem 0
-        .inset-item
+        .item-price
           display flex
-          justify-content space-between
-          margin .05rem
-          border-radius .05rem
-          color $color-theme
-          background #fff
-          .inset-pic
-            width 1rem
-            flex 0 0 1rem
-            height 1rem
-            padding .1rem 0 .1rem .05rem 
-          .inset-info
-            display flex
+          font-size $font-size-medium-x
+          color #fff
+          background $color-theme
+          .ticket
+            width 80px
+            flex 0 0 80px
+            padding 20px 0 14px
+            text-align center
+            .ticket-name
+              margin-bottom 4px
+            .text-big
+              font-size $font-size-large-x
+          .original
             flex-grow 1
-            flex-direction column
-            justify-content space-between
-            margin 0 .1rem 0 .05rem
-            padding .1rem 0 .1rem .05rem 
-            .title
-              font-size .18rem
-              font-weight bold
-            .info-bottom
-              .sell-count
-                font-size .11rem
-                line-height .2rem
-                color $color-text-list
-              .inset-price
-                display flex
-                justify-content space-between
-                font-size .11rem
-                .zk-price
-                  color $color-text-d
-                  .text-big
-                    font-size .16rem
-                    font-weight bold
-                .reserve-price
-                  margin-top .05rem
-                  text-decoration line-through
-                  color #666
-          .coupon-container
+            padding 20px 0 14px
+            border-right  2px dashed $color-btn
+            .before-price
+              margin 4px 0
+              font-size $font-size-small
+              text-decoration line-through
+            .after-price
+              .text-big
+                font-size 24px
+          .sell-btn
+            width 70px
+            flex 0 0 70px
+            outline none
+            border none
+            font-size $font-size-large
+            color $color-theme
+            background $color-btn
+
+
+    .data-list2
+      font-size 0
+      .item
+        display inline-block
+        width 290px
+        margin 0 7px 7px 0
+        padding-bottom 10px
+        border 1px solid #ddd
+        box-sizing border-box
+        .img-wrapper
+          width 288px
+          height 288px
+          .item-img
+            width 100%
+            height 100%
+        .item-info
+          display flex
+          height 40px
+          margin 0 5px 14px 5px
+          font-size $font-size-small
+          color $color-text
+          position relative
+          .t-icon
+            width 25px
+            flex 0 0 25px
+            height 25px
+            margin-right 10px
+            background url(../../images/tb.png) no-repeat
+            background-size cover
+          .title
+            line-height 20px
+          .count
+            position absolute
+            right 0
+            bottom 0
+            line-height 20px
+            color $color-text-d
+        .item-price
+          display flex
+          height 56px
+          font-size $font-size-medium-x
+          color $color-theme
+          .ticket
+            width 80px
+            flex 0 0 80px
+            text-align center
+            .ticket-name
+              margin-bottom 4px
+            .text-big
+              font-size 34px
+          .original
+            flex-grow 1
+            .before-price
+              margin-top 18px
+              font-size $font-size-small
+              text-decoration line-through
+            .after-price
+              font-size $font-size-medium
+              .text-big
+                font-size $font-size-large
+          .sell-btn
+            width 92px
+            flex 0 0 92px
+            height 56px
+            outline none
+            border none
+            font-size $font-size-medium-x
+            color #fff
+            background $color-theme
+
+
+    .data-list3
+      font-size 0
+      .item
+        display inline-block
+        width 290px
+        margin 0 7px 7px 0
+        border 1px solid #f5f5f5
+        box-sizing border-box
+        .img-wrapper
+          width 288px
+          height 288px
+          .item-img
+            width 100%
+            height 100%
+        .item-info
+          display flex
+          height 40px
+          margin 0 5px 14px 5px
+          font-size $font-size-small
+          color $color-text
+          position relative
+          .t-icon
+            width 25px
+            flex 0 0 25px
+            height 25px
+            margin-right 10px
+            background url(../../images/tb.png) no-repeat
+            background-size cover
+          .title
+            line-height 20px
+          .count
+            position absolute
+            right 0
+            bottom 0
+            line-height 20px
+            color $color-text-d
+        .item-price
+          display flex
+          height 72px
+          font-size $font-size-medium-x
+          color $color-theme
+          background #f5f5f5
+          .ticket-wrapper
+            flex-grow 1
+            display flex
+            align-items center
+            .ticket
+              width 80px
+              flex 0 0 80px
+              text-align center
+              .ticket-name
+                margin-top 14px
+                margin-bottom 4px
+              .text-big
+                font-size 34px
+            .sell-btn
+              width 108px
+              flex 0 0 108px
+              height 34px
+              border-radius 17px
+              outline none
+              border none
+              font-size $font-size-medium-x
+              color #fff
+              background $color-theme
+          .original
+            width 94px
+            flex 0 0 94px
             display flex
             flex-direction column
             justify-content space-around
-            width .85rem
-            flex 0 0 .85rem
-            position relative
-            padding .15rem 0 .1rem 
-            border-radius .05rem
             align-items center
-            color #fff
-            background $color-theme
-            &:after,&:before
-              content ''
-              width .1rem
-              height .1rem
-              border-radius 50%
-              background $color-background-d
-            &:before
-              position absolute
-              top -0.05rem
-              left -0.04rem
-            &:after
-              position absolute
-              bottom -0.05rem
-              left -0.04rem
-            .title
-              font-size .16rem
-            .coupon-price
-              .text-big
-                font-size .24rem
-            .btn-pull
-              width 90%
-              padding .05rem 0
-              margin 0 auto
-              border none
-              border-radius .4rem
-              outline none
-              font-size $font-size-small
-              color $color-theme
-              background #fff
-        .data-item
-          display flex
-          justify-content space-between
-          padding .1rem .05rem
-          margin .05rem
-          border-radius .05rem
-          background $color-background
-          .link-left
-            display flex
-            flex-grow 1
-          .item-coupon
-            display flex
-            flex-direction column
-            width .8rem
-            flex 0 0 .8rem
+            padding 8px 0
+            border-right 2px dashed #fff
+            font-size $font-size-medium
             position relative
-            padding-top .1rem
-            &:after,&:before
+            &:before,&:after
+              position absolute
               content ''
-              width .1rem
-              height .1rem
+              width 10px
+              height 10px
               border-radius 50%
-              background $color-background-d
+              background #fff
             &:before
-              position absolute
-              top -0.15rem
-              left -0.04rem
+              top -5px
+              right -5px
             &:after
-              position absolute
-              bottom -0.15rem
-              left -0.04rem
-            .coupon-container
-              flex 1
-              display flex
-              flex-direction column
-              justify-content space-between
-              margin  0 0 .1rem
-              padding-left .05rem
-              text-align center
-              box-sizing border-box
-              border-left 1.5px dashed #f3f3f3
+              bottom -5px
+              right -5px
+            .before-price
               font-size $font-size-small
-              color $color-border-a
-              .coupon-title
-                font-weight bold
-              .coupon-price
-                font-weight bold
-                .text-big
-                  font-size $font-size-large-x
-              .btn-pull
-                width 90%
-                padding .05rem 0
-                margin 0 auto
-                border none
-                border-radius .4rem
-                outline none
-                font-size $font-size-small
-                color $color-text
-                background $color-theme
-          .item-pic
-            width 1rem
-            flex 0 0 1rem
-            height 1rem
-          .item-info
-            display flex
-            flex-grow 1
-            flex-direction column
-            justify-content space-between
-            margin 0 .1rem 0 .05rem
-            .info-title
-              line-height .2rem
-              font-size $font-size-medium
-              color $color-theme
-              display -webkit-box
-              overflow hidden
-              -webkit-box-orient vertical
-              -webkit-line-clamp 2
-              .insert-title
-                font-weight bold
-                font-size .18rem
-              .i-new
-                display inline-block
-                width .24rem
-                height .15rem
-                background url(../../images/new.png) no-repeat center
-                background-size contain
-              .i-tb,.i-tm
-                display inline-block
-                width .15rem
-                height .15rem
-              .i-tb
-                background url(../../images/tb.png) no-repeat center
-                background-size contain
-              .i-tm
-                background url(../../images/tm.png) no-repeat center
-                background-size contain
-              .i-title
-                display inline
-                line-height .2rem
-                font-size $font-size-medium
-                // vertical-align middle
-            .info-bottom
-              .sell-count
-                font-size .11rem
-                line-height .2rem
-                color $color-text-list
-              .item-price
-                display flex
-                justify-content space-between
-                font-size .11rem
-                .zk-price
-                  color $color-text-d
-                  .text-big
-                    font-size .16rem
-                    font-weight bold
-                .reserve-price
-                  margin-top .05rem
-                  text-decoration line-through
-                  color #666
+              text-decoration line-through
+            .after-price
+              font-size $font-size-small
+              .text-big
+                font-size $font-size-large
+        
 </style>

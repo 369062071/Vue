@@ -54,6 +54,8 @@ export default {
   .navigator
     display flex
     position relative
+    width 1190px
+    margin 0 auto
     background $color-background
     .recommend
       width 170px
