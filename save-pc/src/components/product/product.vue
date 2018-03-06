@@ -1,102 +1,38 @@
 <template>
   <div class="product">
-    <!-- 
-      :pullDownRefresh="pullDownRefreshObj"
-      @pullingDown="onPullingDown"
-     -->
-    <scroll
-      class="product-container"
-      :data="dataList"
-      :pullUpLoad="pullUpLoad"
-      @pullingUp="loadMore"
-      ref="scroll"
-    >
-      <div>
-        <div class="slider-wrapper" v-if="banners.length" style="height: 180px">
-          <slider>
-            <div  v-for="(item,index) in banners" :key="index">
-              <a :href="item.linkUrl">
-                <img class="needsclick" @load="loadImage" :src="item.picUrl" >
-              </a>
-            </div>
-          </slider>
+    <ul class="data-list1">
+      <li class="item" v-for="(item, index) in dataList" :key="index">
+        <img :src="item.picUrls" class="item-img">
+        <div class="item-info">
+          <em class="t-icon"></em>
+          <p class="title" v-text="item.title"></p>
+          <p class="count">
+            已抢<span v-text="item.sellcount"></span>件
+          </p>
         </div>
-        <ul class="data-list">
-          <li  v-for="(item, index) in dataList" :key="index">
-            <div class="data-item">
-               <div class="link-left">
-                <img v-lazy="item.picurls" class="item-pic" >
-                <div class="item-info">
-                  <div class="info-title" ref="info" style="-webkit-box-orient: vertical">
-                    <em class="i-new"></em>
-                    <em class="i-tb" v-show="item.shoptype == 1"></em>
-                    <em class="i-tm" v-show="item.shoptype == 0"></em>
-                    <!-- <span v-text="item.title" class="i-title"></span> -->
-                    {{ item.title }}
-                  </div>
-                  <div class="info-bottom">
-                    <p class="sell-count">以抢<span v-text="item.sellcount"></span>件</p>
-                    <div class="item-price">
-                      <p class="zk-price">优惠价￥<span v-text="item.zkprice" class="text-big"></span></p>
-                      <p class="reserve-price">￥<span v-text="item.reserveprice"></span></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="item-coupon">
-                <div class="coupon-container">
-                  <p class="coupon-title">优惠价</p>
-                  <p class="coupon-price">￥<span class="text-big" v-text="item.coupon / 100"></span></p>
-                  <button class="btn-pull">领券购买</button>
-                </div>
-              </div>
-            </div>
-           
-
-            <div class="inset-item" v-show="item.sum">
-             
-              <img v-lazy="item.picurls" class="inset-pic">
-              <div class="inset-info">
-            
-                <span class="title">免费体验 满意付款</span>
-        
-                <div class="info-bottom">
-                  <p class="sell-count">以抢<span v-text="item.sellcount"></span>件</p>
-                  <div class="inset-price">
-                    <p class="zk-price">优惠券￥<span v-text="item.zkprice" class="text-big"></span></p>
-                    <p class="reserve-price">￥
-                      <span v-text="item.reserveprice"></span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-          
-             
-              <div class="coupon-container">
-                <p class="title">优惠</p>
-                <p class="coupon-price">￥
-                  <span class="text-big" v-text="item.coupon"></span>
-                </p>
-                <button class="btn-pull">马上抢</button>
-              </div>
-
-            </div>
-          </li>
-
-          <loading v-show="hasMore" :class="dataList ? 'loading-padding' : '' "></loading>
-
-        </ul>
-      </div>
-      <p v-show="!hasMore" class="no-data">没有更多了</p>
-    </scroll>
+        <div class="item-price">
+          <div class="ticket">
+            <p class="ticket-name">优惠券</p>
+            <p class="ticket-name" v-text="item.coupon"></p>
+          </div>
+          <div class="original">
+            <p class="before-price" v-text="item.reserveprice"></p>
+            <p class="after-price" v-text="item.zkprice"></p>
+          </div>
+          <button type="button">领券购买</button>
+        </div>
+      </li>
+      <!-- <loading v-show="hasMore" :class="dataList ? 'loading-padding' : '' "></loading> -->
+    </ul>
+    
   </div>
 </template>
 
 <script>
 import Scroll from '@/base/scroll/scroll'
-import Loading from '@/components/loading/loading'
+// import Loading from '@/components/loading/loading'
 import Slider from '@/base/slider/slider'
-import InsertItem from '@/components/insert-item/insert-item'
+// import InsertItem from '@/components/insert-item/insert-item'
 import Bus from '@/bus.js'
 import {getItemVo} from '@/common/js/api'
 import {data} from '../../data'
@@ -105,9 +41,7 @@ import {data} from '../../data'
 export default {
   components: {
     Scroll,
-    Loading,
-    Slider,
-    InsertItem
+    Slider
   },
   data () {
     return {
@@ -243,17 +177,43 @@ export default {
   @import "../../common/stylus/variable"
 
   .product
-    position: fixed;
-    width: 100%
-    max-width 980px
-    top: .93rem
-    bottom: 0
-    .product-container
-      height 100%
-      font-size $font-size-medium
-      color $color-text-info
-      overflow hidden
-      background $color-background-d
+    .data-list1
+      font-size 0
+      .item
+        display inline-block
+        width 290px
+        margin-bottom 7px
+        margin-right 7px
+        border 1px solid #999
+        box-sizing border-box
+        .item-img
+          width 100%
+          height 100%
+          background #000
+        .item-info
+          display flex
+          height 40px
+          margin 0 5px
+          font-size $font-size-small
+          color $color-text
+          position relative
+          .t-icon
+            width 25px
+            flex 0 0 25px
+            height 25px
+            margin-right 10px
+            background url(../../images/tb.png) no-repeat
+            background-size cover
+          .title
+            line-height 20px
+          .count
+            position absolute
+            right 0
+            bottom 0
+            line-height 20px
+            color $color-text-d
+
+          
       .no-data
         padding .1rem 0
         text-align center

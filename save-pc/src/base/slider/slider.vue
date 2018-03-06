@@ -29,7 +29,7 @@
       },
       interval: {
         type: Number,
-        default: 4000
+        default: 5000
       },
       showDot: {
         type: Boolean,
@@ -175,6 +175,7 @@
       // 小圆点
       _initDots () {
         this.dots = new Array(this.children.length)
+        console.log(this.dots)
       },
       _play () {
         clearTimeout(this.timer)
@@ -197,17 +198,20 @@
       white-space: nowrap
       .slide-item
         float: left
+        height 400px
         box-sizing: border-box
         overflow: hidden
         text-align: center
         a
           display: block
           width: 100%
+          height 100%
           overflow: hidden
           text-decoration: none
         img
           display: block
           width: 100%
+          height: 100%
     .dots
       position: absolute
       right: 0

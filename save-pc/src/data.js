@@ -190,15 +190,7 @@ const data = {
       sum: 43
     }
   },
-  'banner': [
-    {
-      linkUrl: '#',
-      picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'
-    },
-    {
-      linkUrl: '#',
-      picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'
-    },
+  'banners': [
     {
       linkUrl: '#',
       picUrl: 'https://img.alicdn.com/imgextra/i4/3012913363/TB27Heoe3fH8KJjy1zcXXcTzpXa_!!3012913363.jpg_200x200.jpg?x-oss-process=image/format,webp'

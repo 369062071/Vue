@@ -2,18 +2,18 @@
   <div id="app">
     <m-search></m-search>
     <navigator></navigator>
-    <!-- <m-marquee class="m-marquee"></m-marquee>
-    <move-link></move-link>
-    <product></product> -->
+    <m-banner></m-banner>
+    <product></product>
   </div>
 </template>
 
 <script>
-import MMarquee from '@/components/m-marquee/m-marquee'
+// import MMarquee from '@/components/m-marquee/m-marquee'
 import MSearch from '@/components/m-search/m-search'
 import Navigator from '@/components/navigator/navigator'
+import MBanner from '@/components/m-banner/m-banner'
 import Product from '@/components/product/product'
-import MoveLink from '@/components/move-link/move-link'
+// import MoveLink from '@/components/move-link/move-link'
 import {getCategorize} from '@/common/js/api.js'
 
 export default {
@@ -21,14 +21,13 @@ export default {
   components: {
     MSearch,
     Navigator,
-    Product,
-    MMarquee,
-    MoveLink
+    MBanner,
+    Product
   },
   data () {
     return {
       // navList: data.navList,
-      currentTabIndex: 1
+      // currentTabIndex: 1
     }
   },
   created () {

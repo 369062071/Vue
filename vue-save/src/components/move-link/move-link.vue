@@ -14,9 +14,10 @@ export default {
   .link
     width .5rem
     height .5rem
-    background yellow
     position absolute
-    right 0.4rem
-    bottom -4.8rem
+    right 0.15rem
+    bottom -5rem
+    background url(../../images/move-link.png) no-repeat
+    background-size .5rem .5rem
     z-index 99
 </style>
