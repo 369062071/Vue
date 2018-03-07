@@ -14,6 +14,9 @@
         </div>
       </div>
     </div>
+    <div class="pop-up" v-show="isPopShow">
+
+    </div>
   </div>
 </template>
 
@@ -30,23 +33,62 @@ export default {
   data () {
     return {
       banners: data.banners,
-      w: 0,
-      r: 0,
-      num: 6,
-      isRotate: false
+      isPopShow: false,
+      isRotate: false,
+      rotateTime: 0,
+      rotateAngle: 0,
+      fisrtAngle: 212,
+      timer: null
     }
   },
   mounted () {
+    // this.getRandom()
+    this.init()
   },
   methods: {
+    init () {
+      this.setStart()
+    },
     onPlay () {
       if (!this.isRotate) {
+        clearInterval(this.timer)
+        this.timer = null
+        this.getRandom()
+        this.setAngle(this.rotateAngle, this.rotateTime)
+        console.log(this.$refs.prize.style[transform])
         this.isRotate = true
         // this.$refs.prize.className = 'prize'
-        this.$refs.prize.style[transition] = 'all 3s'
-        this.$refs.prize.style[transform] = `rotate(212deg)`
-        console.log(this.$refs.prize)
+        this.resetRotate(this.rotateTime)
       }
+    },
+    setAngle (angle, time) {
+      this.$refs.prize.style[transition] = 'all ' + time + 's'
+      this.$refs.prize.style[transform] = 'rotate(' + angle + 'deg)'
+    },
+    getRandom () {
+      this.rotateTime = (Math.random() * 2 + 2).toFixed(1)
+      this.rotateAngle = this.rotateAngle + (Math.floor(Math.random() * 4 + 2) * 360 + this.fisrtAngle)
+      this.fisrtAngle = 0
+      console.log(this.rotateTime, Math.floor(Math.random() * 4 + 2) * 360)
+    },
+    setStart () {
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(() => {
+        if (this.rotateAngle >= 350) {
+          this.rotateAngle = 0
+        }
+        this.rotateAngle = this.rotateAngle + 0.1
+        this.setAngle(this.rotateAngle)
+      }, 40)
+    },
+    resetRotate (time) {
+      setTimeout(() => {
+        console.log('定时器执行了')
+        this.isRotate = false
+        this.isPopShow = true
+      }, time * 1000 + 1000)
     }
   },
   watch: {
@@ -61,6 +103,9 @@ export default {
 </script>
 
 <style  scoped>
+  .rotate {
+    position: relative;
+  }
   .title {
     margin-top: 0.05rem;
     text-align: center;
@@ -127,6 +172,14 @@ export default {
     background: rgb(126, 126, 126);
   }
 
+  .pop-up {
+    width: 100%;
+    height: 200px;
+    background: #333;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   @keyframes myrotate {
     0% {
       transform: rotate(0deg)
