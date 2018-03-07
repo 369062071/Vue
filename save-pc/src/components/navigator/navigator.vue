@@ -87,6 +87,7 @@ export default {
         background rgba(0,0,0,.6)
         display none
         font-size 0
+        z-index 99
         .item
           display inline-block
           width 50%

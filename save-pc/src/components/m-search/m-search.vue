@@ -71,6 +71,7 @@ export default {
       padding 0
       border-top-right-radius 24px
       border-bottom-right-radius 24px
+      cursor pointer
       outline none
       border none
       font-size $font-size-medium

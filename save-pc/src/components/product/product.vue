@@ -146,11 +146,8 @@ export default {
       this.getScrollTop()
       this.getClientHeight()
       this.getScrollHeight()
-      console.log(this.scrollTop, this.clientHeight, this.scrollHeight)
 
       if (this.scrollTop + this.clientHeight >= this.scrollHeight - 300) {
-        console.log(this.scrollTop + this.clientHeight, this.scrollHeight - 300)
-        console.log('到底部了')
         if (this.isLoad) {
           console.log('加载执行了')
           this.isLoad = false
@@ -324,7 +321,7 @@ export default {
             font-size $font-size-large
             color $color-theme
             background $color-btn
-
+            cursor pointer
 
     .data-list2
       font-size 0
@@ -395,7 +392,7 @@ export default {
             font-size $font-size-medium-x
             color #fff
             background $color-theme
-
+            cursor pointer
 
     .data-list3
       font-size 0
@@ -462,6 +459,7 @@ export default {
               font-size $font-size-medium-x
               color #fff
               background $color-theme
+              cursor pointer
           .original
             width 94px
             flex 0 0 94px
