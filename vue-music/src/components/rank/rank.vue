@@ -25,13 +25,27 @@
 <script type="text/ecmascript-6">
   import Scroll from '@/base/scroll/scroll'
   import Loading from '@/base/loading/loading'
-  // import {ERR_OK} from 'api/config'
+  import {getTopList} from '@/api/rank'
+  import {ERR_OK} from '@/api/config'
 
   export default {
     components: {
       Scroll,
       Loading
+    },
+    created () {
+      this._getTopList()
+    },
+    methods: {
+      _getTopList () {
+        getTopList().then(res => {
+          if (res.code === ERR_OK) {
+            console.log(res.data.topList)
+          }
+        })
+      }
     }
+
   }
 </script>
 
