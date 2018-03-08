@@ -50,6 +50,7 @@
       this.update()
       // 这里是调用resize
       window.addEventListener('resize', () => {
+        console.log(11)
         if (!this.slide || !this.slide.enabled) {
           return
         }

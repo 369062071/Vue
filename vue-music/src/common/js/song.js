@@ -12,6 +12,7 @@ export default class Song {
 }
 
 export function createSong (musicData) {
+  console.log('musicData', musicData)
   return new Song({
     id: musicData.songid,
     mid: musicData.albummid,
@@ -21,7 +22,7 @@ export function createSong (musicData) {
     duration: musicData.interval,
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${musicData.albummid}.jpg?max_age=2592000`,
     // url: `http://dl.stream.qqmusic.qq.com/C400${musicData.songmid}.m4a?guid=9923701325&fromtag=999`
-    url: 'http://dl.stream.qqmusic.qq.com/C400003OUlho2HcRHC.m4a?guid=9923701325&vkey=FE6BD1ED77E7756338C00DA8E33753F7C3DEE576EFF3860BC07366CFEACA9A8BBDE693AF74B5FE13275E5C2EFC28C7DEAC734A1D85055414&uin=&fromtag=999'
+    url: `http://isure.stream.qqmusic.qq.com/C100${musicData.songmid}.m4a?fromtag=32`
   })
 }
 
